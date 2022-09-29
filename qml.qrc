@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/VirtualKeyboard.qml</file>
+        <file>qml/Preedit.qml</file>
+        <file>qml/ToolbarAndCandidateArea.qml</file>
+        <file>qml/Toolbar.qml</file>
+        <file>qml/CandidateList.qml</file>
+        <file>qml/KeyboardLayoutArea.qml</file>
+        <file>qml/ClassicKeyboardLayout.qml</file>
+        <file>qml/ToolArea.qml</file>
+        <file>qml/HideButton.qml</file>
+        <file>qml/key/ActionKey.qml</file>
+        <file>qml/key/AltKey.qml</file>
+        <file>qml/key/BaseKey.qml</file>
+        <file>qml/key/CapslockKey.qml</file>
+        <file>qml/key/ChangeImKey.qml</file>
+        <file>qml/key/CharKey.qml</file>
+        <file>qml/key/CtrlKey.qml</file>
+        <file>qml/key/FnKey.qml</file>
+        <file>qml/key/FnSymbolKey.qml</file>
+        <file>qml/key/LetterKey.qml</file>
+        <file>qml/key/ShiftKey.qml</file>
+        <file>qml/key/SpaceKey.qml</file>
+        <file>qml/key/SwitchKey.qml</file>
+        <file>qml/key/SymbolKey.qml</file>
+        <file>qml/key/TemporarySwitchKey.qml</file>
+        <file>qml/key/WinKey.qml</file>
+        <file>img/close.png</file>
+        <file>qml/js/utils.js</file>
+    </qresource>
+</RCC>
