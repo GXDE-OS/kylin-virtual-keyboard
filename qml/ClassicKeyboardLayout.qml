@@ -23,13 +23,13 @@ Column {
         FnSymbolKey{ label: "0"; shiftedText: ")"; fnValue:"F10" }
         FnSymbolKey{ label: "-"; shiftedText: "_"; fnValue:"F11" }
         FnSymbolKey{ label: "+"; shiftedText: "="; fnValue:"F12" }
-        ActionKey{ label: "Backspace"; width: keyWidth*1.5+spacing; height: keyHeight * 3/4 }
+        BackspaceKey{}
     }
 
     Row {
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: virtualKeyboard.keySpacing
-        ActionKey{ label: "Tab"; width: virtualKeyboard.keyWidth*1.5+spacing }
+        ActionKey{ label: "Tab"; width: virtualKeyboard.keyWidth*1.5+spacing; alignment: Text.AlignLeft }
         LetterKey{ label: "q"; shiftedText: "Q" }
         LetterKey{ label: "w"; shiftedText: "W" }
         LetterKey{ label: "e"; shiftedText: "E" }
@@ -49,7 +49,7 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: virtualKeyboard.keySpacing
 
-        CapslockKey{width: virtualKeyboard.keyWidth*2+spacing}
+        CapslockKey{width: virtualKeyboard.keyWidth*2+spacing; alignment: Text.AlignLeft }
         LetterKey{ label: "a"; shiftedText: "A" }
         LetterKey{ label: "s"; shiftedText: "S" }
         LetterKey{ label: "d"; shiftedText: "D" }
@@ -61,13 +61,13 @@ Column {
         LetterKey{ label: "l"; shiftedText: "L" }
         SymbolKey{ label: ";"; shiftedText: ":" }
         SymbolKey{ label: "'"; shiftedText: "\"" }
-        ActionKey{ label: "Enter"; width: keyWidth*2.5 +spacing*2}
+        EnterKey{}
 
     }
     Row {
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: virtualKeyboard.keySpacing
-        ShiftKey{width: virtualKeyboard.keyWidth*2.5+spacing*2 }
+        ShiftKey{width: virtualKeyboard.keyWidth*2.5+spacing*2; alignment: Text.AlignLeft }
         LetterKey{ label: "z" ; shiftedText: "Z" }
         LetterKey{ label: "x" ; shiftedText: "X" }
         LetterKey{ label: "c" ; shiftedText: "C" }
@@ -78,8 +78,8 @@ Column {
         SymbolKey{ label: ","; shiftedText: "<"  }
         SymbolKey{ label: "."; shiftedText: ">"  }
         SymbolKey{ label: "/"; shiftedText: "?"  }
-        ActionKey{ label: "↑" }
-        ShiftKey{ width: virtualKeyboard.keyWidth*2+spacing }
+        ActionKey{ label: "up"; actionKeyImgPath: "qrc:/img/up.png" }
+        ShiftKey{ width: virtualKeyboard.keyWidth*2+spacing; alignment: Text.AlignRight }
     }
     Row {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -92,9 +92,9 @@ Column {
         ChangeImKey{}
         SpaceKey{}
         AltKey{}
-        ActionKey{ label: "←" }
-        ActionKey{ label: "↓" }
-        ActionKey{ label: "→" }
+        ActionKey{ label: "left"; actionKeyImgPath: "qrc:/img/left.png" }
+        ActionKey{ label: "down"; actionKeyImgPath: "qrc:/img/down.png" }
+        ActionKey{ label: "right"; actionKeyImgPath: "qrc:/img/right.png" }
         CtrlKey{}
     }
 }

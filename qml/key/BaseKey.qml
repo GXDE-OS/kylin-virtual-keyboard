@@ -9,7 +9,8 @@ ToolButton {
     property real fontSize: virtualKeyboard.fontSize
     property alias keyLabel: keyLabel_
     property alias keyBackground: keyBackground_
-
+    /*label和img对应父控件的水平对齐方式 取值为AlignHCenter:居中对齐,AlignRight:向右对齐,AlignLeft:向左对齐*/
+    property int alignment: Text.AlignHCenter
 
     background: Rectangle {
         id: keyBackground_
@@ -31,13 +32,11 @@ ToolButton {
         text: label
         font.pointSize: fontSize
         font.weight: Font.Light
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            verticalCenter: parent.verticalCenter
-        }
-        horizontalAlignment: Text.AlignHCenter
+        anchors.fill: parent
+        padding: alignment == Text.AlignHCenter ? undefined : virtualKeyboard.keyLableAlignment
+        horizontalAlignment: alignment
+        verticalAlignment: Text.AlignVCenter
         visible: true
     }
-
 }
 
