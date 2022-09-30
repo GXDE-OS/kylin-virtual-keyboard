@@ -5,6 +5,7 @@ Rectangle {
     width: virtualKeyboard.width
     height: virtualKeyboard.preeditHeight
     color: virtualKeyboard.virtualKeyboardColor
+    x: virtualKeyboard.preeditX
 
     Label {
         font.pointSize: virtualKeyboard.preeditTextFontSize

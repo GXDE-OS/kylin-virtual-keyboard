@@ -16,8 +16,8 @@ Rectangle {
 
     //大小相关
     /*设置默认值，防止报错，fontSize为0时会报错，加载qml文件时height为0，会导致fontSize为0*/
-    property real cardinalNumber: height == 0 ? 8 : height/67.0
-    property int preeditHeight: cardinalNumber * 8
+    property real cardinalNumber: height == 0 ? 8 : height/64.0
+    property int preeditHeight: cardinalNumber * 5
     property int toolAndCandidateHeight: cardinalNumber * 8
     property int keyboardLayoutHeight: cardinalNumber * 49
     property int keySpacing: cardinalNumber
@@ -26,6 +26,8 @@ Rectangle {
     property int spaceKeyWidth: keyWidth * 6.5 + keySpacing * 6
     property int keyHeight: cardinalNumber * 9
     property int firstRowKeyHeight: keyHeight * 7/9
+    property int keyLableAlignment: keyWidth / 3
+    property int keyIconAlignment: keyWidth / 3
     property int imHeight: keyHeight * 2/3
     property int imWidth: keyWidth * 9/5
     property real fontSize: keyHeight * 4/11 * 3/4
@@ -35,8 +37,11 @@ Rectangle {
     property real preeditTextFontSize: fontSize
     property real candidateFontSize: fontSize
     property real imFontSize: fontSize
-    property int candidateListWidth: width * 9/10
+    property int preeditX: cardinalNumber * 3.5
+    property int candidateListWidth: width - 7*cardinalNumber
+    property int toolbarSize: cardinalNumber * 3
     property int candidateListX: cardinalNumber * 2
+    property int candidateListSpacing: cardinalNumber * 3
     property int keyRadius: cardinalNumber * 3/4
     property int longPressInterval: 1000
     property int shiftLeftMargin: cardinalNumber
@@ -44,7 +49,7 @@ Rectangle {
     property int imLeftMargin: cardinalNumber
 
     //颜色相关
-    property color virtualKeyboardColor: "#F0F0F5"   /*虚拟键盘背景色*/
+    property color virtualKeyboardColor: "#EBEDEF"   /*虚拟键盘背景色*/
     property color charKeyNormalColor: "#FFFFFF"    /*字符按键默认态颜色*/
     property color charKeyPressedColor: "#DDE0E4"   /*字符按键按下态颜色*/
     property color charKeyHoverColor: "#EDF1F5"    /*字符按键悬浮态颜色*/
@@ -58,6 +63,8 @@ Rectangle {
     property color switchKeyHoverNormalColor: "#C0C6CE"    /*开关按键默认hover态*/
     property color switchKeyHoverOpenColor: "#328AF0"  /*开关按键按下hover态*/
     property color currentIMColor: "#328AF0"  /*输入法列表中当前输入法高亮*/
+    property color candidateListBackgroundColor: "#DDE0E4"  /*候选词列表背景色*/
+    property color preeditBottomColor: "#E4E6E9" /*预编辑下方分割线颜色*/
 
     //状态相关
     property string letterState: "NORMAL"
@@ -96,7 +103,7 @@ Rectangle {
     signal qmlUpdateCurrentIMList(var currentIMList)
 
     //前台发送给后台的信号
-    signal qmlKeyEvent(string key, string keycode, int modifierKeyStates,
+    signal qmlKeyEvent(string key, int keycode, int modifierKeyStates,
                     bool isRelease, int time)
     signal qmlCandidateClicked(int index)
     signal qmlSelectInputMethod(string im)
@@ -177,12 +184,6 @@ Rectangle {
         anchors.top: preedit.bottom
         width: virtualKeyboard.width
         height: 1
-        color: "black"
-    }
-    Rectangle {
-        anchors.top: toolbarAndCandidate.bottom
-        width: virtualKeyboard.width
-        height: 1
-        color: "black"
+        color: virtualKeyboard.preeditBottomColor
     }
 }
