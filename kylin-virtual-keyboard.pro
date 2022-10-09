@@ -2,7 +2,7 @@ QT += quick
 QT += dbus
 QT += core gui
 QT += KWindowSystem
-greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
