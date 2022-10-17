@@ -1,4 +1,6 @@
 #include "virtualkeyboardmanager.h"
+#include <QDBusMetaType>
+#include <QMetaType>
 
 VirtualKeyboardManager::VirtualKeyboardManager(QObject *parent)
     : QObject(parent) {
@@ -82,7 +84,7 @@ void VirtualKeyboardManager::imListChanged(
     QDBusPendingCallWatcher *imChangedCall) {
     QDBusPendingReply<QString> reply = *imChangedCall;
     if (!reply.isError()) {
-        const QString& imName = reply.value();
+        const QString &imName = reply.value();
         emit changeIM(imName);
     }
     imChangedCall->deleteLater();
@@ -90,40 +92,71 @@ void VirtualKeyboardManager::imListChanged(
 
 void VirtualKeyboardManager::hideVirtualKeyboard() { HideVirtualKeyboard(); }
 
-void VirtualKeyboardManager::requestCurrentIMList() {
-    QDBusPendingReply<QString> reply =
-        fcitx5ControllerInterface_->asyncCall("CurrentInputMethodGroup");
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
-    QObject::connect(watcher, &QDBusPendingCallWatcher::finished,
-                     [this](QDBusPendingCallWatcher *watcher) {
-                         QDBusPendingReply<QString> reply = *watcher;
-                         watcher->deleteLater();
+class FcitxQtIMInfo {
+public:
+    friend QDBusArgument &operator<<(QDBusArgument &argument,
+                                     const FcitxQtIMInfo &arg);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument,
+                                           FcitxQtIMInfo &arg);
+    static void registerDBusMetaType();
+    void setUniqueName(const QString &uniqueName) { uniqueName_ = uniqueName; }
+    void setLocalName(const QString &localName) { localName_ = localName; }
+    void setLabel(const QString &label) { label_ = label; }
+    const QString &getUniqueName() const { return uniqueName_; }
+    const QString &getLocalName() const { return localName_; }
+    const QString &getLabel() const { return label_; }
 
-                         if (reply.isError()) {
-                             return;
-                         }
+private:
+    QString uniqueName_;
+    QString localName_;
+    QString label_;
+};
 
-                         updateIMList(reply.value());
-                     });
+QDBusArgument &operator<<(QDBusArgument &argument, const FcitxQtIMInfo &arg) {
+    argument.beginStructure();
+    argument << arg.uniqueName_;
+    argument << arg.localName_;
+    argument << arg.label_;
+    argument.endStructure();
+    return argument;
 }
 
-void VirtualKeyboardManager::updateIMList(const QString &currentIMGroup) {
-    fcitx::FcitxQtControllerProxy fcitxQtControllerProxy(
-        fcitx5Service, fcitx5ServiceControllerPath,
-        QDBusConnection::sessionBus(), this);
-    fcitx::FcitxQtStringKeyValueList items;
-    auto reply =
-        fcitxQtControllerProxy.InputMethodGroupInfo(currentIMGroup, items);
-    if (!reply.isValid()) {
-        return;
-    }
+const QDBusArgument &operator>>(const QDBusArgument &argument,
+                                FcitxQtIMInfo &arg) {
+    QString uniqueName;
+    QString localName;
+    QString label;
+    argument.beginStructure();
+    argument >> uniqueName >> localName >> label;
+    argument.endStructure();
+    arg.setUniqueName(uniqueName);
+    arg.setLocalName(localName);
+    arg.setLabel(label);
+    return argument;
+}
 
-    currentIMList_.clear();
+Q_DECLARE_METATYPE(FcitxQtIMInfo)
+
+void FcitxQtIMInfo::registerDBusMetaType() {
+    qDBusRegisterMetaType<FcitxQtIMInfo>();
+    qDBusRegisterMetaType<QList<FcitxQtIMInfo>>();
+}
+
+void VirtualKeyboardManager::requestCurrentIMList() {
+    FcitxQtIMInfo::registerDBusMetaType();
+    QDBusPendingReply<QList<FcitxQtIMInfo>> reply =
+        virtualKeyboardBackendInterface_->asyncCall("CurrentIMList");
+    reply.waitForFinished();
+
+    auto items = reply.value();
+
+    QStringList stringList;
     for (const auto &imInfo : items) {
-        currentIMList_.append(imInfo.key());
+        stringList.append(imInfo.getUniqueName() + "|" + imInfo.getLocalName() +
+                          "|" + imInfo.getLabel());
     }
 
-    emit updateCurrentIMList(QVariant(currentIMList_));
+    emit updateCurrentIMList(QVariant(stringList));
 }
 
 void VirtualKeyboardManager::resizeView() {
@@ -143,6 +176,26 @@ void VirtualKeyboardManager::processResolutionChangedEvent() {
     }
 }
 
+void VirtualKeyboardManager::showView() {
+    fcitx::FcitxQtControllerProxy fcitxQtControllerProxy(
+        fcitx5Service, fcitx5ServiceControllerPath,
+        QDBusConnection::sessionBus(), this);
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(
+        fcitxQtControllerProxy.CurrentInputMethod(), this);
+    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, this,
+                     [=](QDBusPendingCallWatcher *watcher) {
+                         QDBusPendingReply<QString> reply = *watcher;
+                         if (!reply.isError()) {
+                             const QString &imName = reply.value();
+                             emit changeIM(imName);
+                         }
+                         resizeView();
+                         view_->show();
+                         appInputAreaManager_->raiseInputArea(
+                             view_.get(), view_->geometry());
+                     });
+}
+
 void VirtualKeyboardManager::initView() {
     view_.reset(new QQuickView());
     view_->setSource(QUrl("qrc:/qml/VirtualKeyboard.qml"));
@@ -151,10 +204,7 @@ void VirtualKeyboardManager::initView() {
 
     connectSignals();
 
-    resizeView();
-    appInputAreaManager_->raiseInputArea(view_.get(), view_->geometry());
-
-    view_->show();
+    showView();
 }
 
 void VirtualKeyboardManager::destoryView() {
@@ -208,7 +258,7 @@ void VirtualKeyboardManager::connectSignals() {
             SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)),
             rootObject, SIGNAL(qmlUpdateCandidateList(QVariant)));
     connect(this, SIGNAL(changeIM(const QString &)), rootObject,
-            SIGNAL(qmlChangeIm(QString)));
+            SIGNAL(qmlChangeIM(QString)));
     connect(this, SIGNAL(reset()), rootObject, SIGNAL(qmlReset()));
     connect(this, SIGNAL(updateCurrentIMList(const QVariant &)), rootObject,
             SIGNAL(qmlUpdateCurrentIMList(QVariant)));

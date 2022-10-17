@@ -66,6 +66,7 @@ signals:
     void updateCurrentIMList(const QVariant &currentIMList);
 
 private:
+    void showView();
     void initView();
     void destoryView();
     void resizeView();
@@ -76,7 +77,6 @@ private:
     void initAppInputAreaManager();
     void connectSignals();
     void initDBusService();
-    void updateIMList(const QString &currentIMGroup);
 
     std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;
     std::unique_ptr<DBusService> dBusService_ = nullptr;
@@ -86,8 +86,7 @@ private:
     std::unique_ptr<QDBusInterface> virtualKeyboardBackendInterface_ = nullptr;
     std::unique_ptr<QDBusInterface> fcitx5ControllerInterface_ = nullptr;
     bool virtualkeyboardVisible_ = false;
-    float virtualKeyboardAspectRatio_ = 470.0 / 1620.0;
-    QStringList currentIMList_;
+    float virtualKeyboardAspectRatio_ = 472.0 / 1620.0;
     QString virtualKeyboardBackendService =
         "org.fcitx.Fcitx5.VirtualKeyboardBackend";
     QString virtualKeyboardBackendServicePath = "/virtualkeyboard";
