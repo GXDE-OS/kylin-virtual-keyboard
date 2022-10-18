@@ -13,6 +13,11 @@ Rectangle {
     property var candidateList
     //可用输入法列表
     property var currentIMList
+    //当前输入法名称
+    property string uniqueName
+    //当前输入法，组成为"uniqueName|localName|label"
+    //TOOD 目前以“|”分割数据
+    property string currentIM: "||"
 
     //大小相关
     /*设置默认值，防止报错，fontSize为0时会报错，加载qml文件时height为0，会导致fontSize为0*/
@@ -99,7 +104,7 @@ Rectangle {
     signal qmlUpdatePreedit(string preeditText)
     signal qmlUpdateCandidateList(var candidateList)
     signal qmlReset()
-    signal qmlChangeIm(string uniqueName)
+    signal qmlChangeIM(string uniqueName)
     signal qmlUpdateCurrentIMList(var currentIMList)
 
     //前台发送给后台的信号
@@ -130,6 +135,10 @@ Rectangle {
                 showCandidateList()
             }
         }
+        function onQmlChangeIM(uniqueName){
+            virtualKeyboard.uniqueName = uniqueName
+        }
+
         function onQmlUpdateCurrentIMList(currentIMList) {
             virtualKeyboard.currentIMList = currentIMList
         }
@@ -174,6 +183,16 @@ Rectangle {
         ctrlState = "NORMAL"
     }
 
+    onUniqueNameChanged: {
+        if(currentIMList === undefined){
+            qmlRequestCurrentIMList()
+        }
+        for(var i = 0; i<currentIMList.length; i++){
+            if(currentIMList[i].includes(uniqueName)){
+                currentIM = currentIMList[i]
+            }
+        }
+    }
 
     Preedit{id: preedit}
     ToolbarAndCandidateArea{id: toolbarAndCandidate}

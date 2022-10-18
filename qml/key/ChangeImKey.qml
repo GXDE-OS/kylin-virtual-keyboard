@@ -4,7 +4,7 @@ import "../js/utils.js" as Utils
 
 SwitchKey {
     id: changeIm
-    label: "中"
+    label: virtualKeyboard.currentIM.split("|")[2]
 
     Binding {
         target: changeIm
@@ -15,11 +15,16 @@ SwitchKey {
     keyMouseArea.onReleased: {
         if(virtualKeyboard.changeIMState == "NORMAL"){
             virtualKeyboard.changeIMState = "OPEN"
-            virtualKeyboard.qmlRequestCurrentIMList()
             imList.open()
         }else{
             imList.close()
         }
+    }
+
+    keyMouseArea.onPressed: {
+        virtualKeyboard.qmlRequestCurrentIMList()
+        currentIMListView.currentIndex =
+                virtualKeyboard.currentIMList.indexOf(virtualKeyboard.currentIM)
     }
 
     state: virtualKeyboard.changeIMState
@@ -72,17 +77,19 @@ SwitchKey {
                 boundsBehavior: Flickable.StopAtBounds
                 highlight: Rectangle{color: virtualKeyboard.currentIMColor}
                 delegate: Text {
+                    property string uniqueName: modelData.split("|")[0]
+                    property string localName: modelData.split("|")[1]
+                    property string label: modelData.split("|")[2]
                     height: virtualKeyboard.imHeight
                     width: virtualKeyboard.imWidth
                     font.pointSize: virtualKeyboard.imFontSize
-                    text: modelData
+                    text: label.padEnd(3, " ") + localName
                     anchors.left: parent.left
                     anchors.leftMargin: virtualKeyboard.imLeftMargin
                     MouseArea{
                        anchors.fill: parent
                        onReleased: {
-                           virtualKeyboard.qmlSetCurrentIM(modelData)
-                           currentIMListView.currentIndex = index
+                           virtualKeyboard.qmlSetCurrentIM(uniqueName)
                            imList.close()
                        }
                     }
@@ -94,4 +101,5 @@ SwitchKey {
             }
         }
     }
+
 }
