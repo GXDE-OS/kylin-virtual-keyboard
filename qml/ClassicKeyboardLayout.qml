@@ -29,7 +29,7 @@ Column {
     Row {
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: virtualKeyboard.keySpacing
-        ActionKey{ label: "Tab"; width: virtualKeyboard.keyWidth*1.5+spacing; alignment: Text.AlignLeft }
+        ActionKey{ label: "Tab"; width: virtualKeyboard.keyWidth*1.5 + virtualKeyboard.keySpacing; alignment: Text.AlignLeft }
         LetterKey{ label: "q"; shiftedText: "Q" }
         LetterKey{ label: "w"; shiftedText: "W" }
         LetterKey{ label: "e"; shiftedText: "E" }
@@ -49,7 +49,7 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: virtualKeyboard.keySpacing
 
-        CapslockKey{width: virtualKeyboard.keyWidth*2+spacing; alignment: Text.AlignLeft }
+        CapslockKey{width: virtualKeyboard.keyWidth*2 + virtualKeyboard.keySpacing; alignment: Text.AlignLeft }
         LetterKey{ label: "a"; shiftedText: "A" }
         LetterKey{ label: "s"; shiftedText: "S" }
         LetterKey{ label: "d"; shiftedText: "D" }
@@ -67,7 +67,7 @@ Column {
     Row {
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: virtualKeyboard.keySpacing
-        ShiftKey{width: virtualKeyboard.keyWidth*2.5+spacing*2; alignment: Text.AlignLeft }
+        ShiftKey{width: virtualKeyboard.keyWidth*2.5 + virtualKeyboard.keySpacing*2; alignment: Text.AlignLeft }
         LetterKey{ label: "z" ; shiftedText: "Z" }
         LetterKey{ label: "x" ; shiftedText: "X" }
         LetterKey{ label: "c" ; shiftedText: "C" }
@@ -79,7 +79,7 @@ Column {
         SymbolKey{ label: "."; shiftedText: ">"  }
         SymbolKey{ label: "/"; shiftedText: "?"  }
         ActionKey{ label: "up"; actionKeyImgPath: "qrc:/img/up.png" }
-        ShiftKey{ width: virtualKeyboard.keyWidth*2+spacing; alignment: Text.AlignRight }
+        ShiftKey{ width: virtualKeyboard.keyWidth*2 + virtualKeyboard.keySpacing; alignment: Text.AlignRight }
     }
     Row {
         anchors.horizontalCenter: parent.horizontalCenter
