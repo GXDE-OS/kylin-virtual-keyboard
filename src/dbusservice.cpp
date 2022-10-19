@@ -38,7 +38,7 @@ void DBusService::UpdatePreeditCaret(int preeditCursor) {
 }
 
 void DBusService::UpdatePreeditArea(const QString &preeditText) {
-    virtualKeyboardManager_->updatePreeditArea(preeditText);
+    virtualKeyboardManager_->UpdatePreeditArea(preeditText);
 }
 
 void DBusService::UpdateCandidateArea(const QStringList &candidateTextList,
