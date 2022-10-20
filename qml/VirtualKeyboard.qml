@@ -118,16 +118,16 @@ Rectangle {
 
     Connections {
         target: virtualKeyboard
-        function onShowToolbar() {
+        onShowToolbar: {
             isToolbarVisible = true
         }
-        function onShowCandidateList() {
+        onShowCandidateList: {
             isToolbarVisible = false
         }
-        function onQmlUpdatePreedit(preeditText) {
+        onQmlUpdatePreedit: (preeditText) => {
             virtualKeyboard.preeditText = preeditText
         }
-        function onQmlUpdateCandidateList(candidateList) {
+        onQmlUpdateCandidateList: (candidateList) => {
             if(candidateList.length === 0) {
                 showToolbar()
             } else {
@@ -135,11 +135,11 @@ Rectangle {
                 showCandidateList()
             }
         }
-        function onQmlChangeIM(uniqueName){
+        onQmlChangeIM: (uniqueName) =>{
             virtualKeyboard.uniqueName = uniqueName
         }
 
-        function onQmlUpdateCurrentIMList(currentIMList) {
+        onQmlUpdateCurrentIMList: (currentIMList)=> {
             virtualKeyboard.currentIMList = currentIMList
         }
     }
