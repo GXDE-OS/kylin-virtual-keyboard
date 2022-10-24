@@ -191,6 +191,12 @@ void VirtualKeyboardManager::showView() {
                          }
                          resizeView();
                          view_->show();
+
+                         QTime time = QTime::currentTime().addMSecs(200);
+                         while (QTime::currentTime() < time) {
+                             QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+                         }
+
                          appInputAreaManager_->raiseInputArea(
                              view_.get(), view_->geometry());
                      });
