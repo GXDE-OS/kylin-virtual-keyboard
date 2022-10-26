@@ -9,6 +9,7 @@ ToolButton {
     property real fontSize: virtualKeyboard.fontSize
     property alias keyLabel: keyLabel_
     property alias keyBackground: keyBackground_
+    property alias dropShadow: dropShadow_
     /*label和img对应父控件的水平对齐方式 取值为AlignHCenter:居中对齐,AlignRight:向右对齐,AlignLeft:向左对齐*/
     property int alignment: Text.AlignHCenter
 
@@ -18,12 +19,13 @@ ToolButton {
     }
 
     DropShadow {
+        id: dropShadow_
         anchors.fill: parent
-        horizontalOffset: 2
-        verticalOffset: 3
+        verticalOffset: virtualKeyboard.dropShadowVerticalOffset
         radius: virtualKeyboard.keyRadius
-        color: "#999999"
+        color: virtualKeyboard.charKeyDropShadowColor
         source: keyBackground
+        samples: 100
     }
 
 

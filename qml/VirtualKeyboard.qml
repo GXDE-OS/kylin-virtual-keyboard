@@ -47,26 +47,34 @@ Rectangle {
     property int toolbarSize: cardinalNumber * 3
     property int candidateListX: cardinalNumber * 2
     property int candidateListSpacing: cardinalNumber * 3
-    property int keyRadius: cardinalNumber * 3/4
+    property int keyRadius: cardinalNumber
     property int longPressInterval: 1000
     property int shiftLeftMargin: cardinalNumber
     property int shiftTopMargin: cardinalNumber/2
     property int imLeftMargin: cardinalNumber
+    property int dropShadowVerticalOffset: cardinalNumber/4
 
     //颜色相关
     property color virtualKeyboardColor: "#EBEDEF"   /*虚拟键盘背景色*/
     property color charKeyNormalColor: "#FFFFFF"    /*字符按键默认态颜色*/
     property color charKeyPressedColor: "#DDE0E4"   /*字符按键按下态颜色*/
     property color charKeyHoverColor: "#EDF1F5"    /*字符按键悬浮态颜色*/
+    property color charKeyDropShadowColor: "#95A0AD"    /*字符按键偏移色*/
+
     property color actionKeyNormalColor: "#CED3D9"     /*动作按键默认态*/
     property color actionKeyPressedColor: "#A5ACB5"    /*动作按键按下态*/
     property color actionKeyHoverColor:"#C0C6CE"  /*动作按键悬浮态*/
+
     property color switchKeyNormalColor: "#CED3D9"     /*开关按键默认态*/
     property color switchKeyPressedColor: "#A5ACB5"    /*开关按键按下态*/
     property color switchKeyOpenColor: "#3690F8"   /*开关按键开启态*/
     property color switchKeyOpenPressedColor: "#2C73C6"    /*开关按键开启_按下态*/
     property color switchKeyHoverNormalColor: "#C0C6CE"    /*开关按键默认hover态*/
     property color switchKeyHoverOpenColor: "#328AF0"  /*开关按键按下hover态*/
+    property color switchKeyNormalDropShadowColor: "#95A0AD"    /*开关按键默认偏移色*/
+    property color switchKeyOpenDropShadowColor: "#1174E5"    /*开关按键开启偏移色*/
+    property color switchKeyOpenPressedDropShadowColor: "#165FB3"    /*开关按键开启_按下偏移色*/
+
     property color currentIMColor: "#328AF0"  /*输入法列表中当前输入法高亮*/
     property color candidateListBackgroundColor: "#DDE0E4"  /*候选词列表背景色*/
     property color preeditBottomColor: "#E4E6E9" /*预编辑下方分割线颜色*/

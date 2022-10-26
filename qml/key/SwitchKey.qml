@@ -33,12 +33,22 @@ BaseKey {
                 target: keyBackground
                 color: normalColor
             }
+            PropertyChanges{
+                target: dropShadow
+                verticalOffset: virtualKeyboard.dropShadowVerticalOffset
+                color: virtualKeyboard.switchKeyNormalDropShadowColor
+            }
         },
         State {
             name: "PRESSED"
             PropertyChanges {
                 target: keyBackground
                 color: pressedColor
+            }
+            PropertyChanges{
+                target: dropShadow
+                verticalOffset: -virtualKeyboard.dropShadowVerticalOffset
+                color: virtualKeyboard.switchKeyNormalDropShadowColor
             }
         },
         State {
@@ -47,12 +57,22 @@ BaseKey {
                 target: keyBackground
                 color: openColor
             }
+            PropertyChanges{
+                target: dropShadow
+                verticalOffset: -virtualKeyboard.dropShadowVerticalOffset
+                color: virtualKeyboard.switchKeyOpenDropShadowColor
+            }
         },
         State {
             name: "OPEN_PRESSED"
             PropertyChanges {
                 target: keyBackground
                 color: openPressedColor
+            }
+            PropertyChanges{
+                target: dropShadow
+                verticalOffset: -virtualKeyboard.dropShadowVerticalOffset
+                color: virtualKeyboard.switchKeyOpenPressedDropShadowColor
             }
         },
         State {
@@ -67,6 +87,11 @@ BaseKey {
             PropertyChanges {
                 target: keyBackground
                 color: hoverOpenColor
+            }
+            PropertyChanges{
+                target: dropShadow
+                verticalOffset: -virtualKeyboard.dropShadowVerticalOffset
+                color: virtualKeyboard.switchKeyOpenDropShadowColor
             }
         }
     ]

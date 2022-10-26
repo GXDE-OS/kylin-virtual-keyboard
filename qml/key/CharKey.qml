@@ -45,12 +45,20 @@ BaseKey {
                 target: keyBackground
                 color: normalColor
             }
+            PropertyChanges {
+                target: dropShadow
+                verticalOffset: virtualKeyboard.dropShadowVerticalOffset
+            }
         },
         State {
             name: "PRESSED"
             PropertyChanges {
                 target: keyBackground
                 color: pressedColor
+            }
+            PropertyChanges {
+                target: dropShadow
+                verticalOffset: -virtualKeyboard.dropShadowVerticalOffset
             }
         },
         State {
