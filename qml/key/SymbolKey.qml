@@ -36,6 +36,7 @@ CharKey {
     Label {
         id: shiftLabel_
         text: shiftedText
+        color: "black"
         font.pointSize: virtualKeyboard.shiftFontSize
         font.weight: Font.Light
         anchors{

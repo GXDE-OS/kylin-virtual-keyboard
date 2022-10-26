@@ -11,5 +11,6 @@ Rectangle {
         font.pointSize: virtualKeyboard.preeditTextFontSize
         anchors.verticalCenter: parent.verticalCenter
         text: virtualKeyboard.preeditText
+        color: "black"
     }
 }

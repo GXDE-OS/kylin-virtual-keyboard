@@ -68,6 +68,9 @@ SwitchKey {
             Overlay.modal:Rectangle {
                 color: "transparent"
             }
+            background: Rectangle{
+                color: "white"
+            }
 
             ListView {
                 id: currentIMListView

@@ -30,6 +30,7 @@ ToolButton {
     Label {
         id: keyLabel_
         text: label
+        color: "black"
         font.pointSize: fontSize
         font.weight: Font.Light
         anchors.fill: parent
