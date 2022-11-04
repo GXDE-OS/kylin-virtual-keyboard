@@ -206,6 +206,7 @@ void VirtualKeyboardManager::initView() {
     view_.reset(new QQuickView());
     view_->setSource(QUrl("qrc:/qml/VirtualKeyboard.qml"));
     view_->setFlag(Qt::WindowStaysOnTopHint);
+    view_->setFlag(Qt::BypassWindowManagerHint);
     KWindowSystem::setType(view_->winId(), NET::Dock);
 
     connectSignals();
