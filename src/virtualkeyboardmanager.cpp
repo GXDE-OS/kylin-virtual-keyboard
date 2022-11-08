@@ -172,7 +172,7 @@ void VirtualKeyboardManager::resizeView() {
 void VirtualKeyboardManager::processResolutionChangedEvent() {
     if (virtualkeyboardVisible_) {
         resizeView();
-        appInputAreaManager_->raiseInputArea(view_.get(), view_->geometry());
+        appInputAreaManager_->raiseInputArea(view_->geometry());
     }
 }
 
@@ -192,13 +192,8 @@ void VirtualKeyboardManager::showView() {
                          resizeView();
                          view_->show();
 
-                         QTime time = QTime::currentTime().addMSecs(200);
-                         while (QTime::currentTime() < time) {
-                             QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-                         }
-
                          appInputAreaManager_->raiseInputArea(
-                             view_.get(), view_->geometry());
+                             view_->geometry());
                      });
 }
 
@@ -215,6 +210,8 @@ void VirtualKeyboardManager::initView() {
 }
 
 void VirtualKeyboardManager::destoryView() {
+    appInputAreaManager_->fallInputArea();
+
     if (view_ == nullptr) {
         return;
     }
