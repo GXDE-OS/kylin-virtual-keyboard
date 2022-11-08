@@ -179,9 +179,9 @@ void VirtualKeyboardManager::processResolutionChangedEvent() {
 void VirtualKeyboardManager::showView() {
     fcitx::FcitxQtControllerProxy fcitxQtControllerProxy(
         fcitx5Service, fcitx5ServiceControllerPath,
-        QDBusConnection::sessionBus(), this);
+        QDBusConnection::sessionBus(), view_.get());
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(
-        fcitxQtControllerProxy.CurrentInputMethod(), this);
+        fcitxQtControllerProxy.CurrentInputMethod(), view_.get());
     QObject::connect(watcher, &QDBusPendingCallWatcher::finished, this,
                      [=](QDBusPendingCallWatcher *watcher) {
                          QDBusPendingReply<QString> reply = *watcher;
