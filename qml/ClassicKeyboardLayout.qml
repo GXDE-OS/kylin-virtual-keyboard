@@ -22,7 +22,7 @@ Column {
         FnSymbolKey{ label: "9"; shiftedText: "("; fnValue:"F9" }
         FnSymbolKey{ label: "0"; shiftedText: ")"; fnValue:"F10" }
         FnSymbolKey{ label: "-"; shiftedText: "_"; fnValue:"F11" }
-        FnSymbolKey{ label: "+"; shiftedText: "="; fnValue:"F12" }
+        FnSymbolKey{ label: "="; shiftedText: "+"; fnValue:"F12" }
         BackspaceKey{}
     }
 
