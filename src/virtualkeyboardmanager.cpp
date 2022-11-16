@@ -164,6 +164,12 @@ void VirtualKeyboardManager::resizeView() {
     QRect deskRect = screen->geometry();
     int width = deskRect.width();
     int height = deskRect.width() * virtualKeyboardAspectRatio_;
+    if(deskRect.width() < deskRect.height()) {
+        // 竖屏情况下，将虚拟键盘的高度设置为屏幕宽高差值+1,
+        // 使其可以正确刷新qml内容, 防止旋转到横屏后出现重影
+        // TODO(linyuxuan): 找出bug成因，彻底解决该问题
+        height = deskRect.height() - deskRect.width() + 1;
+    }
     int x = 0;
     int y = deskRect.height() - height;
     view_->setGeometry(x, y, width, height);
