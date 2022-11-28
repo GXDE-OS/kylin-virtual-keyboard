@@ -1,17 +1,18 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.12
+import QtQml 2.1
 import "../js/utils.js" as Utils
 
 SwitchKey {
     id: changeIm
     label: virtualKeyboard.currentIM.split("|")[2]
-
+    
     Binding {
         target: changeIm
         property: "switchKeyState"
         value: virtualKeyboard.changeIMState
     }
-
+    
     keyMouseArea.onReleased: {
         if(virtualKeyboard.changeIMState == "NORMAL"){
             virtualKeyboard.changeIMState = "OPEN"
@@ -20,13 +21,13 @@ SwitchKey {
             imList.close()
         }
     }
-
+    
     keyMouseArea.onPressed: {
         virtualKeyboard.qmlRequestCurrentIMList()
-        currentIMListView.currentIndex =
+        imList.currentIndex =
                 virtualKeyboard.currentIMList.indexOf(virtualKeyboard.currentIM)
     }
-
+    
     state: virtualKeyboard.changeIMState
     states: [
         State {
@@ -52,18 +53,24 @@ SwitchKey {
             }
         }
     ]
-
+    
     Rectangle {
         id: imListRectangle
         anchors.bottom: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
         visible: virtualKeyboard.isCurrentIMListVisible
-        width: virtualKeyboard.imWidth
-        height: Math.min(currentIMListView.count, 4) * virtualKeyboard.imHeight
+        width: imList.width
+        height: imList.height
         Menu {
             id: imList
-            width: parent.width
-            height: parent.height
+            
+            onHeightChanged: {
+                // 切换输入法列表默认显示四个条目
+                if (imList.count > 4) {
+                    height = imList.itemAt(0).height * 4
+                }
+            }
+            
             modal: true
             Overlay.modal:Rectangle {
                 color: "transparent"
@@ -71,38 +78,35 @@ SwitchKey {
             background: Rectangle{
                 color: "white"
             }
-
-            ListView {
-                id: currentIMListView
-                width: parent.width
-                height: imListRectangle.height
+            
+            Instantiator {
                 model: virtualKeyboard.currentIMList
-                boundsBehavior: Flickable.StopAtBounds
-                highlight: Rectangle{color: virtualKeyboard.currentIMColor}
-                delegate: Text {
+                delegate: MenuItem {
+                    background: Rectangle {
+                        color: hovered? virtualKeyboard.currentIMColor: "white"
+                    }
                     property string uniqueName: modelData.split("|")[0]
                     property string localName: modelData.split("|")[1]
                     property string label: modelData.split("|")[2]
-                    height: virtualKeyboard.imHeight
-                    width: virtualKeyboard.imWidth
                     font.pointSize: virtualKeyboard.imFontSize
                     text: label.padEnd(3, " ") + localName
-                    anchors.left: parent.left
-                    anchors.leftMargin: virtualKeyboard.imLeftMargin
                     MouseArea{
-                       anchors.fill: parent
-                       onReleased: {
-                           virtualKeyboard.qmlSetCurrentIM(uniqueName)
-                           imList.close()
-                       }
+                        anchors.fill: parent
+                        onReleased: {
+                            virtualKeyboard.qmlSetCurrentIM(uniqueName)
+                            imList.close()
+                        }
                     }
                 }
+                
+                onObjectAdded: imList.insertItem(index, object)
+                onObjectRemoved: imList.removeItem(object)
             }
-
+            
             onClosed: {
                 virtualKeyboard.changeIMState = "NORMAL"
             }
         }
     }
-
+    
 }
