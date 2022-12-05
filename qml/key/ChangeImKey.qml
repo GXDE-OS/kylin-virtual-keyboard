@@ -83,7 +83,7 @@ SwitchKey {
                 model: virtualKeyboard.currentIMList
                 delegate: MenuItem {
                     background: Rectangle {
-                        color: hovered? virtualKeyboard.currentIMColor: "white"
+                        color: highlighted? virtualKeyboard.currentIMColor: "white"
                     }
                     property string uniqueName: modelData.split("|")[0]
                     property string localName: modelData.split("|")[1]

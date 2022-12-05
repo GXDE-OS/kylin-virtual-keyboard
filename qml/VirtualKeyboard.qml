@@ -35,13 +35,13 @@ Rectangle {
     property int keyIconAlignment: keyWidth / 3
     property int imHeight: keyHeight * 2/3
     property int imWidth: keyWidth * 9/5
-    property real fontSize: keyHeight * 4/11 * 3/4
+    property real fontSize: keyHeight * 6/11 * 3/4
     property real shiftFontSize: fontSize / 2
     property real switchKeyFontSize: fontSize * 3/4
     property real actionKeyFontSize: fontSize * 3/4
     property real preeditTextFontSize: fontSize * 3/4
     property real candidateFontSize: fontSize * 3/4
-    property real imFontSize: fontSize / 2
+    property real imFontSize: fontSize * 3/4
     property int preeditX: cardinalNumber * 3.5
     property int candidateListWidth: width - 7*cardinalNumber
     property int toolbarSize: cardinalNumber * 3
