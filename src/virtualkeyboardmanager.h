@@ -86,7 +86,7 @@ private:
     std::unique_ptr<QDBusInterface> virtualKeyboardBackendInterface_ = nullptr;
     std::unique_ptr<QDBusInterface> fcitx5ControllerInterface_ = nullptr;
     bool virtualkeyboardVisible_ = false;
-    float virtualKeyboardAspectRatio_ = 472.0 / 1620.0;
+    float virtualKeyboardAspectRatio_ = 512.0 / 1620.0;
     QString virtualKeyboardBackendService =
         "org.fcitx.Fcitx5.VirtualKeyboardBackend";
     QString virtualKeyboardBackendServicePath = "/virtualkeyboard";

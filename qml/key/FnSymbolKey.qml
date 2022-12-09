@@ -4,6 +4,8 @@ SymbolKey {
     height: virtualKeyboard.firstRowKeyHeight
 
     property string fnValue
+    
+    fontSize: virtualKeyboard.fnSymbolKeyFontSize
 
     state: virtualKeyboard.fnSymbolState
 

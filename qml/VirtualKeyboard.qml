@@ -38,6 +38,7 @@ Rectangle {
     property real fontSize: keyHeight * 6/11 * 3/4
     property real shiftFontSize: fontSize / 2
     property real switchKeyFontSize: fontSize * 3/4
+    property real fnSymbolKeyFontSize: fontSize * 3/4
     property real actionKeyFontSize: fontSize * 3/4
     property real preeditTextFontSize: fontSize * 3/4
     property real candidateFontSize: fontSize * 3/4
