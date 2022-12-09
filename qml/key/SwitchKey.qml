@@ -62,6 +62,10 @@ BaseKey {
                 verticalOffset: -virtualKeyboard.dropShadowVerticalOffset
                 color: virtualKeyboard.switchKeyOpenDropShadowColor
             }
+            PropertyChanges {
+                target: keyLabel
+                color: "white"
+            }
         },
         State {
             name: "OPEN_PRESSED"
@@ -73,6 +77,10 @@ BaseKey {
                 target: dropShadow
                 verticalOffset: -virtualKeyboard.dropShadowVerticalOffset
                 color: virtualKeyboard.switchKeyOpenPressedDropShadowColor
+            }
+            PropertyChanges {
+                target: keyLabel
+                color: "white"
             }
         },
         State {
@@ -92,6 +100,10 @@ BaseKey {
                 target: dropShadow
                 verticalOffset: -virtualKeyboard.dropShadowVerticalOffset
                 color: virtualKeyboard.switchKeyOpenDropShadowColor
+            }
+            PropertyChanges {
+                target: keyLabel
+                color: "white"
             }
         }
     ]
