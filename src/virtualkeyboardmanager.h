@@ -19,6 +19,9 @@
 #include "appinputareamanager.h"
 #include "dbusservice.h"
 #include "eventhandler.h"
+#include "placementmodemanager.h"
+#include "floatgeometrymanager.h"
+#include "expansiongeometrymanager.h"
 
 class VirtualKeyboardManager : public QObject {
     Q_OBJECT
@@ -47,12 +50,16 @@ public:
 public slots:
     void hideVirtualKeyboard();
     void requestCurrentIMList();
+    void moveVirtualKeyboard(int x, int y);
+    void resizeVirtualKeyboard(int width, int height);
 
 private slots:
     void backendServiceRegistered(const QString &serviceName);
     void backendServiceUnregistered(const QString &serviceName);
     void imListChanged(QDBusPendingCallWatcher *imChangedCall);
     void processResolutionChangedEvent();
+    void raiseInputArea();
+    void fallInputArea();
 
 signals:
     void updatePreeditCaret(int index);
@@ -75,6 +82,8 @@ private:
     void initFcitx5ControllerInterface();
     void initEventHandler();
     void initAppInputAreaManager();
+    void initPlacementModeManager();
+    void initGeometryManager();
     void connectSignals();
     void initDBusService();
 
@@ -82,6 +91,9 @@ private:
     std::unique_ptr<DBusService> dBusService_ = nullptr;
     std::unique_ptr<QQuickView> view_ = nullptr;
     std::unique_ptr<EventHandler> eventHandler_ = nullptr;
+    std::unique_ptr<PlacementModeManager> placementModeManager_ = nullptr;
+    std::unique_ptr<FloatGeometryManager> floatGeometryManager_ = nullptr;
+    std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager_ = nullptr;
     std::unique_ptr<QDBusServiceWatcher> serviceWatcher_ = nullptr;
     std::unique_ptr<QDBusInterface> virtualKeyboardBackendInterface_ = nullptr;
     std::unique_ptr<QDBusInterface> fcitx5ControllerInterface_ = nullptr;

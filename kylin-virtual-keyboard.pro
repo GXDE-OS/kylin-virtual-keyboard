@@ -12,7 +12,11 @@ SOURCES += \
     src/appinputareamanager.cpp \
     src/dbusservice.cpp \
     src/eventhandler.cpp \
+    src/expansiongeometrymanager.cpp \
+    src/floatgeometrymanager.cpp \
+    src/geometrymanager.cpp \
     src/main.cpp \
+    src/placementmodemanager.cpp \
     src/virtualkeyboardmanager.cpp
 
 RESOURCES += \
@@ -33,6 +37,10 @@ HEADERS += \
     src/appinputareamanager.h \
     src/dbusservice.h \
     src/eventhandler.h \
+    src/expansiongeometrymanager.h \
+    src/floatgeometrymanager.h \
+    src/geometrymanager.h \
+    src/placementmodemanager.h \
     src/virtualkeyboardmanager.h
 
 DISTFILES +=
