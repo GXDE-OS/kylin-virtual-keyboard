@@ -6,6 +6,7 @@ Rectangle {
     id: virtualKeyboard
     anchors.fill: parent
     color: virtualKeyboardColor
+    radius: placementMode === "EXPANSION" ? 0 : virtualKeyboardFloatPlacementRadius
 
     //预编辑
     property string preeditText
@@ -21,7 +22,8 @@ Rectangle {
 
     //大小相关
     /*设置默认值，防止报错，fontSize为0时会报错，加载qml文件时height为0，会导致fontSize为0*/
-    property real cardinalNumber: height == 0 ? 8 : height/64.0
+    property real cardinalNumber: height == 0 ? 8 : height/(placementMode === "EXPANSION" ? 64.0 : 68.5)
+    property int dragBarHeight: cardinalNumber * 4.5
     property int preeditHeight: cardinalNumber * 5
     property int toolAndCandidateHeight: cardinalNumber * 8
     property int keyboardLayoutHeight: cardinalNumber * 49
@@ -54,6 +56,8 @@ Rectangle {
     property int shiftTopMargin: cardinalNumber/2
     property int imLeftMargin: cardinalNumber
     property int dropShadowVerticalOffset: cardinalNumber/4
+    property int dragBarIndicatorWidth: cardinalNumber * 7
+    property int dragBarIndicatorHeight: cardinalNumber/2
 
     //颜色相关
     property color virtualKeyboardColor: "#EBEDEF"   /*虚拟键盘背景色*/
@@ -79,6 +83,11 @@ Rectangle {
     property color currentIMColor: "#328AF0"  /*输入法列表中当前输入法高亮*/
     property color candidateListBackgroundColor: "#DDE0E4"  /*候选词列表背景色*/
     property color preeditBottomColor: "#E4E6E9" /*预编辑下方分割线颜色*/
+    property color dragBarIndicatorColor: "#1D1D1D" /*拖拽条指示器颜色*/
+
+    //圆角相关
+    property int virtualKeyboardFloatPlacementRadius: 16
+    property int dragBarIndicatorRadius: 2
 
     //状态相关
     property string letterState: "NORMAL"
@@ -91,6 +100,7 @@ Rectangle {
     property string winState: "NORMAL"
     property string changeIMState: "NORMAL"
     property string switchLayoutButtonState: "NORMAL"
+    property string placementMode: "EXPANSION"
 
     //可见性相关
     property bool isToolbarVisible: true
@@ -115,6 +125,8 @@ Rectangle {
     signal qmlReset()
     signal qmlChangeIM(string uniqueName)
     signal qmlUpdateCurrentIMList(var currentIMList)
+    signal qmlEnterExpansionPlacementMode()
+    signal qmlEnterFloatPlacementMode()
 
     //前台发送给后台的信号
     signal qmlKeyEvent(string key, int keycode, int modifierKeyStates,
@@ -124,6 +136,8 @@ Rectangle {
     signal qmlHideVirtualKeyboard()
     signal qmlRequestCurrentIMList()
     signal qmlSetCurrentIM(string currentIm)
+    signal qmlPlacementModeButtonClicked()
+    signal qmlMoveByOffset(int offsetX, int offsetY)
 
     Connections {
         target: virtualKeyboard
@@ -147,9 +161,14 @@ Rectangle {
         onQmlChangeIM: (uniqueName) =>{
             virtualKeyboard.uniqueName = uniqueName
         }
-
         onQmlUpdateCurrentIMList: (currentIMList)=> {
             virtualKeyboard.currentIMList = currentIMList
+        }
+        onQmlEnterExpansionPlacementMode: {
+            virtualKeyboard.placementMode = "EXPANSION"
+        }
+        onQmlEnterFloatPlacementMode: {
+            virtualKeyboard.placementMode = "FLOAT"
         }
     }
 
@@ -203,6 +222,7 @@ Rectangle {
         }
     }
 
+    DragBar{id: dragBar}
     Preedit{id: preedit}
     ToolbarAndCandidateArea{id: toolbarAndCandidate}
     KeyboardLayoutArea{visible: isKeyBoardLayoutVisible}

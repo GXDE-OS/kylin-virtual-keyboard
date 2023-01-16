@@ -36,5 +36,9 @@
         <file>img/up.png</file>
         <file>qml/key/BackspaceKey.qml</file>
         <file>qml/key/EnterKey.qml</file>
+        <file>qml/PlacementModeButton.qml</file>
+        <file>img/upfloat.svg</file>
+        <file>img/downfloat.svg</file>
+        <file>qml/DragBar.qml</file>
     </qresource>
 </RCC>

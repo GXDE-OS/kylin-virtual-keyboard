@@ -6,6 +6,7 @@ Rectangle {
     height: virtualKeyboard.preeditHeight
     color: virtualKeyboard.virtualKeyboardColor
     x: virtualKeyboard.preeditX
+    anchors.top: dragBar.visible ? dragBar.bottom : parent.top
 
     Label {
         font.pointSize: virtualKeyboard.preeditTextFontSize

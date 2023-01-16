@@ -6,6 +6,8 @@ Rectangle {
     visible: virtualKeyboard.isToolbarVisible
     color: virtualKeyboard.virtualKeyboardColor
 
-    HideButton{}
-
+    HideButton{id: hideButton}
+    PlacementModeButton{
+        alignmentRight: hideButton
+    }
 }
