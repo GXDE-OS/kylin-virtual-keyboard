@@ -9,24 +9,23 @@ public:
     explicit FloatGeometryManager(
         VirtualKeyboardManager *virtualKeyboardManager,
         QObject *parent = nullptr);
-    ~FloatGeometryManager() = default;
+    ~FloatGeometryManager() override = default;
 
 public slots:
     void moveVirtualKeyboardByOffset(int offsetX, int offsetY);
 
 private:
+    float getVirtualKeyboardWidthRatio() const override;
+    float getVirtualKeyboardHeightRatio() const override;
     QPoint calculateNormalizedPosition(const QPoint &position) const;
     QPoint calculateVirtualKeyboardPosition() override;
-    QSize calculateVirtualKeyboardSize() override;
     void saveVirtualKeyboardPosition();
     QPoint loadVirtualKeyboardPosition();
     void moveVirtualKeyboard(int x, int y);
 
-    int distanceToBottom = 56;
-    float virtualKeyboardWidthRatio_ = 1458.0 / 1620.0;
-    float virtualKeyboardAspectRatio_ = 548.0 / 1458.0;
+    constexpr static int distanceToBottom = 56;
+
     QPoint position_ = {0, 0};
-    QSize size_ = {0, 0};
 };
 
 #endif // FLOATGEOMETRYMANAGER_H

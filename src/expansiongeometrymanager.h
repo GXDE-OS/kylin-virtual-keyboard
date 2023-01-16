@@ -8,13 +8,12 @@ public:
     explicit ExpansionGeometryManager(
         VirtualKeyboardManager *virtualKeyboardManager,
         QObject *parent = nullptr);
-    ~ExpansionGeometryManager() = default;
+    ~ExpansionGeometryManager() override = default;
 
 private:
+    float getVirtualKeyboardWidthRatio() const override;
+    float getVirtualKeyboardHeightRatio() const override;
     QPoint calculateVirtualKeyboardPosition() override;
-    QSize calculateVirtualKeyboardSize() override;
-
-    float virtualKeyboardAspectRatio_ = 512.0 / 1620.0;
 };
 
 #endif // EXPANSIONGEOMETRYMANAGER_H

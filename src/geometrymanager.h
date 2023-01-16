@@ -10,9 +10,7 @@ class VirtualKeyboardManager;
 class GeometryManager : public QObject {
     Q_OBJECT
 public:
-    explicit GeometryManager(VirtualKeyboardManager *virtualKeyboardManager,
-                             QObject *parent = nullptr);
-    ~GeometryManager() = default;
+    virtual ~GeometryManager() = default;
 
 public slots:
     void updateGeometry();
@@ -21,9 +19,19 @@ signals:
     void virtualKeyboardMoved(int x, int y);
     void virtualKeyboardResized(int width, int height);
 
+protected:
+    explicit GeometryManager(VirtualKeyboardManager *virtualKeyboardManager,
+                             QObject *parent = nullptr);
+
+    int calculateVirtualKeyboardWidth() const;
+    int calculateVirtualKeyboardHeight() const;
+    QSize calculateVirtualKeyboardSize() const;
+
 private:
-    virtual QPoint calculateVirtualKeyboardPosition();
-    virtual QSize calculateVirtualKeyboardSize();
+    virtual float getVirtualKeyboardWidthRatio() const = 0;
+    virtual float getVirtualKeyboardHeightRatio() const = 0;
+
+    virtual QPoint calculateVirtualKeyboardPosition() = 0;
 
 protected:
     VirtualKeyboardManager *virtualKeyboardManager_ = nullptr;

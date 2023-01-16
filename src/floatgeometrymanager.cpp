@@ -10,7 +10,15 @@ FloatGeometryManager::FloatGeometryManager(
 
 void FloatGeometryManager::moveVirtualKeyboardByOffset(int offsetX,
                                                        int offsetY) {
-    moveVirtualKeyboard(offsetX + position_.x(), offsetY + position_.y());
+    moveVirtualKeyboard(position_.x() + offsetX, position_.y() + offsetY);
+}
+
+float FloatGeometryManager::getVirtualKeyboardWidthRatio() const {
+    return 1458.0 / 1620.0;
+}
+
+float FloatGeometryManager::getVirtualKeyboardHeightRatio() const {
+    return 548.0 / 1620.0;
 }
 
 QPoint FloatGeometryManager::calculateNormalizedPosition(
@@ -18,23 +26,23 @@ QPoint FloatGeometryManager::calculateNormalizedPosition(
     int newX = 0;
     int newY = 0;
     QSize viewPortSize = QGuiApplication::primaryScreen()->geometry().size();
-
+    auto virtualKeyboardSize = calculateVirtualKeyboardSize();
     if (position.x() > 0 &&
-        position.x() + size_.width() < viewPortSize.width()) {
+        position.x() + virtualKeyboardSize.width() < viewPortSize.width()) {
         newX = position.x();
     } else if (position.x() <= 0) {
         newX = 0;
     } else {
-        newX = viewPortSize.width() - size_.width();
+        newX = viewPortSize.width() - virtualKeyboardSize.width();
     }
 
     if (position.y() > 0 &&
-        position.y() + size_.height() < viewPortSize.height()) {
+        position.y() + virtualKeyboardSize.height() < viewPortSize.height()) {
         newY = position.y();
     } else if (position.y() <= 0) {
         newY = 0;
     } else {
-        newY = viewPortSize.height() - size_.height();
+        newY = viewPortSize.height() - virtualKeyboardSize.height();
     }
 
     return QPoint(newX, newY);
@@ -46,33 +54,15 @@ QPoint FloatGeometryManager::calculateVirtualKeyboardPosition() {
     }
 
     QSize viewPortSize = QGuiApplication::primaryScreen()->geometry().size();
-    int x = (viewPortSize.width() - size_.width()) / 2;
-    int y = 0;
-    y = viewPortSize.height() - 56 - size_.height();
+    auto virtualKeyboardSize = calculateVirtualKeyboardSize();
+    int x = (viewPortSize.width() - virtualKeyboardSize.width()) / 2;
+    int y = viewPortSize.height() -
+            (virtualKeyboardSize.height() + distanceToBottom);
     position_.setX(x);
     position_.setY(y);
 
     saveVirtualKeyboardPosition();
     return position_;
-}
-
-QSize FloatGeometryManager::calculateVirtualKeyboardSize() {
-    if (size_ != QSize(0, 0)) {
-        return size_;
-    }
-
-    QSize viewPortSize = QGuiApplication::primaryScreen()->geometry().size();
-    int width = viewPortSize.width() * virtualKeyboardWidthRatio_;
-    int height = 0;
-    if (viewPortSize.width() > viewPortSize.height()) {
-        height = width * virtualKeyboardAspectRatio_;
-    } else {
-        height = viewPortSize.height() * virtualKeyboardWidthRatio_ *
-                 virtualKeyboardAspectRatio_;
-    }
-    size_.setWidth(width);
-    size_.setHeight(height);
-    return size_;
 }
 
 void FloatGeometryManager::saveVirtualKeyboardPosition() {}
