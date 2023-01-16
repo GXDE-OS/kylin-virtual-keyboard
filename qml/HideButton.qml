@@ -10,7 +10,8 @@ Rectangle {
     color: virtualKeyboard.virtualKeyboardColor
     Image {
         id: hideButtonImg
-        anchors.fill: parent
+        anchors.centerIn: parent
+        sourceSize: Qt.size(parent.width, parent.width)
         source: "qrc:/img/close.png"
     }
 
