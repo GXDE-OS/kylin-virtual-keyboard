@@ -1,51 +1,39 @@
 #include "placementmodemanager.h"
 
-PlacementModeManager::PlacementModeManager(VirtualKeyboardManager* virtualKeyboardManager, QObject *parent)
-    : QObject(parent), virtualKeyboardManager_(virtualKeyboardManager)
-{
-    
-}
+PlacementModeManager::PlacementModeManager(
+    VirtualKeyboardManager *virtualKeyboardManager, QObject *parent)
+    : QObject(parent), virtualKeyboardManager_(virtualKeyboardManager) {}
 
-void PlacementModeManager::updatePlacementMode()
-{
-    if(placementMode_ == PlacementMode::Expansion) {
+void PlacementModeManager::updatePlacementMode() {
+    if (placementMode_ == PlacementMode::Expansion) {
         enterExpansionMode();
-    }
-    else {
+    } else {
         enterFloatMode();
     }
 }
 
-void PlacementModeManager::flipPlacementMode() 
-{
-    if(placementMode_ == PlacementMode::Expansion) {
+void PlacementModeManager::flipPlacementMode() {
+    if (placementMode_ == PlacementMode::Expansion) {
         enterFloatMode();
-    }
-    else {
+    } else {
         enterExpansionMode();
     }
 }
 
-void PlacementModeManager::enterExpansionMode()
-{
+void PlacementModeManager::enterExpansionMode() {
     placementMode_ = PlacementMode::Expansion;
     savePlacementMode();
     emit expansionModeEntered();
 }
 
-void PlacementModeManager::enterFloatMode()
-{
+void PlacementModeManager::enterFloatMode() {
     placementMode_ = PlacementMode::Float;
     savePlacementMode();
     emit floatModeEntered();
 }
 
-void PlacementModeManager::savePlacementMode()
-{
-    
-}
+void PlacementModeManager::savePlacementMode() {}
 
-PlacementMode PlacementModeManager::loadPlacementMode()
-{
+PlacementMode PlacementModeManager::loadPlacementMode() {
     return PlacementMode::Float;
 }
