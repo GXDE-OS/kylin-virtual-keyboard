@@ -15,6 +15,8 @@ public slots:
 private:
     float getVirtualKeyboardWidthRatio() const override;
     float getVirtualKeyboardHeightRatio() const override;
+    int calculateNormalizedX(int positionX) const;
+    int calculateNormalizedY(int positionY) const;
     QPoint calculateNormalizedPosition(const QPoint &position) const;
     QPoint calculateVirtualKeyboardPosition() override;
     QMap<QString, QVariant> getVirtualKeyboardCurrentPositionRatioMap() const;

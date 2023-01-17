@@ -36,31 +36,40 @@ float FloatGeometryManager::getVirtualKeyboardHeightRatio() const {
     return 548.0 / 1620.0;
 }
 
+int FloatGeometryManager::calculateNormalizedX(int positionX) const {
+    const auto geometry = QGuiApplication::primaryScreen()->geometry();
+
+    if (positionX < geometry.left()) {
+        return geometry.left();
+    }
+
+    const auto virtualKeyboardWidth = calculateVirtualKeyboardWidth();
+    if (positionX + virtualKeyboardWidth > geometry.right()) {
+        return geometry.right() - virtualKeyboardWidth;
+    }
+
+    return positionX;
+}
+
+int FloatGeometryManager::calculateNormalizedY(int positionY) const {
+    const auto geometry = QGuiApplication::primaryScreen()->geometry();
+
+    if (positionY < geometry.top()) {
+        return geometry.top();
+    }
+
+    const auto virtualKeyboardHeight = calculateVirtualKeyboardHeight();
+    if (positionY + virtualKeyboardHeight > geometry.bottom()) {
+        return geometry.bottom() - virtualKeyboardHeight;
+    }
+
+    return positionY;
+}
+
 QPoint FloatGeometryManager::calculateNormalizedPosition(
     const QPoint &position) const {
-    int newX = 0;
-    int newY = 0;
-    QSize viewPortSize = QGuiApplication::primaryScreen()->geometry().size();
-    auto virtualKeyboardSize = calculateVirtualKeyboardSize();
-    if (position.x() > 0 &&
-        position.x() + virtualKeyboardSize.width() < viewPortSize.width()) {
-        newX = position.x();
-    } else if (position.x() <= 0) {
-        newX = 0;
-    } else {
-        newX = viewPortSize.width() - virtualKeyboardSize.width();
-    }
-
-    if (position.y() > 0 &&
-        position.y() + virtualKeyboardSize.height() < viewPortSize.height()) {
-        newY = position.y();
-    } else if (position.y() <= 0) {
-        newY = 0;
-    } else {
-        newY = viewPortSize.height() - virtualKeyboardSize.height();
-    }
-
-    return QPoint(newX, newY);
+    return QPoint(calculateNormalizedX(position.x()),
+                  calculateNormalizedY(position.y()));
 }
 
 QPoint FloatGeometryManager::calculateVirtualKeyboardPosition() {
