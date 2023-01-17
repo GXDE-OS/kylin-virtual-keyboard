@@ -17,7 +17,8 @@ SOURCES += \
     src/geometrymanager.cpp \
     src/main.cpp \
     src/placementmodemanager.cpp \
-    src/virtualkeyboardmanager.cpp
+    src/virtualkeyboardmanager.cpp \
+    src/virtualkeyboardsettings.cpp
 
 RESOURCES += \
     qml.qrc
@@ -41,7 +42,8 @@ HEADERS += \
     src/floatgeometrymanager.h \
     src/geometrymanager.h \
     src/placementmodemanager.h \
-    src/virtualkeyboardmanager.h
+    src/virtualkeyboardmanager.h \
+    src/virtualkeyboardsettings.h
 
 DISTFILES +=
 
