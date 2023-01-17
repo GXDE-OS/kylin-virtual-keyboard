@@ -6,9 +6,7 @@
 class FloatGeometryManager : public GeometryManager {
     Q_OBJECT
 public:
-    explicit FloatGeometryManager(
-        VirtualKeyboardManager *virtualKeyboardManager,
-        QObject *parent = nullptr);
+    explicit FloatGeometryManager(QObject *parent = nullptr);
     ~FloatGeometryManager() override;
 
 public slots:

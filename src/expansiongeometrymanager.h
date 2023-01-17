@@ -5,9 +5,7 @@
 
 class ExpansionGeometryManager : public GeometryManager {
 public:
-    explicit ExpansionGeometryManager(
-        VirtualKeyboardManager *virtualKeyboardManager,
-        QObject *parent = nullptr);
+    explicit ExpansionGeometryManager(QObject *parent = nullptr);
     ~ExpansionGeometryManager() override = default;
 
 private:

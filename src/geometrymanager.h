@@ -20,8 +20,7 @@ signals:
     void virtualKeyboardResized(int width, int height);
 
 protected:
-    explicit GeometryManager(VirtualKeyboardManager *virtualKeyboardManager,
-                             QObject *parent = nullptr);
+    explicit GeometryManager(QObject *parent = nullptr);
 
     int calculateVirtualKeyboardWidth() const;
     int calculateVirtualKeyboardHeight() const;
@@ -32,9 +31,6 @@ private:
     virtual float getVirtualKeyboardHeightRatio() const = 0;
 
     virtual QPoint calculateVirtualKeyboardPosition() = 0;
-
-protected:
-    VirtualKeyboardManager *virtualKeyboardManager_ = nullptr;
 };
 
 #endif // GEOMETRYMANAGER_H

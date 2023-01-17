@@ -10,9 +10,7 @@ class PlacementModeManager : public QObject {
     Q_OBJECT
 
 public:
-    explicit PlacementModeManager(
-        VirtualKeyboardManager *virtualKeyboardManager,
-        QObject *parent = nullptr);
+    explicit PlacementModeManager(QObject *parent = nullptr);
     ~PlacementModeManager() override;
 
     void updatePlacementMode();
@@ -33,7 +31,6 @@ private:
     void savePlacementMode();
     void loadPlacementMode();
 
-    VirtualKeyboardManager *virtualKeyboardManager_ = nullptr;
     PlacementMode placementMode_ = PlacementMode::Expansion;
     static QString placementModeKey;
 };

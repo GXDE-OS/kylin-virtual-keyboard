@@ -5,9 +5,7 @@
 // static
 QString PlacementModeManager::placementModeKey = "placementMode";
 
-PlacementModeManager::PlacementModeManager(
-    VirtualKeyboardManager *virtualKeyboardManager, QObject *parent)
-    : QObject(parent), virtualKeyboardManager_(virtualKeyboardManager) {
+PlacementModeManager::PlacementModeManager(QObject *parent) : QObject(parent) {
     loadPlacementMode();
 }
 

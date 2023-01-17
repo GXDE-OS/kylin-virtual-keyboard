@@ -16,9 +16,8 @@ QString FloatGeometryManager::virtualKeyboardPositionRatioXKey =
 QString FloatGeometryManager::virtualKeyboardPositionRatioYKey =
     "virtualKeyboardPositionRatioY";
 
-FloatGeometryManager::FloatGeometryManager(
-    VirtualKeyboardManager *virtualKeyboardManager, QObject *parent)
-    : GeometryManager{virtualKeyboardManager, parent} {
+FloatGeometryManager::FloatGeometryManager(QObject *parent)
+    : GeometryManager{parent} {
     loadVirtualKeyboardPosition();
 }
 
