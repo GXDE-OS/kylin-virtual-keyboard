@@ -6,16 +6,20 @@
 
 class VirtualKeyboardManager;
 
-enum class PlacementMode { Expansion, Float };
-
 class PlacementModeManager : public QObject {
     Q_OBJECT
+
 public:
     explicit PlacementModeManager(
         VirtualKeyboardManager *virtualKeyboardManager,
         QObject *parent = nullptr);
-    ~PlacementModeManager() = default;
+    ~PlacementModeManager() override;
+
     void updatePlacementMode();
+
+    enum PlacementMode { Expansion, Float };
+    Q_ENUM(PlacementMode)
+
 signals:
     void expansionModeEntered();
     void floatModeEntered();
@@ -23,14 +27,15 @@ public slots:
     void flipPlacementMode();
 
 private:
+    void setPlacementMode(PlacementMode placementMode);
     void enterExpansionMode();
     void enterFloatMode();
     void savePlacementMode();
-    PlacementMode loadPlacementMode();
+    void loadPlacementMode();
 
     VirtualKeyboardManager *virtualKeyboardManager_ = nullptr;
     PlacementMode placementMode_ = PlacementMode::Expansion;
-    QSettings settings_;
+    static QString placementModeKey;
 };
 
 #endif // PLACEMENTMODEMANAGER_H

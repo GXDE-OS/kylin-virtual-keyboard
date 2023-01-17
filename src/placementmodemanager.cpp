@@ -1,8 +1,17 @@
 #include "placementmodemanager.h"
 
+#include "virtualkeyboardsettings.h"
+
+// static
+QString PlacementModeManager::placementModeKey = "placementMode";
+
 PlacementModeManager::PlacementModeManager(
     VirtualKeyboardManager *virtualKeyboardManager, QObject *parent)
-    : QObject(parent), virtualKeyboardManager_(virtualKeyboardManager) {}
+    : QObject(parent), virtualKeyboardManager_(virtualKeyboardManager) {
+    loadPlacementMode();
+}
+
+PlacementModeManager::~PlacementModeManager() { savePlacementMode(); }
 
 void PlacementModeManager::updatePlacementMode() {
     if (placementMode_ == PlacementMode::Expansion) {
@@ -20,20 +29,29 @@ void PlacementModeManager::flipPlacementMode() {
     }
 }
 
-void PlacementModeManager::enterExpansionMode() {
-    placementMode_ = PlacementMode::Expansion;
+void PlacementModeManager::setPlacementMode(PlacementMode placementMode) {
+    placementMode_ = placementMode;
     savePlacementMode();
+}
+
+void PlacementModeManager::enterExpansionMode() {
+    setPlacementMode(PlacementMode::Expansion);
     emit expansionModeEntered();
 }
 
 void PlacementModeManager::enterFloatMode() {
-    placementMode_ = PlacementMode::Float;
-    savePlacementMode();
+    setPlacementMode(PlacementMode::Float);
     emit floatModeEntered();
 }
 
-void PlacementModeManager::savePlacementMode() {}
+void PlacementModeManager::savePlacementMode() {
+    VirtualKeyboardSettings::getInstance().setValue(placementModeKey,
+                                                    placementMode_);
+}
 
-PlacementMode PlacementModeManager::loadPlacementMode() {
-    return PlacementMode::Float;
+void PlacementModeManager::loadPlacementMode() {
+    placementMode_ =
+        VirtualKeyboardSettings::getInstance()
+            .getValue(placementModeKey, PlacementModeManager::Expansion)
+            .value<PlacementModeManager::PlacementMode>();
 }
