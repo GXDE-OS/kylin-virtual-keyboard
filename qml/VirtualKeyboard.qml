@@ -137,7 +137,8 @@ Rectangle {
     signal qmlRequestCurrentIMList()
     signal qmlSetCurrentIM(string currentIm)
     signal qmlPlacementModeButtonClicked()
-    signal qmlMoveByOffset(int offsetX, int offsetY)
+    signal qmlMoveBy(int offsetX, int offsetY)
+    signal qmlDragEnded()
 
     Connections {
         target: virtualKeyboard

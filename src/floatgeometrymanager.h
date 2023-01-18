@@ -10,7 +10,8 @@ public:
     ~FloatGeometryManager() override;
 
 public slots:
-    void moveVirtualKeyboardByOffset(int offsetX, int offsetY);
+    void moveBy(int offsetX, int offsetY);
+    void endDrag();
 
 private:
     float getVirtualKeyboardWidthRatio() const override;
@@ -23,7 +24,8 @@ private:
     QMap<QString, QVariant> getVirtualKeyboardDefaultPositionRatioMap() const;
     void saveVirtualKeyboardPosition();
     void loadVirtualKeyboardPosition();
-    void moveVirtualKeyboard(int x, int y);
+
+    void moveVirtualKeyboard(const QPoint &targetPoint);
 
     constexpr static int distanceToBottom = 56;
 

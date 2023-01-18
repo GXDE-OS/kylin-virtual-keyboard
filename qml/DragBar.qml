@@ -17,7 +17,11 @@ Rectangle {
             startY = mouseY
         }
         onPositionChanged: {
-            qmlMoveByOffset(mouseX - startX, mouseY - startY)
+            qmlMoveBy(mouseX - startX, mouseY - startY)
+        }
+
+        onReleased: {
+            qmlDragEnded()
         }
     }
 

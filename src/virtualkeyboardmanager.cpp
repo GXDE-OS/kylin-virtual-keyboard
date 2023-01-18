@@ -1,4 +1,5 @@
 #include "virtualkeyboardmanager.h"
+
 #include <QDBusMetaType>
 #include <QMetaType>
 
@@ -277,9 +278,10 @@ void VirtualKeyboardManager::connectSignals() {
             SLOT(requestCurrentIMList()));
     connect(rootObject, SIGNAL(qmlPlacementModeButtonClicked()),
             placementModeManager_.get(), SLOT(flipPlacementMode()));
-    connect(rootObject, SIGNAL(qmlMoveByOffset(int, int)),
-            floatGeometryManager_.get(),
-            SLOT(moveVirtualKeyboardByOffset(int, int)));
+    connect(rootObject, SIGNAL(qmlMoveBy(int, int)),
+            floatGeometryManager_.get(), SLOT(moveBy(int, int)));
+    connect(rootObject, SIGNAL(qmlDragEnded()), floatGeometryManager_.get(),
+            SLOT(endDrag()));
 
     eventHandler_->connectSignals(rootObject);
 

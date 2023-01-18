@@ -23,9 +23,17 @@ FloatGeometryManager::FloatGeometryManager(QObject *parent)
 
 FloatGeometryManager::~FloatGeometryManager() { saveVirtualKeyboardPosition(); }
 
-void FloatGeometryManager::moveVirtualKeyboardByOffset(int offsetX,
-                                                       int offsetY) {
-    moveVirtualKeyboard(position_.x() + offsetX, position_.y() + offsetY);
+void FloatGeometryManager::moveBy(int offsetX, int offsetY) {
+    const QPoint offset(offsetX, offsetY);
+
+    moveVirtualKeyboard(QPoint(position_ + offset));
+}
+
+void FloatGeometryManager::endDrag() {
+    const QPoint normalizedPoint = calculateNormalizedPosition(position_);
+    if (normalizedPoint != position_) {
+        moveVirtualKeyboard(normalizedPoint);
+    }
 }
 
 float FloatGeometryManager::getVirtualKeyboardWidthRatio() const {
@@ -141,8 +149,8 @@ void FloatGeometryManager::loadVirtualKeyboardPosition() {
     position_ = calculateNormalizedPosition(virtualKeyboardPosition);
 }
 
-void FloatGeometryManager::moveVirtualKeyboard(int x, int y) {
-    position_ = calculateNormalizedPosition(QPoint(x, y));
+void FloatGeometryManager::moveVirtualKeyboard(const QPoint &targetPoint) {
+    position_ = targetPoint;
     emit virtualKeyboardMoved(position_.x(), position_.y());
     saveVirtualKeyboardPosition();
 }
