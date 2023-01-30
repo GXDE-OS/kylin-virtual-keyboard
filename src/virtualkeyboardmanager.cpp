@@ -178,7 +178,7 @@ void VirtualKeyboardManager::showView() {
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(
         fcitxQtControllerProxy.CurrentInputMethod(), view_.get());
     QObject::connect(watcher, &QDBusPendingCallWatcher::finished, this,
-                     [=](QDBusPendingCallWatcher *watcher) {
+                     [this](QDBusPendingCallWatcher *watcher) {
                          QDBusPendingReply<QString> reply = *watcher;
                          if (!reply.isError()) {
                              const QString &imName = reply.value();
