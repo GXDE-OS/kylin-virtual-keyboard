@@ -22,6 +22,7 @@
 #include "expansiongeometrymanager.h"
 #include "floatgeometrymanager.h"
 #include "placementmodemanager.h"
+#include "trayentry.h"
 
 class VirtualKeyboardManager : public QObject {
     Q_OBJECT
@@ -86,6 +87,7 @@ private:
     void initGeometryManager();
     void connectSignals();
     void initDBusService();
+    void initTrayEntry();
 
     std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;
     std::unique_ptr<DBusService> dBusService_ = nullptr;
@@ -96,6 +98,7 @@ private:
     std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager_ =
         nullptr;
     std::unique_ptr<QDBusServiceWatcher> serviceWatcher_ = nullptr;
+    std::unique_ptr<TrayEntry> trayEntry_ = nullptr;
     std::unique_ptr<QDBusInterface> virtualKeyboardBackendInterface_ = nullptr;
     std::unique_ptr<QDBusInterface> fcitx5ControllerInterface_ = nullptr;
     bool virtualkeyboardVisible_ = false;

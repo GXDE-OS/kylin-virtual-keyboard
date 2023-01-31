@@ -16,6 +16,7 @@ SOURCES += \
     src/floatgeometrymanager.cpp \
     src/geometrymanager.cpp \
     src/main.cpp \
+    src/trayentry.cpp \
     src/placementmodemanager.cpp \
     src/virtualkeyboardmanager.cpp \
     src/virtualkeyboardsettings.cpp
@@ -43,6 +44,7 @@ HEADERS += \
     src/geometrymanager.h \
     src/placementmodemanager.h \
     src/virtualkeyboardmanager.h \
+    src/trayentry.h \
     src/virtualkeyboardsettings.h
 
 DISTFILES +=
