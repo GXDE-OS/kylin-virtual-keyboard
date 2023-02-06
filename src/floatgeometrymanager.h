@@ -14,26 +14,37 @@ public slots:
     void endDrag();
 
 private:
+    QPoint calculateVirtualKeyboardPosition() override;
     float getVirtualKeyboardWidthRatio() const override;
     float getVirtualKeyboardHeightRatio() const override;
+
     int calculateNormalizedX(int positionX) const;
     int calculateNormalizedY(int positionY) const;
     QPoint calculateNormalizedPosition(const QPoint &position) const;
-    QPoint calculateVirtualKeyboardPosition() override;
-    QMap<QString, QVariant> getVirtualKeyboardCurrentPositionRatioMap() const;
-    QMap<QString, QVariant> getVirtualKeyboardDefaultPositionRatioMap() const;
-    void saveVirtualKeyboardPosition();
-    void loadVirtualKeyboardPosition();
+
+    QPoint calculatePositionFromRatio(float leftMarginRatio,
+                                      float topMarginRatio) const;
+    QPoint calculateCurrentPosition() const;
+    QPoint calculateNormalizedPositionFromRatio(float leftMarginRatio,
+                                                float topMarginRatio) const;
+
+    QSize calculateMarginSize() const;
+    QMap<QString, QVariant> getMarginRatioMap() const;
+    QMap<QString, QVariant> getDefaultMarginRatioMap() const;
+    void updateMarginRatio(const QPoint &targetPosition);
+    void saveMarginRatioMap();
+    void loadMarginRatioMap();
 
     void moveVirtualKeyboard(const QPoint &targetPoint);
 
     constexpr static int distanceToBottom = 56;
 
-    QPoint position_ = {0, 0};
+    float leftMarginRatio_ = 0.0f;
+    float topMarginRatio_ = 0.0f;
 
-    static QString virtualKeyboardPositionRatioMapKey;
-    static QString virtualKeyboardPositionRatioXKey;
-    static QString virtualKeyboardPositionRatioYKey;
+    static QString marginRatioMapKey;
+    static QString leftMarginRatioKey;
+    static QString topMarginRatioKey;
 };
 
 #endif // FLOATGEOMETRYMANAGER_H

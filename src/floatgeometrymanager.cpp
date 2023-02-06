@@ -7,32 +7,34 @@
 #include "virtualkeyboardsettings.h"
 
 // static
-QString FloatGeometryManager::virtualKeyboardPositionRatioMapKey =
-    "virtualKeyboardPositionRatioMap";
+QString FloatGeometryManager::marginRatioMapKey =
+    "virtualKeyboardMarginRatioMap";
 // static
-QString FloatGeometryManager::virtualKeyboardPositionRatioXKey =
-    "virtualKeyboardPositionRatioX";
+QString FloatGeometryManager::leftMarginRatioKey =
+    "virtualKeyboardLeftMarginRatio";
 // static
-QString FloatGeometryManager::virtualKeyboardPositionRatioYKey =
-    "virtualKeyboardPositionRatioY";
+QString FloatGeometryManager::topMarginRatioKey =
+    "virtualKeyboardTopMarginRatio";
 
 FloatGeometryManager::FloatGeometryManager(QObject *parent)
     : GeometryManager{parent} {
-    loadVirtualKeyboardPosition();
+    loadMarginRatioMap();
 }
 
-FloatGeometryManager::~FloatGeometryManager() { saveVirtualKeyboardPosition(); }
+FloatGeometryManager::~FloatGeometryManager() { saveMarginRatioMap(); }
 
 void FloatGeometryManager::moveBy(int offsetX, int offsetY) {
     const QPoint offset(offsetX, offsetY);
 
-    moveVirtualKeyboard(QPoint(position_ + offset));
+    moveVirtualKeyboard(QPoint(calculateCurrentPosition() + offset));
 }
 
 void FloatGeometryManager::endDrag() {
-    const QPoint normalizedPoint = calculateNormalizedPosition(position_);
-    if (normalizedPoint != position_) {
-        moveVirtualKeyboard(normalizedPoint);
+    const QPoint currentPosition = calculateCurrentPosition();
+    const QPoint normalizedPosition =
+        calculateNormalizedPosition(currentPosition);
+    if (normalizedPosition != currentPosition) {
+        moveVirtualKeyboard(normalizedPosition);
     }
 }
 
@@ -80,77 +82,102 @@ QPoint FloatGeometryManager::calculateNormalizedPosition(
                   calculateNormalizedY(position.y()));
 }
 
+QPoint FloatGeometryManager::calculateCurrentPosition() const {
+    return calculatePositionFromRatio(leftMarginRatio_, topMarginRatio_);
+}
+
+QPoint
+FloatGeometryManager::calculatePositionFromRatio(float leftMarginRatio,
+                                                 float topMarginRatio) const {
+    const QSize marginSize = calculateMarginSize();
+
+    return QPoint(marginSize.width() * leftMarginRatio,
+                  marginSize.height() * topMarginRatio);
+}
+
+QPoint FloatGeometryManager::calculateNormalizedPositionFromRatio(
+    float leftMarginRatio, float topMarginRatio) const {
+    return calculateNormalizedPosition(
+        calculatePositionFromRatio(leftMarginRatio, topMarginRatio));
+}
+
 QPoint FloatGeometryManager::calculateVirtualKeyboardPosition() {
-    return position_;
+    return calculateNormalizedPosition(calculateCurrentPosition());
 }
 
-QMap<QString, QVariant>
-FloatGeometryManager::getVirtualKeyboardCurrentPositionRatioMap() const {
-    const QSize viewPortSize =
-        QGuiApplication::primaryScreen()->geometry().size();
-
-    const float positionX = position_.x();
-    const float positionY = position_.y();
-    const float ratioX = positionX / viewPortSize.width();
-    const float ratioY = positionY / viewPortSize.height();
-    QMap<QString, QVariant> virtualKeyboardPositionRatioMap = {
-        {virtualKeyboardPositionRatioXKey, ratioX},
-        {virtualKeyboardPositionRatioYKey, ratioY}};
-
-    return virtualKeyboardPositionRatioMap;
-}
-
-void FloatGeometryManager::saveVirtualKeyboardPosition() {
-    VirtualKeyboardSettings::getInstance().setValue(
-        virtualKeyboardPositionRatioMapKey,
-        getVirtualKeyboardCurrentPositionRatioMap());
-}
-
-QMap<QString, QVariant>
-FloatGeometryManager::getVirtualKeyboardDefaultPositionRatioMap() const {
+QSize FloatGeometryManager::calculateMarginSize() const {
     const QSize viewPortSize =
         QGuiApplication::primaryScreen()->geometry().size();
     const auto virtualKeyboardSize = calculateVirtualKeyboardSize();
 
-    const float defaultPositionX =
-        (viewPortSize.width() - virtualKeyboardSize.width()) / 2;
-    const float defaultPositionY =
-        viewPortSize.height() -
-        (virtualKeyboardSize.height() + distanceToBottom);
-    const float defaultRatioX = defaultPositionX / viewPortSize.width();
-    const float defaultRatioY = defaultPositionY / viewPortSize.height();
+    const int horizontalMargin =
+        viewPortSize.width() - virtualKeyboardSize.width();
+    const int verticalMargin =
+        viewPortSize.height() - virtualKeyboardSize.height();
 
-    QMap<QString, QVariant> virtualKeyboardDefaultPositionRatioMap = {
-        {virtualKeyboardPositionRatioXKey, defaultRatioX},
-        {virtualKeyboardPositionRatioYKey, defaultRatioY}};
-
-    return virtualKeyboardDefaultPositionRatioMap;
+    return QSize(horizontalMargin, verticalMargin);
 }
 
-void FloatGeometryManager::loadVirtualKeyboardPosition() {
-    const auto virtualKeyboardPositionRatioMap =
-        VirtualKeyboardSettings::getInstance()
-            .getValue(virtualKeyboardPositionRatioMapKey,
-                      getVirtualKeyboardDefaultPositionRatioMap())
-            .toMap();
+QMap<QString, QVariant> FloatGeometryManager::getMarginRatioMap() const {
+    QMap<QString, QVariant> marginRatioMap = {
+        {leftMarginRatioKey, leftMarginRatio_},
+        {topMarginRatioKey, topMarginRatio_}};
 
+    return marginRatioMap;
+}
+
+void FloatGeometryManager::updateMarginRatio(const QPoint &targetPosition) {
+    const QSize marginSize = calculateMarginSize();
+
+    leftMarginRatio_ = targetPosition.x() * 1.0f / marginSize.width();
+    topMarginRatio_ = targetPosition.y() * 1.0f / marginSize.height();
+}
+
+void FloatGeometryManager::saveMarginRatioMap() {
+    VirtualKeyboardSettings::getInstance().setValue(marginRatioMapKey,
+                                                    getMarginRatioMap());
+}
+
+QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
     const QSize viewPortSize =
         QGuiApplication::primaryScreen()->geometry().size();
+    const auto virtualKeyboardSize = calculateVirtualKeyboardSize();
 
-    const float ratioX =
-        virtualKeyboardPositionRatioMap[virtualKeyboardPositionRatioXKey]
-            .toFloat();
-    const float ratioY =
-        virtualKeyboardPositionRatioMap[virtualKeyboardPositionRatioYKey]
-            .toFloat();
+    const float leftMargin =
+        (viewPortSize.width() - virtualKeyboardSize.width()) / 2;
+    const float topMargin = viewPortSize.height() -
+                            (virtualKeyboardSize.height() + distanceToBottom);
 
-    const QPoint virtualKeyboardPosition(viewPortSize.width() * ratioX,
-                                         viewPortSize.height() * ratioY);
-    position_ = calculateNormalizedPosition(virtualKeyboardPosition);
+    const QSize marginSize = calculateMarginSize();
+
+    const float defaultLeftMarginRatio = leftMargin / marginSize.width();
+    const float defaultTopMarginRatio = topMargin / marginSize.height();
+
+    QMap<QString, QVariant> virtualKeyboardDefaultMarginRatioMap = {
+        {leftMarginRatioKey, defaultLeftMarginRatio},
+        {topMarginRatioKey, defaultTopMarginRatio}};
+
+    return virtualKeyboardDefaultMarginRatioMap;
+}
+
+void FloatGeometryManager::loadMarginRatioMap() {
+    const auto marginRatioMap =
+        VirtualKeyboardSettings::getInstance()
+            .getValue(marginRatioMapKey, getDefaultMarginRatioMap())
+            .toMap();
+
+    const float leftMarginRatio = marginRatioMap[leftMarginRatioKey].toFloat();
+    const float topMarginRatio = marginRatioMap[topMarginRatioKey].toFloat();
+
+    updateMarginRatio(
+        calculateNormalizedPositionFromRatio(leftMarginRatio, topMarginRatio));
 }
 
 void FloatGeometryManager::moveVirtualKeyboard(const QPoint &targetPoint) {
-    position_ = targetPoint;
-    emit virtualKeyboardMoved(position_.x(), position_.y());
-    saveVirtualKeyboardPosition();
+    updateMarginRatio(targetPoint);
+
+    const QPoint currentPosition = calculateCurrentPosition();
+    emit virtualKeyboardMoved(currentPosition.x(), currentPosition.y());
+
+    saveMarginRatioMap();
 }
