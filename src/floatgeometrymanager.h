@@ -31,6 +31,8 @@ private:
     QSize calculateMarginSize() const;
     QMap<QString, QVariant> getMarginRatioMap() const;
     QMap<QString, QVariant> getDefaultMarginRatioMap() const;
+    float calculateLeftMarginRatio(float leftMargin) const;
+    float calculateTopMarginRatio(float topMargin) const;
     void updateMarginRatio(const QPoint &targetPosition);
     void saveMarginRatioMap();
     void loadMarginRatioMap();

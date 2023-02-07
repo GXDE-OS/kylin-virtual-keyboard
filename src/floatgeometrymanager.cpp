@@ -125,11 +125,17 @@ QMap<QString, QVariant> FloatGeometryManager::getMarginRatioMap() const {
     return marginRatioMap;
 }
 
-void FloatGeometryManager::updateMarginRatio(const QPoint &targetPosition) {
-    const QSize marginSize = calculateMarginSize();
+float FloatGeometryManager::calculateLeftMarginRatio(float leftMargin) const {
+    return leftMargin / calculateMarginSize().width();
+}
 
-    leftMarginRatio_ = targetPosition.x() * 1.0f / marginSize.width();
-    topMarginRatio_ = targetPosition.y() * 1.0f / marginSize.height();
+float FloatGeometryManager::calculateTopMarginRatio(float topMargin) const {
+    return topMargin / calculateMarginSize().height();
+}
+
+void FloatGeometryManager::updateMarginRatio(const QPoint &targetPosition) {
+    leftMarginRatio_ = calculateLeftMarginRatio(targetPosition.x());
+    topMarginRatio_ = calculateTopMarginRatio(targetPosition.y());
 }
 
 void FloatGeometryManager::saveMarginRatioMap() {
@@ -141,18 +147,15 @@ QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
     const QSize viewPortSize = getPrimaryScreenGeometry().size();
     const auto virtualKeyboardSize = calculateVirtualKeyboardSize();
 
-    const float leftMargin =
+    const int leftMargin =
         (viewPortSize.width() - virtualKeyboardSize.width()) / 2;
     const int defaultBottomMargin =
         viewPortSize.height() * defaultBottomMarginRatio;
-    const float topMargin =
-        viewPortSize.height() -
-        (virtualKeyboardSize.height() + defaultBottomMargin);
+    const int topMargin = viewPortSize.height() -
+                          (virtualKeyboardSize.height() + defaultBottomMargin);
 
-    const QSize marginSize = calculateMarginSize();
-
-    const float defaultLeftMarginRatio = leftMargin / marginSize.width();
-    const float defaultTopMarginRatio = topMargin / marginSize.height();
+    const float defaultLeftMarginRatio = calculateLeftMarginRatio(leftMargin);
+    const float defaultTopMarginRatio = calculateTopMarginRatio(topMargin);
 
     QMap<QString, QVariant> virtualKeyboardDefaultMarginRatioMap = {
         {leftMarginRatioKey, defaultLeftMarginRatio},
