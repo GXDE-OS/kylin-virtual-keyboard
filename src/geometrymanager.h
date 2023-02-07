@@ -26,6 +26,8 @@ protected:
     int calculateVirtualKeyboardHeight() const;
     QSize calculateVirtualKeyboardSize() const;
 
+    static QRect getPrimaryScreenGeometry();
+
 private:
     virtual float getVirtualKeyboardWidthRatio() const = 0;
     virtual float getVirtualKeyboardHeightRatio() const = 0;

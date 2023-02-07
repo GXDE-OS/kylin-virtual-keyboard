@@ -6,13 +6,13 @@
 GeometryManager::GeometryManager(QObject *parent) : QObject(parent) {}
 
 int GeometryManager::calculateVirtualKeyboardWidth() const {
-    QSize viewPortSize = QGuiApplication::primaryScreen()->geometry().size();
+    QSize viewPortSize = getPrimaryScreenGeometry().size();
 
     return viewPortSize.width() * getVirtualKeyboardWidthRatio();
 }
 
 int GeometryManager::calculateVirtualKeyboardHeight() const {
-    QSize viewPortSize = QGuiApplication::primaryScreen()->geometry().size();
+    QSize viewPortSize = getPrimaryScreenGeometry().size();
 
     if (viewPortSize.width() > viewPortSize.height()) {
         return viewPortSize.width() * getVirtualKeyboardHeightRatio();
@@ -29,6 +29,11 @@ int GeometryManager::calculateVirtualKeyboardHeight() const {
 QSize GeometryManager::calculateVirtualKeyboardSize() const {
     return QSize(calculateVirtualKeyboardWidth(),
                  calculateVirtualKeyboardHeight());
+}
+
+// static
+QRect GeometryManager::getPrimaryScreenGeometry() {
+    return QGuiApplication::primaryScreen()->geometry();
 }
 
 void GeometryManager::updateGeometry() {

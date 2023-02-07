@@ -47,7 +47,7 @@ float FloatGeometryManager::getVirtualKeyboardHeightRatio() const {
 }
 
 int FloatGeometryManager::calculateNormalizedX(int positionX) const {
-    const auto geometry = QGuiApplication::primaryScreen()->geometry();
+    const auto geometry = getPrimaryScreenGeometry();
 
     if (positionX < geometry.left()) {
         return geometry.left();
@@ -62,7 +62,7 @@ int FloatGeometryManager::calculateNormalizedX(int positionX) const {
 }
 
 int FloatGeometryManager::calculateNormalizedY(int positionY) const {
-    const auto geometry = QGuiApplication::primaryScreen()->geometry();
+    const auto geometry = getPrimaryScreenGeometry();
 
     if (positionY < geometry.top()) {
         return geometry.top();
@@ -106,8 +106,7 @@ QPoint FloatGeometryManager::calculateVirtualKeyboardPosition() {
 }
 
 QSize FloatGeometryManager::calculateMarginSize() const {
-    const QSize viewPortSize =
-        QGuiApplication::primaryScreen()->geometry().size();
+    const QSize viewPortSize = getPrimaryScreenGeometry().size();
     const auto virtualKeyboardSize = calculateVirtualKeyboardSize();
 
     const int horizontalMargin =
@@ -139,8 +138,7 @@ void FloatGeometryManager::saveMarginRatioMap() {
 }
 
 QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
-    const QSize viewPortSize =
-        QGuiApplication::primaryScreen()->geometry().size();
+    const QSize viewPortSize = getPrimaryScreenGeometry().size();
     const auto virtualKeyboardSize = calculateVirtualKeyboardSize();
 
     const float leftMargin =

@@ -14,7 +14,7 @@ float ExpansionGeometryManager::getVirtualKeyboardHeightRatio() const {
 }
 
 QPoint ExpansionGeometryManager::calculateVirtualKeyboardPosition() {
-    QSize viewPortSize = QGuiApplication::primaryScreen()->geometry().size();
+    QSize viewPortSize = getPrimaryScreenGeometry().size();
 
     return QPoint(0, viewPortSize.height() - calculateVirtualKeyboardHeight());
 }
