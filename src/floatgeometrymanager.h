@@ -37,7 +37,7 @@ private:
 
     void moveVirtualKeyboard(const QPoint &targetPoint);
 
-    constexpr static int distanceToBottom = 56;
+    constexpr static float defaultBottomMarginRatio = 0.05f;
 
     float leftMarginRatio_ = 0.0f;
     float topMarginRatio_ = 0.0f;

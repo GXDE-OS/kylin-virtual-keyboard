@@ -143,8 +143,11 @@ QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
 
     const float leftMargin =
         (viewPortSize.width() - virtualKeyboardSize.width()) / 2;
-    const float topMargin = viewPortSize.height() -
-                            (virtualKeyboardSize.height() + distanceToBottom);
+    const int defaultBottomMargin =
+        viewPortSize.height() * defaultBottomMarginRatio;
+    const float topMargin =
+        viewPortSize.height() -
+        (virtualKeyboardSize.height() + defaultBottomMargin);
 
     const QSize marginSize = calculateMarginSize();
 
