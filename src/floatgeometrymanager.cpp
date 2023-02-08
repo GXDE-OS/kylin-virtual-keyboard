@@ -7,13 +7,13 @@
 #include "virtualkeyboardsettings.h"
 
 // static
-QString FloatGeometryManager::marginRatioMapKey =
+const QString FloatGeometryManager::marginRatioMapKey =
     "virtualKeyboardMarginRatioMap";
 // static
-QString FloatGeometryManager::leftMarginRatioKey =
+const QString FloatGeometryManager::leftMarginRatioKey =
     "virtualKeyboardLeftMarginRatio";
 // static
-QString FloatGeometryManager::topMarginRatioKey =
+const QString FloatGeometryManager::topMarginRatioKey =
     "virtualKeyboardTopMarginRatio";
 
 FloatGeometryManager::FloatGeometryManager(QObject *parent)

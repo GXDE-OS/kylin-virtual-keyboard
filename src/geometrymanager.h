@@ -10,7 +10,7 @@ class VirtualKeyboardManager;
 class GeometryManager : public QObject {
     Q_OBJECT
 public:
-    virtual ~GeometryManager() = default;
+    ~GeometryManager() override = default;
 
 public slots:
     void updateGeometry();

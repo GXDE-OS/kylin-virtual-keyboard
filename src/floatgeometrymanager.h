@@ -44,9 +44,9 @@ private:
     float leftMarginRatio_ = 0.0f;
     float topMarginRatio_ = 0.0f;
 
-    static QString marginRatioMapKey;
-    static QString leftMarginRatioKey;
-    static QString topMarginRatioKey;
+    static const QString marginRatioMapKey;
+    static const QString leftMarginRatioKey;
+    static const QString topMarginRatioKey;
 };
 
 #endif // FLOATGEOMETRYMANAGER_H
