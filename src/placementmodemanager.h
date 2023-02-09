@@ -32,7 +32,9 @@ private:
     void loadPlacementMode();
 
     PlacementMode placementMode_ = PlacementMode::Expansion;
-    static QString placementModeKey;
+
+    static const QString placementModeGroup;
+    static const QString placementModeKey;
 };
 
 #endif // PLACEMENTMODEMANAGER_H

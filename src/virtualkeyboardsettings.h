@@ -12,9 +12,10 @@ public:
 
     ~VirtualKeyboardSettings();
 
-    QVariant getValue(const QString &key,
+    QVariant getValue(const QString &group, const QString &key,
                       const QVariant &defaultValue = QVariant());
-    void setValue(const QString &key, const QVariant &value);
+    void setValue(const QString &group, const QString &key,
+                  const QVariant &value);
 
 private:
     VirtualKeyboardSettings();

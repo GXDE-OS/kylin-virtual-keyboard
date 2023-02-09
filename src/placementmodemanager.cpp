@@ -3,7 +3,9 @@
 #include "virtualkeyboardsettings.h"
 
 // static
-QString PlacementModeManager::placementModeKey = "placementMode";
+const QString PlacementModeManager::placementModeGroup = "placementMode";
+// static
+const QString PlacementModeManager::placementModeKey = "placementMode";
 
 PlacementModeManager::PlacementModeManager(QObject *parent) : QObject(parent) {
     loadPlacementMode();
@@ -43,13 +45,13 @@ void PlacementModeManager::enterFloatMode() {
 }
 
 void PlacementModeManager::savePlacementMode() {
-    VirtualKeyboardSettings::getInstance().setValue(placementModeKey,
-                                                    placementMode_);
+    VirtualKeyboardSettings::getInstance().setValue(
+        placementModeGroup, placementModeKey, placementMode_);
 }
 
 void PlacementModeManager::loadPlacementMode() {
-    placementMode_ =
-        VirtualKeyboardSettings::getInstance()
-            .getValue(placementModeKey, PlacementModeManager::Expansion)
-            .value<PlacementModeManager::PlacementMode>();
+    placementMode_ = VirtualKeyboardSettings::getInstance()
+                         .getValue(placementModeGroup, placementModeKey,
+                                   PlacementModeManager::Expansion)
+                         .value<PlacementModeManager::PlacementMode>();
 }

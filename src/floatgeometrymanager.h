@@ -44,6 +44,7 @@ private:
     float leftMarginRatio_ = 0.0f;
     float topMarginRatio_ = 0.0f;
 
+    static const QString floatGeometryGroup;
     static const QString marginRatioMapKey;
     static const QString leftMarginRatioKey;
     static const QString topMarginRatioKey;

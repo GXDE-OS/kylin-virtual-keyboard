@@ -7,14 +7,13 @@
 #include "virtualkeyboardsettings.h"
 
 // static
-const QString FloatGeometryManager::marginRatioMapKey =
-    "virtualKeyboardMarginRatioMap";
+const QString FloatGeometryManager::floatGeometryGroup = "floatGeometry";
 // static
-const QString FloatGeometryManager::leftMarginRatioKey =
-    "virtualKeyboardLeftMarginRatio";
+const QString FloatGeometryManager::marginRatioMapKey = "marginRatioMap";
 // static
-const QString FloatGeometryManager::topMarginRatioKey =
-    "virtualKeyboardTopMarginRatio";
+const QString FloatGeometryManager::leftMarginRatioKey = "leftMarginRatio";
+// static
+const QString FloatGeometryManager::topMarginRatioKey = "topMarginRatio";
 
 FloatGeometryManager::FloatGeometryManager(QObject *parent)
     : GeometryManager{parent} {
@@ -139,8 +138,8 @@ void FloatGeometryManager::updateMarginRatio(const QPoint &targetPosition) {
 }
 
 void FloatGeometryManager::saveMarginRatioMap() {
-    VirtualKeyboardSettings::getInstance().setValue(marginRatioMapKey,
-                                                    getMarginRatioMap());
+    VirtualKeyboardSettings::getInstance().setValue(
+        floatGeometryGroup, marginRatioMapKey, getMarginRatioMap());
 }
 
 QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
@@ -167,7 +166,8 @@ QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
 void FloatGeometryManager::loadMarginRatioMap() {
     const auto marginRatioMap =
         VirtualKeyboardSettings::getInstance()
-            .getValue(marginRatioMapKey, getDefaultMarginRatioMap())
+            .getValue(floatGeometryGroup, marginRatioMapKey,
+                      getDefaultMarginRatioMap())
             .toMap();
 
     const float leftMarginRatio = marginRatioMap[leftMarginRatioKey].toFloat();

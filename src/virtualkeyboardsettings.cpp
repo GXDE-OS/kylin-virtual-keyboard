@@ -8,16 +8,27 @@ VirtualKeyboardSettings &VirtualKeyboardSettings::getInstance() {
 }
 
 VirtualKeyboardSettings::VirtualKeyboardSettings()
-    : settings("kylinos", "kylin-virtual-keyboard") {}
+    : settings("kylinsoft", "kylin virtual keyboard") {}
 
 VirtualKeyboardSettings::~VirtualKeyboardSettings() = default;
 
 QVariant VirtualKeyboardSettings::getValue(
-    const QString &key, const QVariant &defaultValue /*= QVariant()*/) {
-    return settings.value(key, defaultValue);
+    const QString &group, const QString &key,
+    const QVariant &defaultValue /*= QVariant()*/) {
+    settings.beginGroup(group);
+
+    auto value = settings.value(key, defaultValue);
+
+    settings.endGroup();
+
+    return value;
 }
 
-void VirtualKeyboardSettings::setValue(const QString &key,
+void VirtualKeyboardSettings::setValue(const QString &group, const QString &key,
                                        const QVariant &value) {
+    settings.beginGroup(group);
+
     settings.setValue(key, value);
+
+    settings.endGroup();
 }
