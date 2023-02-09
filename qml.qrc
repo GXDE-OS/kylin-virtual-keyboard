@@ -40,5 +40,6 @@
         <file>img/upfloat.svg</file>
         <file>img/downfloat.svg</file>
         <file>qml/DragBar.qml</file>
+        <file>img/space.svg</file>
     </qresource>
 </RCC>
