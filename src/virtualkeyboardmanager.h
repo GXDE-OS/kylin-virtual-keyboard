@@ -23,6 +23,7 @@
 #include "floatgeometrymanager.h"
 #include "placementmodemanager.h"
 #include "trayentry.h"
+#include "virtualkeyboardview.h"
 
 class VirtualKeyboardManager : public QObject {
     Q_OBJECT
@@ -51,8 +52,6 @@ public:
 public slots:
     void hideVirtualKeyboard();
     void requestCurrentIMList();
-    void moveVirtualKeyboard(int x, int y);
-    void resizeVirtualKeyboard(int width, int height);
 
 private slots:
     void backendServiceRegistered(const QString &serviceName);
@@ -74,7 +73,6 @@ signals:
     void updateCurrentIMList(const QVariant &currentIMList);
 
 private:
-    void showView();
     void initView();
     void destoryView();
     void resizeView();
@@ -91,7 +89,7 @@ private:
 
     std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;
     std::unique_ptr<DBusService> dBusService_ = nullptr;
-    std::unique_ptr<QQuickView> view_ = nullptr;
+    std::unique_ptr<VirtualKeyboardView> view_ = nullptr;
     std::unique_ptr<EventHandler> eventHandler_ = nullptr;
     std::unique_ptr<PlacementModeManager> placementModeManager_ = nullptr;
     std::unique_ptr<FloatGeometryManager> floatGeometryManager_ = nullptr;

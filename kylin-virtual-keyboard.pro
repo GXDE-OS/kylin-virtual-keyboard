@@ -19,7 +19,8 @@ SOURCES += \
     src/trayentry.cpp \
     src/placementmodemanager.cpp \
     src/virtualkeyboardmanager.cpp \
-    src/virtualkeyboardsettings.cpp
+    src/virtualkeyboardsettings.cpp \
+    src/virtualkeyboardview.cpp
 
 RESOURCES += \
     qml.qrc
@@ -45,7 +46,8 @@ HEADERS += \
     src/placementmodemanager.h \
     src/virtualkeyboardmanager.h \
     src/trayentry.h \
-    src/virtualkeyboardsettings.h
+    src/virtualkeyboardsettings.h \
+    src/virtualkeyboardview.h
 
 DISTFILES +=
 

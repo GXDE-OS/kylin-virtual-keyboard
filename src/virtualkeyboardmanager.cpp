@@ -172,34 +172,12 @@ void VirtualKeyboardManager::processResolutionChangedEvent() {
     }
 }
 
-void VirtualKeyboardManager::showView() {
-    fcitx::FcitxQtControllerProxy fcitxQtControllerProxy(
-        fcitx5Service, fcitx5ServiceControllerPath,
-        QDBusConnection::sessionBus(), view_.get());
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(
-        fcitxQtControllerProxy.CurrentInputMethod(), view_.get());
-    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, this,
-                     [this](QDBusPendingCallWatcher *watcher) {
-                         QDBusPendingReply<QString> reply = *watcher;
-                         if (!reply.isError()) {
-                             const QString &imName = reply.value();
-                             emit changeIM(imName);
-                         }
-                         placementModeManager_->updatePlacementMode();
-                         view_->show();
-                     });
-}
-
 void VirtualKeyboardManager::initView() {
-    view_.reset(new QQuickView());
-    view_->setSource(QUrl("qrc:/qml/VirtualKeyboard.qml"));
-    view_->setFlag(Qt::WindowStaysOnTopHint);
-    view_->setFlag(Qt::BypassWindowManagerHint);
-    KWindowSystem::setType(view_->winId(), NET::Dock);
+    view_.reset(new VirtualKeyboardView(this));
 
     connectSignals();
 
-    showView();
+    placementModeManager_->updatePlacementMode();
 }
 
 void VirtualKeyboardManager::destoryView() {
@@ -208,10 +186,8 @@ void VirtualKeyboardManager::destoryView() {
     if (view_ == nullptr) {
         return;
     }
-    if (view_->isVisible()) {
-        view_->hide();
-    }
-    view_.release()->deleteLater();
+
+    view_.reset();
 }
 
 void VirtualKeyboardManager::initDBusServiceWatcher() {
@@ -258,16 +234,17 @@ void VirtualKeyboardManager::initGeometryManager() {
 
 void VirtualKeyboardManager::connectSignals() {
     const auto *rootObject = view_->rootObject();
-    connect(this, SIGNAL(updatePreeditArea(const QString &)), rootObject,
-            SIGNAL(qmlUpdatePreedit(QString)));
+    connect(this, SIGNAL(updatePreeditArea(const QString &)), view_.get(),
+            SIGNAL(updatePreeditArea(const QString &)));
     connect(this,
             SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)),
-            rootObject, SIGNAL(qmlUpdateCandidateList(QVariant)));
-    connect(this, SIGNAL(changeIM(const QString &)), rootObject,
-            SIGNAL(qmlChangeIM(QString)));
-    connect(this, SIGNAL(reset()), rootObject, SIGNAL(qmlReset()));
-    connect(this, SIGNAL(updateCurrentIMList(const QVariant &)), rootObject,
-            SIGNAL(qmlUpdateCurrentIMList(QVariant)));
+            view_.get(),
+            SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)));
+    connect(this, SIGNAL(changeIM(const QString &)), view_.get(),
+            SIGNAL(changeIM(const QString &)));
+    connect(this, SIGNAL(reset()), view_.get(), SIGNAL(reset()));
+    connect(this, SIGNAL(updateCurrentIMList(const QVariant &)), view_.get(),
+            SIGNAL(updateCurrentIMList(const QVariant &)));
 
     connect(QGuiApplication::primaryScreen(),
             SIGNAL(geometryChanged(const QRect)), this,
@@ -291,24 +268,24 @@ void VirtualKeyboardManager::connectSignals() {
     connect(placementModeManager_.get(), SIGNAL(expansionModeEntered()), this,
             SLOT(raiseInputArea()));
     connect(placementModeManager_.get(), SIGNAL(expansionModeEntered()),
-            rootObject, SIGNAL(qmlEnterExpansionPlacementMode()));
+            view_.get(), SIGNAL(expansionModeEntered()));
     connect(placementModeManager_.get(), SIGNAL(floatModeEntered()),
             floatGeometryManager_.get(), SLOT(updateGeometry()));
     connect(placementModeManager_.get(), SIGNAL(floatModeEntered()), this,
             SLOT(fallInputArea()));
-    connect(placementModeManager_.get(), SIGNAL(floatModeEntered()), rootObject,
-            SIGNAL(qmlEnterFloatPlacementMode()));
+    connect(placementModeManager_.get(), SIGNAL(floatModeEntered()),
+            view_.get(), SIGNAL(floatModeEntered()));
 
     connect(expansionGeometryManager_.get(),
-            SIGNAL(virtualKeyboardMoved(int, int)), this,
+            SIGNAL(virtualKeyboardMoved(int, int)), view_.get(),
             SLOT(moveVirtualKeyboard(int, int)));
     connect(expansionGeometryManager_.get(),
-            SIGNAL(virtualKeyboardResized(int, int)), this,
+            SIGNAL(virtualKeyboardResized(int, int)), view_.get(),
             SLOT(resizeVirtualKeyboard(int, int)));
     connect(floatGeometryManager_.get(), SIGNAL(virtualKeyboardMoved(int, int)),
-            this, SLOT(moveVirtualKeyboard(int, int)));
+            view_.get(), SLOT(moveVirtualKeyboard(int, int)));
     connect(floatGeometryManager_.get(),
-            SIGNAL(virtualKeyboardResized(int, int)), this,
+            SIGNAL(virtualKeyboardResized(int, int)), view_.get(),
             SLOT(resizeVirtualKeyboard(int, int)));
 }
 
@@ -336,16 +313,6 @@ void VirtualKeyboardManager::backendServiceUnregistered(
     eventHandler_.reset();
 }
 
-void VirtualKeyboardManager::moveVirtualKeyboard(int x, int y) {
-    view_->setX(x);
-    view_->setY(y);
-}
-
-void VirtualKeyboardManager::resizeVirtualKeyboard(int width, int height) {
-    view_->setWidth(width);
-    view_->setHeight(height);
-}
-
 void VirtualKeyboardManager::raiseInputArea() {
     appInputAreaManager_->raiseInputArea(view_->geometry());
 }
@@ -355,5 +322,5 @@ void VirtualKeyboardManager::fallInputArea() {
 }
 
 void VirtualKeyboardManager::initTrayEntry() {
-    trayEntry_.reset(new TrayEntry(this,this));
+    trayEntry_.reset(new TrayEntry(this, this));
 }
