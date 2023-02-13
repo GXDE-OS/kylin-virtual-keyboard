@@ -83,6 +83,11 @@ private:
     void initAppInputAreaManager();
     void initPlacementModeManager();
     void initGeometryManager();
+    void connectVirtualKeyboardManagerSignals();
+    void connectGeometryManagerSignals();
+    void connectRootObjectSignals();
+    void connectScreenSignals();
+    void connectPlacementModeManagerSignals();
     void connectSignals();
     void initDBusService();
     void initTrayEntry();
