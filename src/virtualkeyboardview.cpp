@@ -2,8 +2,6 @@
 
 #include <QQuickItem>
 
-#include <KWindowSystem>
-
 #include <Fcitx5Qt5/Fcitx5Qt5DBusAddons/fcitxqtcontrollerproxy.h>
 
 // static
@@ -68,9 +66,9 @@ void VirtualKeyboardView::resizeVirtualKeyboard(int width, int height) {
 
 void VirtualKeyboardView::init() {
     view_->setSource(QUrl("qrc:/qml/VirtualKeyboard.qml"));
-    view_->setFlag(Qt::WindowStaysOnTopHint);
-    view_->setFlag(Qt::BypassWindowManagerHint);
-    KWindowSystem::setType(view_->winId(), NET::Dock);
+    view_->setFlags(Qt::Window | Qt::WindowDoesNotAcceptFocus |
+                    Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
+                    Qt::BypassWindowManagerHint);
 }
 
 void VirtualKeyboardView::connectSignals() {
