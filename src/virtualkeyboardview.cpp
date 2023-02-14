@@ -65,6 +65,7 @@ void VirtualKeyboardView::resizeVirtualKeyboard(int width, int height) {
 }
 
 void VirtualKeyboardView::init() {
+    view_->setColor(QColor(Qt::transparent));
     view_->setSource(QUrl("qrc:/qml/VirtualKeyboard.qml"));
     view_->setFlags(Qt::Window | Qt::WindowDoesNotAcceptFocus |
                     Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
