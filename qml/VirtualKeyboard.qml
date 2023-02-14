@@ -226,7 +226,11 @@ Rectangle {
     DragBar{id: dragBar}
     Preedit{id: preedit}
     ToolbarAndCandidateArea{id: toolbarAndCandidate}
-    KeyboardLayoutArea{visible: isKeyBoardLayoutVisible}
+    KeyboardLayoutArea{
+        visible: isKeyBoardLayoutVisible
+        anchors.bottom: virtualKeyboard.bottom
+        radius: virtualKeyboard.radius
+    }
     ToolArea{}
 
     Rectangle {
