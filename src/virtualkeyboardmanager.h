@@ -75,7 +75,7 @@ signals:
 private:
     void initView();
     void destoryView();
-    void resizeView();
+
     void initDBusServiceWatcher();
     void initVirtualKeyboardBackendInterface();
     void initFcitx5ControllerInterface();
@@ -83,14 +83,15 @@ private:
     void initAppInputAreaManager();
     void initPlacementModeManager();
     void initGeometryManager();
+    void initDBusService();
+    void initTrayEntry();
+    void initScreenSignalConnections();
+
     void connectVirtualKeyboardManagerSignals();
     void connectGeometryManagerSignals();
     void connectRootObjectSignals();
-    void initScreenSignalConnections();
     void connectPlacementModeManagerSignals();
     void connectSignals();
-    void initDBusService();
-    void initTrayEntry();
 
     std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;
     std::unique_ptr<DBusService> dBusService_ = nullptr;

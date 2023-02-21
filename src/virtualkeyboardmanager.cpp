@@ -281,12 +281,6 @@ void VirtualKeyboardManager::connectRootObjectSignals() {
     eventHandler_->connectSignals(rootObject);
 }
 
-void VirtualKeyboardManager::initScreenSignalConnections() {
-    connect(QGuiApplication::primaryScreen(),
-            SIGNAL(geometryChanged(const QRect &)), this,
-            SLOT(processResolutionChangedEvent()));
-}
-
 void VirtualKeyboardManager::connectPlacementModeManagerSignals() {
     connect(placementModeManager_.get(), SIGNAL(expansionModeEntered()),
             view_.get(), SIGNAL(expansionModeEntered()));
@@ -347,4 +341,10 @@ void VirtualKeyboardManager::fallInputArea() {
 
 void VirtualKeyboardManager::initTrayEntry() {
     trayEntry_.reset(new TrayEntry(this, this));
+}
+
+void VirtualKeyboardManager::initScreenSignalConnections() {
+    connect(QGuiApplication::primaryScreen(),
+            SIGNAL(geometryChanged(const QRect &)), this,
+            SLOT(processResolutionChangedEvent()));
 }
