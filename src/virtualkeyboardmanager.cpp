@@ -11,6 +11,8 @@ VirtualKeyboardManager::VirtualKeyboardManager(QObject *parent)
     initPlacementModeManager();
     initGeometryManager();
     initTrayEntry();
+
+    initScreenSignalConnections();
 }
 
 VirtualKeyboardManager::~VirtualKeyboardManager() {
@@ -279,7 +281,7 @@ void VirtualKeyboardManager::connectRootObjectSignals() {
     eventHandler_->connectSignals(rootObject);
 }
 
-void VirtualKeyboardManager::connectScreenSignals() {
+void VirtualKeyboardManager::initScreenSignalConnections() {
     connect(QGuiApplication::primaryScreen(),
             SIGNAL(geometryChanged(const QRect &)), this,
             SLOT(processResolutionChangedEvent()));
@@ -303,8 +305,6 @@ void VirtualKeyboardManager::connectPlacementModeManagerSignals() {
 
 void VirtualKeyboardManager::connectSignals() {
     connectVirtualKeyboardManagerSignals();
-
-    connectScreenSignals();
 
     connectRootObjectSignals();
 
