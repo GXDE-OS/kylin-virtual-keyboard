@@ -86,6 +86,7 @@ private:
     void initDBusService();
     void initTrayEntry();
     void initScreenSignalConnections();
+    void initPlacementModeManagerSignalConnections();
 
     void connectVirtualKeyboardManagerSignals();
     void connectGeometryManagerSignals();

@@ -13,6 +13,7 @@ VirtualKeyboardManager::VirtualKeyboardManager(QObject *parent)
     initTrayEntry();
 
     initScreenSignalConnections();
+    initPlacementModeManagerSignalConnections();
 }
 
 VirtualKeyboardManager::~VirtualKeyboardManager() {
@@ -284,17 +285,9 @@ void VirtualKeyboardManager::connectRootObjectSignals() {
 void VirtualKeyboardManager::connectPlacementModeManagerSignals() {
     connect(placementModeManager_.get(), SIGNAL(expansionModeEntered()),
             view_.get(), SIGNAL(expansionModeEntered()));
-    connect(placementModeManager_.get(), SIGNAL(expansionModeEntered()),
-            expansionGeometryManager_.get(), SLOT(updateGeometry()));
-    connect(placementModeManager_.get(), SIGNAL(expansionModeEntered()), this,
-            SLOT(raiseInputArea()));
 
     connect(placementModeManager_.get(), SIGNAL(floatModeEntered()),
             view_.get(), SIGNAL(floatModeEntered()));
-    connect(placementModeManager_.get(), SIGNAL(floatModeEntered()),
-            floatGeometryManager_.get(), SLOT(updateGeometry()));
-    connect(placementModeManager_.get(), SIGNAL(floatModeEntered()), this,
-            SLOT(fallInputArea()));
 }
 
 void VirtualKeyboardManager::connectSignals() {
@@ -347,4 +340,16 @@ void VirtualKeyboardManager::initScreenSignalConnections() {
     connect(QGuiApplication::primaryScreen(),
             SIGNAL(geometryChanged(const QRect &)), this,
             SLOT(processResolutionChangedEvent()));
+}
+
+void VirtualKeyboardManager::initPlacementModeManagerSignalConnections() {
+    connect(placementModeManager_.get(), SIGNAL(expansionModeEntered()),
+            expansionGeometryManager_.get(), SLOT(updateGeometry()));
+    connect(placementModeManager_.get(), SIGNAL(expansionModeEntered()), this,
+            SLOT(raiseInputArea()));
+
+    connect(placementModeManager_.get(), SIGNAL(floatModeEntered()),
+            floatGeometryManager_.get(), SLOT(updateGeometry()));
+    connect(placementModeManager_.get(), SIGNAL(floatModeEntered()), this,
+            SLOT(fallInputArea()));
 }
