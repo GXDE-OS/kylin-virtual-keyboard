@@ -22,8 +22,14 @@ SOURCES += \
     src/virtualkeyboardsettings.cpp \
     src/virtualkeyboardview.cpp
 
+TRANSLATIONS = translations/translation.ts \
+    translations/translation_bo_CN.ts \
+    translations/translation_en.ts \
+    translations/translation_zh_CN.ts
+
 RESOURCES += \
-    qml.qrc
+    qml.qrc \
+    translations.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
