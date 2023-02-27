@@ -37,7 +37,7 @@ Rectangle {
     property int keyIconAlignment: keyWidth / 3
     property int imHeight: keyHeight * 2/3
     property int imWidth: keyWidth * 9/5
-    property real fontSize: keyHeight * 6/11 * 3/4
+    property real fontSize: keyHeight * 6/11 * 7/12
     property real shiftFontSize: fontSize / 2
     property real switchKeyFontSize: fontSize * 3/4
     property real fnSymbolKeyFontSize: fontSize * 3/4
