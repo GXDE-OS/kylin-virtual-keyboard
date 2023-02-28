@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/trayentry.cpp" line="16"/>
         <source>kylin-virtual-keyboard</source>
-        <translation>རྟོག་བཟོའི་མཐེབ་གཞོང་།</translation>
+        <translation>རྟོག་བཟོས་མཐེབ་གཞུང་།</translation>
     </message>
 </context>
 </TS>
