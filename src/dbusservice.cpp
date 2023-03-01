@@ -3,11 +3,27 @@
 
 DBusService::DBusService(VirtualKeyboardManager *virtualKeyboardManager,
                          QObject *parent)
-    : QObject(parent), virtualKeyboardManager_(virtualKeyboardManager) {
+    : QObject(parent), virtualKeyboardManager_(virtualKeyboardManager),
+      virtualKeyboardVisibilityRequestMerger_(
+          VIRTUAL_KEYBOARD_VISIBILITY_PEROID) {
+    initRequestMerger();
+
     startService();
 }
 
 DBusService::~DBusService() { stopService(); }
+
+void DBusService::initRequestMerger() {
+    virtualKeyboardVisibilityRequestMerger_.init(
+        [this]() { virtualKeyboardManager_->ShowVirtualKeyboard(); },
+        [this]() { virtualKeyboardManager_->HideVirtualKeyboard(); },
+        [this]() {
+            return !virtualKeyboardManager_->IsVirtualKeyboardVisible();
+        },
+        [this]() {
+            return virtualKeyboardManager_->IsVirtualKeyboardVisible();
+        });
+}
 
 bool DBusService::startService() {
     return QDBusConnection::sessionBus().registerService(serviceName_) &&
@@ -22,11 +38,11 @@ bool DBusService::stopService() {
 }
 
 void DBusService::ShowVirtualKeyboard() {
-    virtualKeyboardManager_->ShowVirtualKeyboard();
+    virtualKeyboardVisibilityRequestMerger_.activate();
 }
 
 void DBusService::HideVirtualKeyboard() {
-    virtualKeyboardManager_->HideVirtualKeyboard();
+    virtualKeyboardVisibilityRequestMerger_.deactivate();
 }
 
 bool DBusService::IsVirtualKeyboardVisible() {

@@ -4,6 +4,8 @@
 #include <QDBusConnection>
 #include <QObject>
 
+#include "requestmerger.h"
+
 class VirtualKeyboardManager;
 
 class DBusService : public QObject {
@@ -15,6 +17,8 @@ public:
     ~DBusService();
 
 private:
+    void initRequestMerger();
+
     bool startService();
     bool stopService();
 
@@ -35,6 +39,11 @@ private:
     QString serviceName_ = "org.fcitx.Fcitx5.VirtualKeyboard";
     QString servicePath_ = "/org/fcitx/virtualkeyboard/impanel";
     QString serviceInterface_ = "org.fcitx.Fcitx5.VirtualKeyboard1";
+
+    // 在10ms之内的显示和隐藏虚拟键盘的请求将会被合并处理，
+    // 避免虚拟键盘不必要的显示和隐藏及其相应的闪烁效果
+    const int VIRTUAL_KEYBOARD_VISIBILITY_PEROID = 10;
+    RequestMerger virtualKeyboardVisibilityRequestMerger_;
 };
 
 #endif // DBUSSERVICE_H
