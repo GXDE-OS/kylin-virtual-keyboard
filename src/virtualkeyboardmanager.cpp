@@ -10,7 +10,6 @@ VirtualKeyboardManager::VirtualKeyboardManager(QObject *parent)
     initAppInputAreaManager();
     initPlacementModeManager();
     initGeometryManager();
-    initTrayEntry();
 
     initScreenSignalConnections();
     initPlacementModeManagerSignalConnections();
@@ -330,10 +329,6 @@ void VirtualKeyboardManager::raiseInputArea() {
 
 void VirtualKeyboardManager::fallInputArea() {
     appInputAreaManager_->fallInputArea();
-}
-
-void VirtualKeyboardManager::initTrayEntry() {
-    trayEntry_.reset(new TrayEntry(this, this));
 }
 
 void VirtualKeyboardManager::initScreenSignalConnections() {

@@ -10,8 +10,7 @@ class TrayEntry : public QObject {
     Q_OBJECT
 
 public:
-    explicit TrayEntry(VirtualKeyboardManager *virtualKeyboardManager,
-                       QObject *parent = nullptr);
+    explicit TrayEntry(VirtualKeyboardManager *virtualKeyboardManager = nullptr);
     ~TrayEntry() = default;
 
 private:
@@ -33,3 +32,4 @@ private:
 };
 
 #endif // TRAYENTRY_H
+

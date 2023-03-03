@@ -3,6 +3,7 @@
 #include <QTranslator>
 
 #include "virtualkeyboardmanager.h"
+#include "trayentry.h"
 
 int main(int argc, char *argv[]) {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -15,5 +16,7 @@ int main(int argc, char *argv[]) {
     }
 
     VirtualKeyboardManager virtualKeyboardManager;
+    TrayEntry trayEntry(&virtualKeyboardManager);
+
     return app.exec();
 }

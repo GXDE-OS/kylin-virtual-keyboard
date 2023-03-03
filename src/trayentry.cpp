@@ -3,9 +3,8 @@
 #include <QIcon>
 #include <QDBusMessage>
 
-TrayEntry::TrayEntry(VirtualKeyboardManager *virtualKeyboardManager,
-                     QObject *parent)
-: QObject(parent), virtualKeyboardManager_(virtualKeyboardManager) {
+TrayEntry::TrayEntry(VirtualKeyboardManager *virtualKeyboardManager)
+:  virtualKeyboardManager_(virtualKeyboardManager) {
     ConnectFcitxVirtualKeyboardBackend();
     RegisterTrayEntry();
 }

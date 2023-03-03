@@ -84,7 +84,6 @@ private:
     void initPlacementModeManager();
     void initGeometryManager();
     void initDBusService();
-    void initTrayEntry();
     void initScreenSignalConnections();
     void initPlacementModeManagerSignalConnections();
 
@@ -103,7 +102,6 @@ private:
     std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager_ =
         nullptr;
     std::unique_ptr<QDBusServiceWatcher> serviceWatcher_ = nullptr;
-    std::unique_ptr<TrayEntry> trayEntry_ = nullptr;
     std::unique_ptr<QDBusInterface> virtualKeyboardBackendInterface_ = nullptr;
     std::unique_ptr<QDBusInterface> fcitx5ControllerInterface_ = nullptr;
     bool virtualkeyboardVisible_ = false;
