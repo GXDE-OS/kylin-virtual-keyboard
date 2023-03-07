@@ -5,5 +5,5 @@ ActionKey {
     height: keyHeight * 3/4
     alignment: Text.AlignRight
     label: "Backspace"
-    actionKeyImgPath: "qrc:/img/backspace.png"
+    actionKeyImgPath: "qrc:/img/backspace.svg"
 }

@@ -12,14 +12,14 @@ Rectangle {
         id: hideButtonImg
         anchors.centerIn: parent
         sourceSize: Qt.size(parent.width, parent.width)
-        source: "qrc:/img/close.png"
+        source: "qrc:/img/close.svg"
     }
 
     MouseArea {
         anchors.fill: parent
 
         onPressed: {
-            hideButtonImg.source = "qrc:/img/close_pressed.png"
+            hideButtonImg.source = "qrc:/img/close_pressed.svg"
         }
 
         onReleased: {

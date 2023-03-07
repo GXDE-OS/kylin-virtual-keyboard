@@ -25,15 +25,7 @@
         <file>qml/key/SymbolKey.qml</file>
         <file>qml/key/TemporarySwitchKey.qml</file>
         <file>qml/key/WinKey.qml</file>
-        <file>img/close.png</file>
         <file>qml/js/utils.js</file>
-        <file>img/close_pressed.png</file>
-        <file>img/down.png</file>
-        <file>img/backspace.png</file>
-        <file>img/enter.png</file>
-        <file>img/left.png</file>
-        <file>img/right.png</file>
-        <file>img/up.png</file>
         <file>qml/key/BackspaceKey.qml</file>
         <file>qml/key/EnterKey.qml</file>
         <file>qml/PlacementModeButton.qml</file>
@@ -41,5 +33,13 @@
         <file>img/downfloat.svg</file>
         <file>qml/DragBar.qml</file>
         <file>img/space.svg</file>
+        <file>img/backspace.svg</file>
+        <file>img/close.svg</file>
+        <file>img/close_pressed.svg</file>
+        <file>img/enter.svg</file>
+        <file>img/left.svg</file>
+        <file>img/right.svg</file>
+        <file>img/up.svg</file>
+        <file>img/down.svg</file>
     </qresource>
 </RCC>

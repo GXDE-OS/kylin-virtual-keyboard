@@ -78,7 +78,7 @@ Column {
         SymbolKey{ label: ","; shiftedText: "<"  }
         SymbolKey{ label: "."; shiftedText: ">"  }
         SymbolKey{ label: "/"; shiftedText: "?"  }
-        ActionKey{ label: "up"; actionKeyImgPath: "qrc:/img/up.png" }
+        ActionKey{ label: "up"; actionKeyImgPath: "qrc:/img/up.svg" }
         ShiftKey{ width: virtualKeyboard.keyWidth*2 + virtualKeyboard.keySpacing; alignment: Text.AlignRight }
     }
     Row {
@@ -92,9 +92,9 @@ Column {
         ChangeImKey{}
         SpaceKey{}
         AltKey{}
-        ActionKey{ label: "left"; actionKeyImgPath: "qrc:/img/left.png" }
-        ActionKey{ label: "down"; actionKeyImgPath: "qrc:/img/down.png" }
-        ActionKey{ label: "right"; actionKeyImgPath: "qrc:/img/right.png" }
+        ActionKey{ label: "left"; actionKeyImgPath: "qrc:/img/left.svg" }
+        ActionKey{ label: "down"; actionKeyImgPath: "qrc:/img/down.svg" }
+        ActionKey{ label: "right"; actionKeyImgPath: "qrc:/img/right.svg" }
         CtrlKey{}
     }
 }
