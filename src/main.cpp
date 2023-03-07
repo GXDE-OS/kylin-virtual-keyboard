@@ -2,8 +2,8 @@
 #include <QLocale>
 #include <QTranslator>
 
-#include "virtualkeyboardmanager.h"
 #include "trayentry.h"
+#include "virtualkeyboardmanager.h"
 
 int main(int argc, char *argv[]) {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
