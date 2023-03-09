@@ -2,6 +2,7 @@
 #include <QLocale>
 #include <QTranslator>
 
+#include "dbusservice.h"
 #include "trayentry.h"
 #include "virtualkeyboardmanager.h"
 
@@ -17,6 +18,8 @@ int main(int argc, char *argv[]) {
 
     VirtualKeyboardManager virtualKeyboardManager;
     TrayEntry trayEntry(&virtualKeyboardManager);
+
+    DBusService dbusService(&virtualKeyboardManager);
 
     return app.exec();
 }

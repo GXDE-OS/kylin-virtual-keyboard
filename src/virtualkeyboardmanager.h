@@ -17,7 +17,6 @@
 #include <QVariant>
 
 #include "appinputareamanager.h"
-#include "dbusservice.h"
 #include "eventhandler.h"
 #include "expansiongeometrymanager.h"
 #include "floatgeometrymanager.h"
@@ -83,7 +82,6 @@ private:
     void initAppInputAreaManager();
     void initPlacementModeManager();
     void initGeometryManager();
-    void initDBusService();
     void initScreenSignalConnections();
     void initPlacementModeManagerSignalConnections();
 
@@ -94,7 +92,6 @@ private:
     void connectSignals();
 
     std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;
-    std::unique_ptr<DBusService> dBusService_ = nullptr;
     std::unique_ptr<VirtualKeyboardView> view_ = nullptr;
     std::unique_ptr<EventHandler> eventHandler_ = nullptr;
     std::unique_ptr<PlacementModeManager> placementModeManager_ = nullptr;

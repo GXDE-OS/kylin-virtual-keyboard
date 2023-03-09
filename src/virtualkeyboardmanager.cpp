@@ -6,7 +6,6 @@
 VirtualKeyboardManager::VirtualKeyboardManager(QObject *parent)
     : QObject(parent) {
     initDBusServiceWatcher();
-    initDBusService();
     initAppInputAreaManager();
     initPlacementModeManager();
     initGeometryManager();
@@ -20,7 +19,6 @@ VirtualKeyboardManager::~VirtualKeyboardManager() {
     serviceWatcher_.reset();
     virtualKeyboardBackendInterface_.reset();
     eventHandler_.reset();
-    dBusService_.reset();
     placementModeManager_.reset();
     floatGeometryManager_.reset();
     expansionGeometryManager_.reset();
@@ -297,10 +295,6 @@ void VirtualKeyboardManager::connectSignals() {
     connectPlacementModeManagerSignals();
 
     connectGeometryManagerSignals();
-}
-
-void VirtualKeyboardManager::initDBusService() {
-    dBusService_.reset(new DBusService(this, this));
 }
 
 void VirtualKeyboardManager::backendServiceRegistered(

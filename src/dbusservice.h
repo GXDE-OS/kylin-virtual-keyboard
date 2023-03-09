@@ -5,16 +5,14 @@
 #include <QObject>
 
 #include "requestmerger.h"
-
-class VirtualKeyboardManager;
+#include "virtualkeyboardmanager.h"
 
 class DBusService : public QObject {
     Q_OBJECT
 
 public:
-    explicit DBusService(VirtualKeyboardManager *virtualKeyboardManager,
-                         QObject *object = nullptr);
-    ~DBusService();
+    explicit DBusService(VirtualKeyboardManager *virtualKeyboardManager);
+    ~DBusService() override;
 
 private:
     void initRequestMerger();

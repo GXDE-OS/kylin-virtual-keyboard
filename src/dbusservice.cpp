@@ -1,9 +1,8 @@
 #include "dbusservice.h"
 #include "virtualkeyboardmanager.h"
 
-DBusService::DBusService(VirtualKeyboardManager *virtualKeyboardManager,
-                         QObject *parent)
-    : QObject(parent), virtualKeyboardManager_(virtualKeyboardManager),
+DBusService::DBusService(VirtualKeyboardManager *virtualKeyboardManager)
+    : virtualKeyboardManager_(virtualKeyboardManager),
       virtualKeyboardVisibilityRequestMerger_(
           VIRTUAL_KEYBOARD_VISIBILITY_PEROID) {
     initRequestMerger();
