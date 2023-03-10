@@ -21,7 +21,6 @@
 #include "expansiongeometrymanager.h"
 #include "floatgeometrymanager.h"
 #include "placementmodemanager.h"
-#include "trayentry.h"
 #include "virtualkeyboardview.h"
 
 class VirtualKeyboardManager : public QObject {

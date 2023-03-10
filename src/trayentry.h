@@ -3,8 +3,7 @@
 #include <QObject>
 #include <QSystemTrayIcon>
 #include <QDBusInterface>
-
-class VirtualKeyboardManager;
+#include "virtualkeyboardmanager.h"
 
 class TrayEntry : public QObject {
     Q_OBJECT
