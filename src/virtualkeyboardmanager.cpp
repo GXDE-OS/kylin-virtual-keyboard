@@ -224,11 +224,11 @@ void VirtualKeyboardManager::initAppInputAreaManager() {
 }
 
 void VirtualKeyboardManager::initPlacementModeManager() {
-    placementModeManager_.reset(new PlacementModeManager());
+    placementModeManager_.reset(new PlacementModeManager(viewSettings_));
 }
 
 void VirtualKeyboardManager::initGeometryManager() {
-    floatGeometryManager_.reset(new FloatGeometryManager());
+    floatGeometryManager_.reset(new FloatGeometryManager(viewSettings_));
     expansionGeometryManager_.reset(new ExpansionGeometryManager());
 }
 

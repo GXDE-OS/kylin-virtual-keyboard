@@ -2,15 +2,14 @@
 #define PLACEMENTMODEMANAGER_H
 
 #include <QObject>
-#include <QSettings>
 
-class VirtualKeyboardManager;
+#include "localsettings.h"
 
 class PlacementModeManager : public QObject {
     Q_OBJECT
 
 public:
-    PlacementModeManager();
+    explicit PlacementModeManager(LocalSettings &viewSettings);
     ~PlacementModeManager() override;
 
     void updatePlacementMode();
@@ -21,6 +20,7 @@ public:
 signals:
     void expansionModeEntered();
     void floatModeEntered();
+
 public slots:
     void flipPlacementMode();
 
@@ -31,7 +31,10 @@ private:
     void savePlacementMode();
     void loadPlacementMode();
 
+private:
     PlacementMode placementMode_ = PlacementMode::Expansion;
+
+    LocalSettings &viewSettings_;
 
     static const QString placementModeGroup;
     static const QString placementModeKey;

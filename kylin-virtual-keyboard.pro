@@ -19,8 +19,8 @@ SOURCES += \
     src/requestmerger.cpp \
     src/trayentry.cpp \
     src/placementmodemanager.cpp \
+    src/viewlocalsettings.cpp \
     src/virtualkeyboardmanager.cpp \
-    src/virtualkeyboardsettings.cpp \
     src/virtualkeyboardview.cpp
 
 TRANSLATIONS = translations/translation.ts \
@@ -50,11 +50,12 @@ HEADERS += \
     src/expansiongeometrymanager.h \
     src/floatgeometrymanager.h \
     src/geometrymanager.h \
+    src/localsettings.h \
     src/placementmodemanager.h \
     src/requestmerger.h \
+    src/viewlocalsettings.h \
     src/virtualkeyboardmanager.h \
     src/trayentry.h \
-    src/virtualkeyboardsettings.h \
     src/virtualkeyboardview.h
 
 DISTFILES +=

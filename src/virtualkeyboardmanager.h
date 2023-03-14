@@ -21,6 +21,7 @@
 #include "expansiongeometrymanager.h"
 #include "floatgeometrymanager.h"
 #include "placementmodemanager.h"
+#include "viewlocalsettings.h"
 #include "virtualkeyboardview.h"
 
 class VirtualKeyboardManager : public QObject {
@@ -101,6 +102,9 @@ private:
     std::unique_ptr<QDBusInterface> virtualKeyboardBackendInterface_ = nullptr;
     std::unique_ptr<QDBusInterface> fcitx5ControllerInterface_ = nullptr;
     bool virtualkeyboardVisible_ = false;
+
+    ViewLocalSettings viewSettings_{"kylinsoft", "kylin virtual keyboard"};
+
     QString virtualKeyboardBackendService =
         "org.fcitx.Fcitx5.VirtualKeyboardBackend";
     QString virtualKeyboardBackendServicePath = "/virtualkeyboard";

@@ -4,7 +4,7 @@
 #include <QMap>
 #include <QScreen>
 
-#include "virtualkeyboardsettings.h"
+#include "localsettings.h"
 
 // static
 const QString FloatGeometryManager::floatGeometryGroup = "floatGeometry";
@@ -15,7 +15,8 @@ const QString FloatGeometryManager::leftMarginRatioKey = "leftMarginRatio";
 // static
 const QString FloatGeometryManager::topMarginRatioKey = "topMarginRatio";
 
-FloatGeometryManager::FloatGeometryManager() : GeometryManager() {
+FloatGeometryManager::FloatGeometryManager(LocalSettings &viewSettings)
+    : GeometryManager(), viewSettings_(viewSettings) {
     loadMarginRatioMap();
 }
 
@@ -137,8 +138,8 @@ void FloatGeometryManager::updateMarginRatio(const QPoint &targetPosition) {
 }
 
 void FloatGeometryManager::saveMarginRatioMap() {
-    VirtualKeyboardSettings::getInstance().setValue(
-        floatGeometryGroup, marginRatioMapKey, getMarginRatioMap());
+    viewSettings_.setValue(floatGeometryGroup, marginRatioMapKey,
+                           getMarginRatioMap());
 }
 
 QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
@@ -164,7 +165,7 @@ QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
 
 void FloatGeometryManager::loadMarginRatioMap() {
     const auto marginRatioMap =
-        VirtualKeyboardSettings::getInstance()
+        viewSettings_
             .getValue(floatGeometryGroup, marginRatioMapKey,
                       getDefaultMarginRatioMap())
             .toMap();

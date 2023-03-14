@@ -2,11 +2,12 @@
 #define FLOATGEOMETRYMANAGER_H
 
 #include "geometrymanager.h"
+#include "localsettings.h"
 
 class FloatGeometryManager : public GeometryManager {
     Q_OBJECT
 public:
-    FloatGeometryManager();
+    explicit FloatGeometryManager(LocalSettings &viewSettings);
     ~FloatGeometryManager() override;
 
 public slots:
@@ -39,10 +40,13 @@ private:
 
     void moveVirtualKeyboard(const QPoint &targetPoint);
 
+private:
     constexpr static float defaultBottomMarginRatio = 0.05f;
 
     float leftMarginRatio_ = 0.0f;
     float topMarginRatio_ = 0.0f;
+
+    LocalSettings &viewSettings_;
 
     static const QString floatGeometryGroup;
     static const QString marginRatioMapKey;
