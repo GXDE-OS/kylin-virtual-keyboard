@@ -1,13 +1,20 @@
 #ifndef FLOATGEOMETRYMANAGER_H
 #define FLOATGEOMETRYMANAGER_H
 
+#include <memory>
+
 #include "geometrymanager.h"
 #include "localsettings.h"
 
 class FloatGeometryManager : public GeometryManager {
     Q_OBJECT
+
 public:
-    explicit FloatGeometryManager(LocalSettings &viewSettings);
+    class Strategy;
+
+public:
+    FloatGeometryManager(std::unique_ptr<Strategy> strategy,
+                         LocalSettings &viewSettings);
     ~FloatGeometryManager() override;
 
 public slots:
@@ -16,8 +23,9 @@ public slots:
 
 private:
     QPoint calculateViewPosition() override;
+    int getUnitWidth() const override;
     float getViewWidthRatio() const override;
-    float getViewHeightRatio() const override;
+    int calculateViewHeight() const override;
 
     int calculateNormalizedX(int positionX) const;
     int calculateNormalizedY(int positionY) const;
@@ -41,10 +49,10 @@ private:
     void moveView(const QPoint &targetPoint);
 
 private:
-    constexpr static float defaultBottomMarginRatio = 0.05f;
-
     float leftMarginRatio_ = 0.0f;
     float topMarginRatio_ = 0.0f;
+
+    std::unique_ptr<Strategy> strategy_;
 
     LocalSettings &viewSettings_;
 
@@ -52,6 +60,20 @@ private:
     static const QString marginRatioMapKey;
     static const QString leftMarginRatioKey;
     static const QString topMarginRatioKey;
+};
+
+class FloatGeometryManager::Strategy {
+public:
+    virtual ~Strategy() = default;
+
+    virtual int getUnitWidth() const = 0;
+    virtual float getViewWidthRatio() const = 0;
+    virtual float getViewHeightRatio() const = 0;
+
+    virtual float getDefaultBottomMarginRatio() const = 0;
+
+protected:
+    Strategy() = default;
 };
 
 #endif // FLOATGEOMETRYMANAGER_H

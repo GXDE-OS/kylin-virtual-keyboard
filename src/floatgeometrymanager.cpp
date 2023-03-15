@@ -14,8 +14,10 @@ const QString FloatGeometryManager::leftMarginRatioKey = "leftMarginRatio";
 // static
 const QString FloatGeometryManager::topMarginRatioKey = "topMarginRatio";
 
-FloatGeometryManager::FloatGeometryManager(LocalSettings &viewSettings)
-    : GeometryManager(), viewSettings_(viewSettings) {
+FloatGeometryManager::FloatGeometryManager(std::unique_ptr<Strategy> strategy,
+                                           LocalSettings &viewSettings)
+    : GeometryManager(), strategy_(std::move(strategy)),
+      viewSettings_(viewSettings) {
     loadMarginRatioMap();
 }
 
@@ -36,12 +38,20 @@ void FloatGeometryManager::endDrag() {
     }
 }
 
-float FloatGeometryManager::getViewWidthRatio() const {
-    return 1458.0 / 1620.0;
+int FloatGeometryManager::getUnitWidth() const {
+    return strategy_->getUnitWidth();
 }
 
-float FloatGeometryManager::getViewHeightRatio() const {
-    return 548.0 / 1620.0;
+float FloatGeometryManager::getViewWidthRatio() const {
+    return strategy_->getViewWidthRatio();
+}
+
+int FloatGeometryManager::calculateViewHeight() const {
+    const auto viewPortSize = ScreenManager::getPrimaryScreenSize();
+    const auto unitHeight =
+        std::max(viewPortSize.width(), viewPortSize.height());
+
+    return unitHeight * strategy_->getViewHeightRatio();
 }
 
 int FloatGeometryManager::calculateNormalizedX(int positionX) const {
@@ -145,7 +155,7 @@ QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
 
     const int leftMargin = (viewPortSize.width() - viewSize.width()) / 2;
     const int defaultBottomMargin =
-        viewPortSize.height() * defaultBottomMarginRatio;
+        viewPortSize.height() * strategy_->getDefaultBottomMarginRatio();
     const int topMargin =
         viewPortSize.height() - (viewSize.height() + defaultBottomMargin);
 

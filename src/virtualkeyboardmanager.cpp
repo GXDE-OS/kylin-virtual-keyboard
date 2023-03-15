@@ -3,6 +3,8 @@
 #include <QDBusMetaType>
 #include <QMetaType>
 
+#include "virtualkeyboardstrategy.h"
+
 VirtualKeyboardManager::VirtualKeyboardManager(QObject *parent)
     : QObject(parent) {
     initDBusServiceWatcher();
@@ -228,7 +230,10 @@ void VirtualKeyboardManager::initPlacementModeManager() {
 }
 
 void VirtualKeyboardManager::initGeometryManager() {
-    floatGeometryManager_.reset(new FloatGeometryManager(viewSettings_));
+    floatGeometryManager_.reset(new FloatGeometryManager(
+        std::unique_ptr<FloatGeometryManager::Strategy>(
+            new VirtualKeyboardStrategy()),
+        viewSettings_));
     expansionGeometryManager_.reset(new ExpansionGeometryManager());
 }
 

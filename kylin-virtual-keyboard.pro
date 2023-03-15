@@ -58,6 +58,7 @@ HEADERS += \
     src/viewlocalsettings.h \
     src/virtualkeyboardmanager.h \
     src/trayentry.h \
+    src/virtualkeyboardstrategy.h \
     src/virtualkeyboardview.h
 
 DISTFILES +=

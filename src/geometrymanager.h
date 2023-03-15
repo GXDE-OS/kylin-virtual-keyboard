@@ -23,12 +23,12 @@ protected:
     GeometryManager();
 
     int calculateViewWidth() const;
-    int calculateViewHeight() const;
     QSize calculateViewSize() const;
 
 private:
+    virtual int getUnitWidth() const = 0;
     virtual float getViewWidthRatio() const = 0;
-    virtual float getViewHeightRatio() const = 0;
+    virtual int calculateViewHeight() const = 0;
 
     virtual QPoint calculateViewPosition() = 0;
 };
