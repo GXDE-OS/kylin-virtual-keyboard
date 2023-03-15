@@ -2,8 +2,7 @@
 #include <QGuiApplication>
 #include <QScreen>
 
-ExpansionGeometryManager::ExpansionGeometryManager(QObject *parent)
-    : GeometryManager{parent} {}
+ExpansionGeometryManager::ExpansionGeometryManager() : GeometryManager() {}
 
 float ExpansionGeometryManager::getVirtualKeyboardWidthRatio() const {
     return 1.0f;

@@ -5,7 +5,7 @@
 
 class ExpansionGeometryManager : public GeometryManager {
 public:
-    explicit ExpansionGeometryManager(QObject *parent = nullptr);
+    ExpansionGeometryManager();
     ~ExpansionGeometryManager() override = default;
 
 private:

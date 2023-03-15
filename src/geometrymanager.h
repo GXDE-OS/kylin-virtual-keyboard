@@ -20,7 +20,7 @@ signals:
     void virtualKeyboardResized(int width, int height);
 
 protected:
-    explicit GeometryManager(QObject *parent = nullptr);
+    GeometryManager();
 
     int calculateVirtualKeyboardWidth() const;
     int calculateVirtualKeyboardHeight() const;

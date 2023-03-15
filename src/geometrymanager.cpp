@@ -3,7 +3,7 @@
 #include <QGuiApplication>
 #include <QScreen>
 
-GeometryManager::GeometryManager(QObject *parent) : QObject(parent) {}
+GeometryManager::GeometryManager() : QObject() {}
 
 int GeometryManager::calculateVirtualKeyboardWidth() const {
     QSize viewPortSize = getPrimaryScreenGeometry().size();

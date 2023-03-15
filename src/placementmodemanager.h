@@ -10,7 +10,7 @@ class PlacementModeManager : public QObject {
     Q_OBJECT
 
 public:
-    explicit PlacementModeManager(QObject *parent = nullptr);
+    PlacementModeManager();
     ~PlacementModeManager() override;
 
     void updatePlacementMode();

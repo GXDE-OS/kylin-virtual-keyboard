@@ -7,7 +7,7 @@ const QString PlacementModeManager::placementModeGroup = "placementMode";
 // static
 const QString PlacementModeManager::placementModeKey = "placementMode";
 
-PlacementModeManager::PlacementModeManager(QObject *parent) : QObject(parent) {
+PlacementModeManager::PlacementModeManager() : QObject() {
     loadPlacementMode();
 }
 

@@ -15,8 +15,7 @@ const QString FloatGeometryManager::leftMarginRatioKey = "leftMarginRatio";
 // static
 const QString FloatGeometryManager::topMarginRatioKey = "topMarginRatio";
 
-FloatGeometryManager::FloatGeometryManager(QObject *parent)
-    : GeometryManager{parent} {
+FloatGeometryManager::FloatGeometryManager() : GeometryManager() {
     loadMarginRatioMap();
 }
 
