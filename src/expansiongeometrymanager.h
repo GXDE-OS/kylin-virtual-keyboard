@@ -9,9 +9,9 @@ public:
     ~ExpansionGeometryManager() override = default;
 
 private:
-    float getVirtualKeyboardWidthRatio() const override;
-    float getVirtualKeyboardHeightRatio() const override;
-    QPoint calculateVirtualKeyboardPosition() override;
+    float getViewWidthRatio() const override;
+    float getViewHeightRatio() const override;
+    QPoint calculateViewPosition() override;
 };
 
 #endif // EXPANSIONGEOMETRYMANAGER_H

@@ -28,8 +28,8 @@ signals:
     void floatModeEntered();
 
 public slots:
-    void moveVirtualKeyboard(int x, int y);
-    void resizeVirtualKeyboard(int width, int height);
+    void move(int x, int y);
+    void resize(int width, int height);
 
 private:
     void init();

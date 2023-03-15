@@ -4,16 +4,14 @@
 
 ExpansionGeometryManager::ExpansionGeometryManager() : GeometryManager() {}
 
-float ExpansionGeometryManager::getVirtualKeyboardWidthRatio() const {
-    return 1.0f;
-}
+float ExpansionGeometryManager::getViewWidthRatio() const { return 1.0f; }
 
-float ExpansionGeometryManager::getVirtualKeyboardHeightRatio() const {
+float ExpansionGeometryManager::getViewHeightRatio() const {
     return 512.0 / 1620.0;
 }
 
-QPoint ExpansionGeometryManager::calculateVirtualKeyboardPosition() {
+QPoint ExpansionGeometryManager::calculateViewPosition() {
     QSize viewPortSize = getPrimaryScreenGeometry().size();
 
-    return QPoint(0, viewPortSize.height() - calculateVirtualKeyboardHeight());
+    return QPoint(0, viewPortSize.height() - calculateViewHeight());
 }

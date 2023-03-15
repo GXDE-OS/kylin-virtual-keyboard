@@ -15,9 +15,9 @@ public slots:
     void endDrag();
 
 private:
-    QPoint calculateVirtualKeyboardPosition() override;
-    float getVirtualKeyboardWidthRatio() const override;
-    float getVirtualKeyboardHeightRatio() const override;
+    QPoint calculateViewPosition() override;
+    float getViewWidthRatio() const override;
+    float getViewHeightRatio() const override;
 
     int calculateNormalizedX(int positionX) const;
     int calculateNormalizedY(int positionY) const;
@@ -38,7 +38,7 @@ private:
     void saveMarginRatioMap();
     void loadMarginRatioMap();
 
-    void moveVirtualKeyboard(const QPoint &targetPoint);
+    void moveView(const QPoint &targetPoint);
 
 private:
     constexpr static float defaultBottomMarginRatio = 0.05f;

@@ -5,17 +5,17 @@
 
 GeometryManager::GeometryManager() : QObject() {}
 
-int GeometryManager::calculateVirtualKeyboardWidth() const {
+int GeometryManager::calculateViewWidth() const {
     QSize viewPortSize = getPrimaryScreenGeometry().size();
 
-    return viewPortSize.width() * getVirtualKeyboardWidthRatio();
+    return viewPortSize.width() * getViewWidthRatio();
 }
 
-int GeometryManager::calculateVirtualKeyboardHeight() const {
+int GeometryManager::calculateViewHeight() const {
     QSize viewPortSize = getPrimaryScreenGeometry().size();
 
     if (viewPortSize.width() > viewPortSize.height()) {
-        return viewPortSize.width() * getVirtualKeyboardHeightRatio();
+        return viewPortSize.width() * getViewHeightRatio();
     } else {
         // 竖屏情况下，从屏幕左上角开始算起，以当前屏幕宽度为测量基准，
         // 在该范围里面的部分可以正常刷新；在该范围外面部分会出现重影。
@@ -25,15 +25,13 @@ int GeometryManager::calculateVirtualKeyboardHeight() const {
         // TODO(linyuxuan): 找出bug成因，彻底解决该问题
         const int leastHeight =
             viewPortSize.height() - viewPortSize.width() + 1;
-        const int requiredHeight =
-            viewPortSize.height() * getVirtualKeyboardHeightRatio();
+        const int requiredHeight = viewPortSize.height() * getViewHeightRatio();
         return std::max(leastHeight, requiredHeight);
     }
 }
 
-QSize GeometryManager::calculateVirtualKeyboardSize() const {
-    return QSize(calculateVirtualKeyboardWidth(),
-                 calculateVirtualKeyboardHeight());
+QSize GeometryManager::calculateViewSize() const {
+    return QSize(calculateViewWidth(), calculateViewHeight());
 }
 
 // static
@@ -42,9 +40,9 @@ QRect GeometryManager::getPrimaryScreenGeometry() {
 }
 
 void GeometryManager::updateGeometry() {
-    QPoint position = calculateVirtualKeyboardPosition();
-    emit virtualKeyboardMoved(position.x(), position.y());
+    QPoint position = calculateViewPosition();
+    emit viewMoved(position.x(), position.y());
 
-    QSize size = calculateVirtualKeyboardSize();
-    emit virtualKeyboardResized(size.width(), size.height());
+    QSize size = calculateViewSize();
+    emit viewResized(size.width(), size.height());
 }

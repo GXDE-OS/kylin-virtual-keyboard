@@ -247,17 +247,14 @@ void VirtualKeyboardManager::connectVirtualKeyboardManagerSignals() {
 }
 
 void VirtualKeyboardManager::connectGeometryManagerSignals() {
-    connect(expansionGeometryManager_.get(),
-            SIGNAL(virtualKeyboardMoved(int, int)), view_.get(),
-            SLOT(moveVirtualKeyboard(int, int)));
-    connect(expansionGeometryManager_.get(),
-            SIGNAL(virtualKeyboardResized(int, int)), view_.get(),
-            SLOT(resizeVirtualKeyboard(int, int)));
-    connect(floatGeometryManager_.get(), SIGNAL(virtualKeyboardMoved(int, int)),
-            view_.get(), SLOT(moveVirtualKeyboard(int, int)));
-    connect(floatGeometryManager_.get(),
-            SIGNAL(virtualKeyboardResized(int, int)), view_.get(),
-            SLOT(resizeVirtualKeyboard(int, int)));
+    connect(expansionGeometryManager_.get(), SIGNAL(viewMoved(int, int)),
+            view_.get(), SLOT(move(int, int)));
+    connect(expansionGeometryManager_.get(), SIGNAL(viewResized(int, int)),
+            view_.get(), SLOT(resize(int, int)));
+    connect(floatGeometryManager_.get(), SIGNAL(viewMoved(int, int)),
+            view_.get(), SLOT(move(int, int)));
+    connect(floatGeometryManager_.get(), SIGNAL(viewResized(int, int)),
+            view_.get(), SLOT(resize(int, int)));
 }
 
 void VirtualKeyboardManager::connectRootObjectSignals() {

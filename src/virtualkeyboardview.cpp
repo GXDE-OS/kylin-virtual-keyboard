@@ -54,12 +54,12 @@ QObject *VirtualKeyboardView::rootObject() const { return view_->rootObject(); }
 
 QRect VirtualKeyboardView::geometry() const { return view_->geometry(); }
 
-void VirtualKeyboardView::moveVirtualKeyboard(int x, int y) {
+void VirtualKeyboardView::move(int x, int y) {
     view_->setX(x);
     view_->setY(y);
 }
 
-void VirtualKeyboardView::resizeVirtualKeyboard(int width, int height) {
+void VirtualKeyboardView::resize(int width, int height) {
     view_->setWidth(width);
     view_->setHeight(height);
 }

@@ -16,23 +16,23 @@ public slots:
     void updateGeometry();
 
 signals:
-    void virtualKeyboardMoved(int x, int y);
-    void virtualKeyboardResized(int width, int height);
+    void viewMoved(int x, int y);
+    void viewResized(int width, int height);
 
 protected:
     GeometryManager();
 
-    int calculateVirtualKeyboardWidth() const;
-    int calculateVirtualKeyboardHeight() const;
-    QSize calculateVirtualKeyboardSize() const;
+    int calculateViewWidth() const;
+    int calculateViewHeight() const;
+    QSize calculateViewSize() const;
 
     static QRect getPrimaryScreenGeometry();
 
 private:
-    virtual float getVirtualKeyboardWidthRatio() const = 0;
-    virtual float getVirtualKeyboardHeightRatio() const = 0;
+    virtual float getViewWidthRatio() const = 0;
+    virtual float getViewHeightRatio() const = 0;
 
-    virtual QPoint calculateVirtualKeyboardPosition() = 0;
+    virtual QPoint calculateViewPosition() = 0;
 };
 
 #endif // GEOMETRYMANAGER_H
