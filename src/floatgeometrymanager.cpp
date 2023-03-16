@@ -1,10 +1,9 @@
 #include "floatgeometrymanager.h"
 
-#include <QGuiApplication>
 #include <QMap>
-#include <QScreen>
 
 #include "localsettings.h"
+#include "screenmanager.h"
 
 // static
 const QString FloatGeometryManager::floatGeometryGroup = "floatGeometry";
@@ -46,7 +45,7 @@ float FloatGeometryManager::getViewHeightRatio() const {
 }
 
 int FloatGeometryManager::calculateNormalizedX(int positionX) const {
-    const auto geometry = getPrimaryScreenGeometry();
+    const auto geometry = ScreenManager::getPrimaryScreenGeometry();
 
     if (positionX < geometry.left()) {
         return geometry.left();
@@ -61,7 +60,7 @@ int FloatGeometryManager::calculateNormalizedX(int positionX) const {
 }
 
 int FloatGeometryManager::calculateNormalizedY(int positionY) const {
-    const auto geometry = getPrimaryScreenGeometry();
+    const auto geometry = ScreenManager::getPrimaryScreenGeometry();
 
     if (positionY < geometry.top()) {
         return geometry.top();
@@ -105,7 +104,7 @@ QPoint FloatGeometryManager::calculateViewPosition() {
 }
 
 QSize FloatGeometryManager::calculateMarginSize() const {
-    const QSize viewPortSize = getPrimaryScreenGeometry().size();
+    const QSize viewPortSize = ScreenManager::getPrimaryScreenSize();
     const auto viewSize = calculateViewSize();
 
     const int horizontalMargin = viewPortSize.width() - viewSize.width();
@@ -141,7 +140,7 @@ void FloatGeometryManager::saveMarginRatioMap() {
 }
 
 QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
-    const QSize viewPortSize = getPrimaryScreenGeometry().size();
+    const QSize viewPortSize = ScreenManager::getPrimaryScreenSize();
     const auto viewSize = calculateViewSize();
 
     const int leftMargin = (viewPortSize.width() - viewSize.width()) / 2;

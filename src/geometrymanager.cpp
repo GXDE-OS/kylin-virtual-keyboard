@@ -1,18 +1,17 @@
 #include "geometrymanager.h"
 
-#include <QGuiApplication>
-#include <QScreen>
+#include "screenmanager.h"
 
 GeometryManager::GeometryManager() : QObject() {}
 
 int GeometryManager::calculateViewWidth() const {
-    QSize viewPortSize = getPrimaryScreenGeometry().size();
+    QSize viewPortSize = ScreenManager::getPrimaryScreenSize();
 
     return viewPortSize.width() * getViewWidthRatio();
 }
 
 int GeometryManager::calculateViewHeight() const {
-    QSize viewPortSize = getPrimaryScreenGeometry().size();
+    QSize viewPortSize = ScreenManager::getPrimaryScreenSize();
 
     if (viewPortSize.width() > viewPortSize.height()) {
         return viewPortSize.width() * getViewHeightRatio();
@@ -32,11 +31,6 @@ int GeometryManager::calculateViewHeight() const {
 
 QSize GeometryManager::calculateViewSize() const {
     return QSize(calculateViewWidth(), calculateViewHeight());
-}
-
-// static
-QRect GeometryManager::getPrimaryScreenGeometry() {
-    return QGuiApplication::primaryScreen()->geometry();
 }
 
 void GeometryManager::updateGeometry() {

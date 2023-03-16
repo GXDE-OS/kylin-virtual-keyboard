@@ -26,8 +26,6 @@ protected:
     int calculateViewHeight() const;
     QSize calculateViewSize() const;
 
-    static QRect getPrimaryScreenGeometry();
-
 private:
     virtual float getViewWidthRatio() const = 0;
     virtual float getViewHeightRatio() const = 0;

@@ -1,6 +1,6 @@
 #include "expansiongeometrymanager.h"
-#include <QGuiApplication>
-#include <QScreen>
+
+#include "screenmanager.h"
 
 ExpansionGeometryManager::ExpansionGeometryManager() : GeometryManager() {}
 
@@ -11,7 +11,7 @@ float ExpansionGeometryManager::getViewHeightRatio() const {
 }
 
 QPoint ExpansionGeometryManager::calculateViewPosition() {
-    QSize viewPortSize = getPrimaryScreenGeometry().size();
+    QSize viewPortSize = ScreenManager::getPrimaryScreenSize();
 
     return QPoint(0, viewPortSize.height() - calculateViewHeight());
 }

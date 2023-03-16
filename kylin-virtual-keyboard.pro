@@ -17,6 +17,7 @@ SOURCES += \
     src/geometrymanager.cpp \
     src/main.cpp \
     src/requestmerger.cpp \
+    src/screenmanager.cpp \
     src/trayentry.cpp \
     src/placementmodemanager.cpp \
     src/viewlocalsettings.cpp \
@@ -53,6 +54,7 @@ HEADERS += \
     src/localsettings.h \
     src/placementmodemanager.h \
     src/requestmerger.h \
+    src/screenmanager.h \
     src/viewlocalsettings.h \
     src/virtualkeyboardmanager.h \
     src/trayentry.h \
