@@ -35,8 +35,10 @@ Rectangle {
     property int firstRowKeyHeight: keyHeight * 7/9
     property int keyLableAlignment: keyWidth / 3
     property int keyIconAlignment: keyWidth / 3
-    property int imHeight: keyHeight * 2/3
-    property int imWidth: keyWidth * 9/5
+    property int virtualKeyboardAvailableHeight: placementMode === "EXPANSION" ? virtualKeyboard.height
+                                                                 : virtualKeyboard.height - dragBar.height
+    property int imListItemHeight: virtualKeyboardAvailableHeight * 1/10
+    property int imListItemWidth: virtualKeyboardAvailableHeight * 5/13
     property real fontSize: keyHeight * 6/11 * 7/12
     property real shiftFontSize: fontSize / 2
     property real switchKeyFontSize: fontSize * 3/4
@@ -44,7 +46,7 @@ Rectangle {
     property real actionKeyFontSize: fontSize * 3/4
     property real preeditTextFontSize: fontSize * 3/4
     property real candidateFontSize: fontSize * 3/4
-    property real imFontSize: fontSize * 3/4
+    property real imListFontSize: fontSize * 3/4
     property int preeditX: cardinalNumber * 3.5
     property int candidateListWidth: width - 7*cardinalNumber
     property int toolbarSize: cardinalNumber * 3

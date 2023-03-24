@@ -61,6 +61,7 @@ SwitchKey {
         visible: virtualKeyboard.isCurrentIMListVisible
         width: imList.width
         height: imList.height
+        radius: 8
         Menu {
             id: imList
             
@@ -70,12 +71,15 @@ SwitchKey {
                     height = imList.itemAt(0).height * 4
                 }
             }
-            
+            width: virtualKeyboard.imListItemWidth
             modal: true
             Overlay.modal:Rectangle {
                 color: "transparent"
             }
             background: Rectangle{
+                radius: imListRectangle.radius
+                width: parent.width
+                height: parent.height
                 color: "white"
             }
             
@@ -83,13 +87,16 @@ SwitchKey {
                 model: virtualKeyboard.currentIMList
                 delegate: MenuItem {
                     background: Rectangle {
+                        radius: imListRectangle.radius
                         color: highlighted? virtualKeyboard.currentIMColor: "white"
                     }
                     property string uniqueName: modelData.split("|")[0]
                     property string localName: modelData.split("|")[1]
                     property string label: modelData.split("|")[2]
-                    font.pointSize: virtualKeyboard.imFontSize
+                    font.pointSize: virtualKeyboard.imListFontSize
                     text: label.padEnd(3, " ") + localName
+                    width: virtualKeyboard.imListItemWidth
+                    height: virtualKeyboard.imListItemHeight
                     MouseArea{
                         anchors.fill: parent
                         onReleased: {
