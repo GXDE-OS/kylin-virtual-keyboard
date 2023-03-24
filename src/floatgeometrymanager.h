@@ -70,7 +70,8 @@ public:
     virtual float getViewWidthRatio() const = 0;
     virtual float getViewHeightRatio() const = 0;
 
-    virtual float getDefaultBottomMarginRatio() const = 0;
+    virtual int getDefaultRightMargin() const = 0;
+    virtual int getDefaultBottomMargin() const = 0;
 
 protected:
     Strategy() = default;

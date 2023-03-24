@@ -17,7 +17,21 @@ public:
     float getViewWidthRatio() const override { return 1458.0 / 1620.0; }
     float getViewHeightRatio() const override { return 548.0 / 1620.0; }
 
-    float getDefaultBottomMarginRatio() const override { return 0.05f; }
+    int getDefaultRightMargin() const override {
+        const int screenWidth = ScreenManager::getPrimaryScreenSize().width();
+        const int viewWidth = getUnitWidth() * getViewWidthRatio();
+
+        return (screenWidth - viewWidth) / 2;
+    }
+
+    int getDefaultBottomMargin() const override {
+        const int screenHeight = ScreenManager::getPrimaryScreenSize().height();
+
+        return screenHeight * defaultBottomMarginRatio_;
+    }
+
+private:
+    static constexpr float defaultBottomMarginRatio_ = 0.05f;
 };
 
 #endif // VIRTUALKEYBOARDSTRATEGY_H

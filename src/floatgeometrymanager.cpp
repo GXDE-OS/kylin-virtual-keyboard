@@ -153,11 +153,12 @@ QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
     const QSize viewPortSize = ScreenManager::getPrimaryScreenSize();
     const auto viewSize = calculateViewSize();
 
-    const int leftMargin = (viewPortSize.width() - viewSize.width()) / 2;
-    const int defaultBottomMargin =
-        viewPortSize.height() * strategy_->getDefaultBottomMarginRatio();
+    const int leftMargin =
+        viewPortSize.width() -
+        (viewSize.width() + strategy_->getDefaultRightMargin());
     const int topMargin =
-        viewPortSize.height() - (viewSize.height() + defaultBottomMargin);
+        viewPortSize.height() -
+        (viewSize.height() + strategy_->getDefaultBottomMargin());
 
     const float defaultLeftMarginRatio = calculateLeftMarginRatio(leftMargin);
     const float defaultTopMarginRatio = calculateTopMarginRatio(topMargin);
