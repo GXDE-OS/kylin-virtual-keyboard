@@ -5,7 +5,7 @@
 #include <QObject>
 
 #include "requestmerger.h"
-#include "virtualkeyboardmanager.h"
+#include "virtualkeyboard/virtualkeyboardmanager.h"
 
 class DBusService : public QObject {
     Q_OBJECT

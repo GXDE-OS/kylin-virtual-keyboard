@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "localsettings.h"
+#include "localsettings/localsettings.h"
 
 class PlacementModeManager : public QObject {
     Q_OBJECT

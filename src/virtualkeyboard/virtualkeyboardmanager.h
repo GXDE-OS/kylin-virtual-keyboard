@@ -18,10 +18,10 @@
 
 #include "appinputareamanager.h"
 #include "eventhandler.h"
-#include "expansiongeometrymanager.h"
-#include "floatgeometrymanager.h"
+#include "geometrymanager/expansiongeometrymanager.h"
+#include "geometrymanager/floatgeometrymanager.h"
+#include "localsettings/viewlocalsettings.h"
 #include "placementmodemanager.h"
-#include "viewlocalsettings.h"
 #include "virtualkeyboardview.h"
 
 class VirtualKeyboardManager : public QObject {

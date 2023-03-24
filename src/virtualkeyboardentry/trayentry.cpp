@@ -1,7 +1,9 @@
 #include "trayentry.h"
-#include "virtualkeyboardmanager.h"
-#include <QIcon>
+
 #include <QDBusMessage>
+#include <QIcon>
+
+#include "virtualkeyboard/virtualkeyboardmanager.h"
 
 TrayEntry::TrayEntry(VirtualKeyboardManager *virtualKeyboardManager)
 :  virtualKeyboardManager_(virtualKeyboardManager) {

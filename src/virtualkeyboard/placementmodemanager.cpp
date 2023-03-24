@@ -1,6 +1,6 @@
 #include "placementmodemanager.h"
 
-#include "localsettings.h"
+#include "localsettings/localsettings.h"
 
 // static
 const QString PlacementModeManager::placementModeGroup = "placementMode";

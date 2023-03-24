@@ -2,7 +2,7 @@
 
 #include <QMap>
 
-#include "localsettings.h"
+#include "localsettings/localsettings.h"
 #include "screenmanager.h"
 
 // static

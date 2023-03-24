@@ -1,9 +1,11 @@
 #ifndef TRAYENTRY_H
 #define TRAYENTRY_H
+
+#include <QDBusInterface>
 #include <QObject>
 #include <QSystemTrayIcon>
-#include <QDBusInterface>
-#include "virtualkeyboardmanager.h"
+
+#include "virtualkeyboard/virtualkeyboardmanager.h"
 
 class TrayEntry : public QObject {
     Q_OBJECT

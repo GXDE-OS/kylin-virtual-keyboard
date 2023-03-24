@@ -1,7 +1,7 @@
 #ifndef VIRTUALKEYBOARDSTRATEGY_H
 #define VIRTUALKEYBOARDSTRATEGY_H
 
-#include "floatgeometrymanager.h"
+#include "geometrymanager/floatgeometrymanager.h"
 
 #include "screenmanager.h"
 

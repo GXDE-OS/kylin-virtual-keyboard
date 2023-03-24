@@ -2,9 +2,9 @@
 #include <QLocale>
 #include <QTranslator>
 
-#include "dbusservice.h"
-#include "trayentry.h"
-#include "virtualkeyboardmanager.h"
+#include "ipc/dbusservice.h"
+#include "virtualkeyboard/virtualkeyboardmanager.h"
+#include "virtualkeyboardentry/trayentry.h"
 
 int main(int argc, char *argv[]) {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

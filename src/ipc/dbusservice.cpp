@@ -1,5 +1,5 @@
 #include "dbusservice.h"
-#include "virtualkeyboardmanager.h"
+#include "virtualkeyboard/virtualkeyboardmanager.h"
 
 DBusService::DBusService(VirtualKeyboardManager *virtualKeyboardManager)
     : virtualKeyboardManager_(virtualKeyboardManager),

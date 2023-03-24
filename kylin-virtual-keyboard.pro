@@ -10,19 +10,19 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 SOURCES += \
     src/appinputareamanager.cpp \
-    src/dbusservice.cpp \
-    src/eventhandler.cpp \
-    src/expansiongeometrymanager.cpp \
-    src/floatgeometrymanager.cpp \
-    src/geometrymanager.cpp \
+    src/geometrymanager/expansiongeometrymanager.cpp \
+    src/geometrymanager/floatgeometrymanager.cpp \
+    src/geometrymanager/geometrymanager.cpp \
+    src/ipc/dbusservice.cpp \
+    src/ipc/requestmerger.cpp \
+    src/localsettings/viewlocalsettings.cpp \
     src/main.cpp \
-    src/requestmerger.cpp \
     src/screenmanager.cpp \
-    src/trayentry.cpp \
-    src/placementmodemanager.cpp \
-    src/viewlocalsettings.cpp \
-    src/virtualkeyboardmanager.cpp \
-    src/virtualkeyboardview.cpp
+    src/virtualkeyboard/eventhandler.cpp \
+    src/virtualkeyboard/placementmodemanager.cpp \
+    src/virtualkeyboard/virtualkeyboardmanager.cpp \
+    src/virtualkeyboard/virtualkeyboardview.cpp \
+    src/virtualkeyboardentry/trayentry.cpp
 
 TRANSLATIONS = translations/translation.ts \
     translations/translation_bo_CN.ts \
@@ -44,22 +44,24 @@ qnx: target.path = /usr/bin
 else: unix:!android: target.path = /usr/bin
 !isEmpty(target.path): INSTALLS += target
 
+INCLUDEPATH  += src/
+
 HEADERS += \
     src/appinputareamanager.h \
-    src/dbusservice.h \
-    src/eventhandler.h \
-    src/expansiongeometrymanager.h \
-    src/floatgeometrymanager.h \
-    src/geometrymanager.h \
-    src/localsettings.h \
-    src/placementmodemanager.h \
-    src/requestmerger.h \
+    src/geometrymanager/expansiongeometrymanager.h \
+    src/geometrymanager/floatgeometrymanager.h \
+    src/geometrymanager/geometrymanager.h \
+    src/ipc/dbusservice.h \
+    src/ipc/requestmerger.h \
+    src/localsettings/localsettings.h \
+    src/localsettings/viewlocalsettings.h \
     src/screenmanager.h \
-    src/viewlocalsettings.h \
-    src/virtualkeyboardmanager.h \
-    src/trayentry.h \
-    src/virtualkeyboardstrategy.h \
-    src/virtualkeyboardview.h
+    src/virtualkeyboard/eventhandler.h \
+    src/virtualkeyboard/placementmodemanager.h \
+    src/virtualkeyboard/virtualkeyboardmanager.h \
+    src/virtualkeyboard/virtualkeyboardstrategy.h \
+    src/virtualkeyboard/virtualkeyboardview.h \
+    src/virtualkeyboardentry/trayentry.h
 
 DISTFILES +=
 

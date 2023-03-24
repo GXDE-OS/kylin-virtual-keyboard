@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "geometrymanager.h"
-#include "localsettings.h"
+#include "localsettings/localsettings.h"
 
 class FloatGeometryManager : public GeometryManager {
     Q_OBJECT
