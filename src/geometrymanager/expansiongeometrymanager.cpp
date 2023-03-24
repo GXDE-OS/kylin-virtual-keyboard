@@ -4,11 +4,9 @@
 
 ExpansionGeometryManager::ExpansionGeometryManager() : GeometryManager() {}
 
-int ExpansionGeometryManager::getUnitWidth() const {
+int ExpansionGeometryManager::calculateViewWidth() const {
     return ScreenManager::getPrimaryScreenSize().width();
 }
-
-float ExpansionGeometryManager::getViewWidthRatio() const { return 1.0f; }
 
 int ExpansionGeometryManager::calculateViewHeight() const {
     QSize viewPortSize = ScreenManager::getPrimaryScreenSize();

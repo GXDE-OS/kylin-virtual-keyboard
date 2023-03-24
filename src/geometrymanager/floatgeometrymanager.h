@@ -23,8 +23,7 @@ public slots:
 
 private:
     QPoint calculateViewPosition() override;
-    int getUnitWidth() const override;
-    float getViewWidthRatio() const override;
+    int calculateViewWidth() const override;
     int calculateViewHeight() const override;
 
     int calculateNormalizedX(int positionX) const;
@@ -66,15 +65,21 @@ class FloatGeometryManager::Strategy {
 public:
     virtual ~Strategy() = default;
 
-    virtual int getUnitWidth() const = 0;
-    virtual float getViewWidthRatio() const = 0;
-    virtual float getViewHeightRatio() const = 0;
+    int getViewWidth() const { return getUnitWidth() * getViewWidthRatio(); }
+    int getViewHeight() const { return getUnitHeight() * getViewHeightRatio(); }
 
     virtual int getDefaultRightMargin() const = 0;
     virtual int getDefaultBottomMargin() const = 0;
 
 protected:
     Strategy() = default;
+
+private:
+    virtual int getUnitWidth() const = 0;
+    virtual float getViewWidthRatio() const = 0;
+
+    virtual int getUnitHeight() const = 0;
+    virtual float getViewHeightRatio() const = 0;
 };
 
 #endif // FLOATGEOMETRYMANAGER_H

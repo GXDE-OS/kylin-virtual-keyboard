@@ -9,8 +9,7 @@ public:
     ~ExpansionGeometryManager() override = default;
 
 private:
-    int getUnitWidth() const override;
-    float getViewWidthRatio() const override;
+    int calculateViewWidth() const override;
     int calculateViewHeight() const override;
     QPoint calculateViewPosition() override;
 

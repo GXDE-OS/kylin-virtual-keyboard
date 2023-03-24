@@ -4,10 +4,6 @@
 
 GeometryManager::GeometryManager() : QObject() {}
 
-int GeometryManager::calculateViewWidth() const {
-    return getUnitWidth() * getViewWidthRatio();
-}
-
 QSize GeometryManager::calculateViewSize() const {
     return QSize(calculateViewWidth(), calculateViewHeight());
 }

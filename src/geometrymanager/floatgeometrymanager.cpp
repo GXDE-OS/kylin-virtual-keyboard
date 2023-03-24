@@ -38,20 +38,12 @@ void FloatGeometryManager::endDrag() {
     }
 }
 
-int FloatGeometryManager::getUnitWidth() const {
-    return strategy_->getUnitWidth();
-}
-
-float FloatGeometryManager::getViewWidthRatio() const {
-    return strategy_->getViewWidthRatio();
+int FloatGeometryManager::calculateViewWidth() const {
+    return strategy_->getViewWidth();
 }
 
 int FloatGeometryManager::calculateViewHeight() const {
-    const auto viewPortSize = ScreenManager::getPrimaryScreenSize();
-    const auto unitHeight =
-        std::max(viewPortSize.width(), viewPortSize.height());
-
-    return unitHeight * strategy_->getViewHeightRatio();
+    return strategy_->getViewHeight();
 }
 
 int FloatGeometryManager::calculateNormalizedX(int positionX) const {

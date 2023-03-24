@@ -22,12 +22,10 @@ signals:
 protected:
     GeometryManager();
 
-    int calculateViewWidth() const;
     QSize calculateViewSize() const;
 
 private:
-    virtual int getUnitWidth() const = 0;
-    virtual float getViewWidthRatio() const = 0;
+    virtual int calculateViewWidth() const = 0;
     virtual int calculateViewHeight() const = 0;
 
     virtual QPoint calculateViewPosition() = 0;

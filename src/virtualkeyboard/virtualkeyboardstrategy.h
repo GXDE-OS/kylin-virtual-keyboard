@@ -10,18 +10,10 @@ public:
     VirtualKeyboardStrategy() = default;
     ~VirtualKeyboardStrategy() override = default;
 
-    int getUnitWidth() const override {
-        return ScreenManager::getPrimaryScreenSize().width();
-    }
-
-    float getViewWidthRatio() const override { return 1458.0 / 1620.0; }
-    float getViewHeightRatio() const override { return 548.0 / 1620.0; }
-
     int getDefaultRightMargin() const override {
         const int screenWidth = ScreenManager::getPrimaryScreenSize().width();
-        const int viewWidth = getUnitWidth() * getViewWidthRatio();
 
-        return (screenWidth - viewWidth) / 2;
+        return (screenWidth - getViewWidth()) / 2;
     }
 
     int getDefaultBottomMargin() const override {
@@ -29,6 +21,21 @@ public:
 
         return screenHeight * defaultBottomMarginRatio_;
     }
+
+private:
+    int getUnitWidth() const override {
+        return ScreenManager::getPrimaryScreenSize().width();
+    }
+
+    float getViewWidthRatio() const override { return 1458.0 / 1620.0; }
+
+    int getUnitHeight() const override {
+        const auto viewPortSize = ScreenManager::getPrimaryScreenSize();
+
+        return std::max(viewPortSize.width(), viewPortSize.height());
+    }
+
+    float getViewHeightRatio() const override { return 548.0 / 1620.0; }
 
 private:
     static constexpr float defaultBottomMarginRatio_ = 0.05f;
