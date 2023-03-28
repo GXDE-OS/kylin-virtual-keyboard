@@ -1,36 +1,31 @@
 #ifndef TRAYENTRY_H
 #define TRAYENTRY_H
 
-#include <QDBusInterface>
 #include <QObject>
 #include <QSystemTrayIcon>
 
 #include "virtualkeyboard/virtualkeyboardmanager.h"
+#include "virtualkeyboardentry/fcitxvirtualkeyboardservice.h"
 
 class TrayEntry : public QObject {
     Q_OBJECT
 
 public:
-    explicit TrayEntry(VirtualKeyboardManager *virtualKeyboardManager = nullptr);
+    explicit TrayEntry(
+        const FcitxVirtualKeyboardService &virtualKeyboardService,
+        VirtualKeyboardManager *virtualKeyboardManager = nullptr);
     ~TrayEntry() = default;
 
 private:
     void RegisterTrayEntry();
-    void ConnectFcitxVirtualKeyboardBackend();
-    void CallDbusMethodShowVirtualKeyboard();
-    void CallDbusMethodHideVirtualKeyboard();
 
 private slots:
     void ActiveTray(QSystemTrayIcon::ActivationReason reason);
 
 private:
-    QSystemTrayIcon* mSystemTray = nullptr;
+    QSystemTrayIcon *mSystemTray = nullptr;
     VirtualKeyboardManager *virtualKeyboardManager_ = nullptr;
-    QDBusInterface *virtualKeyboardBackendInterface_ = nullptr;
-    QString dbusName_ = "org.fcitx.virtualkeyboard.service";
-    QString dbusPath_ = "/virtualkeyboard";
-    QString dbusInterface_ = "org.fcitx.virtualkeyboard.service";
+    const FcitxVirtualKeyboardService &virtualKeyboardService_;
 };
 
 #endif // TRAYENTRY_H
-

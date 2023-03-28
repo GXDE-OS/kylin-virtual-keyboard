@@ -14,6 +14,7 @@ SOURCES += \
     src/geometrymanager/floatgeometrymanager.cpp \
     src/geometrymanager/geometrymanager.cpp \
     src/ipc/dbusservice.cpp \
+    src/ipc/fcitxvirtualkeyboardserviceproxy.cpp \
     src/ipc/requestmerger.cpp \
     src/localsettings/viewlocalsettings.cpp \
     src/main.cpp \
@@ -52,6 +53,7 @@ HEADERS += \
     src/geometrymanager/floatgeometrymanager.h \
     src/geometrymanager/geometrymanager.h \
     src/ipc/dbusservice.h \
+    src/ipc/fcitxvirtualkeyboardserviceproxy.h \
     src/ipc/requestmerger.h \
     src/localsettings/localsettings.h \
     src/localsettings/viewlocalsettings.h \
@@ -61,6 +63,7 @@ HEADERS += \
     src/virtualkeyboard/virtualkeyboardmanager.h \
     src/virtualkeyboard/virtualkeyboardstrategy.h \
     src/virtualkeyboard/virtualkeyboardview.h \
+    src/virtualkeyboardentry/fcitxvirtualkeyboardservice.h \
     src/virtualkeyboardentry/trayentry.h
 
 DISTFILES +=

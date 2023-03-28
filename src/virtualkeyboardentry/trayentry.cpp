@@ -1,13 +1,13 @@
 #include "trayentry.h"
 
-#include <QDBusMessage>
 #include <QIcon>
 
 #include "virtualkeyboard/virtualkeyboardmanager.h"
 
-TrayEntry::TrayEntry(VirtualKeyboardManager *virtualKeyboardManager)
-:  virtualKeyboardManager_(virtualKeyboardManager) {
-    ConnectFcitxVirtualKeyboardBackend();
+TrayEntry::TrayEntry(const FcitxVirtualKeyboardService &virtualKeyboardService,
+                     VirtualKeyboardManager *virtualKeyboardManager)
+    : virtualKeyboardManager_(virtualKeyboardManager),
+      virtualKeyboardService_(virtualKeyboardService) {
     RegisterTrayEntry();
 }
 
@@ -20,38 +20,15 @@ void TrayEntry::RegisterTrayEntry() {
     mSystemTray->setVisible(true);
 }
 
-void TrayEntry::ConnectFcitxVirtualKeyboardBackend() {
-    virtualKeyboardBackendInterface_ = new
-            QDBusInterface(dbusName_,dbusPath_,dbusInterface_,QDBusConnection::sessionBus());
-    if (!virtualKeyboardBackendInterface_->isValid()) {
-        return;
-    }
-}
-
-void TrayEntry::CallDbusMethodShowVirtualKeyboard() {
-    QDBusMessage replyMsg =
-            virtualKeyboardBackendInterface_->call("ShowVirtualKeyboard");
-    if (replyMsg.type() == QDBusMessage::MessageType::ErrorMessage) {
-        return;
-    }
-}
-
-void TrayEntry::CallDbusMethodHideVirtualKeyboard() {
-    QDBusMessage replyMsg =
-            virtualKeyboardBackendInterface_->call("HideVirtualKeyboard");
-    if (replyMsg.type() == QDBusMessage::MessageType::ErrorMessage) {
-        return;
-    }
-}
-
 void TrayEntry::ActiveTray(QSystemTrayIcon::ActivationReason reason) {
-    switch(reason) {
-        case QSystemTrayIcon::Trigger: {
-        virtualKeyboardManager_->IsVirtualKeyboardVisible() ?
-                    CallDbusMethodHideVirtualKeyboard() : CallDbusMethodShowVirtualKeyboard();
+    switch (reason) {
+    case QSystemTrayIcon::Trigger: {
+        virtualKeyboardManager_->IsVirtualKeyboardVisible()
+            ? virtualKeyboardService_.hideVirtualKeyboard()
+            : virtualKeyboardService_.showVirtualKeyboard();
         break;
     };
-        default:
-            break;
+    default:
+        break;
     }
 }

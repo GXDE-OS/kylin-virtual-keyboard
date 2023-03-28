@@ -3,6 +3,7 @@
 #include <QTranslator>
 
 #include "ipc/dbusservice.h"
+#include "ipc/fcitxvirtualkeyboardserviceproxy.h"
 #include "virtualkeyboard/virtualkeyboardmanager.h"
 #include "virtualkeyboardentry/trayentry.h"
 
@@ -17,7 +18,8 @@ int main(int argc, char *argv[]) {
     }
 
     VirtualKeyboardManager virtualKeyboardManager;
-    TrayEntry trayEntry(&virtualKeyboardManager);
+    FcitxVirtualKeyboardServiceProxy virtualKeyboardService;
+    TrayEntry trayEntry(virtualKeyboardService, &virtualKeyboardManager);
 
     DBusService dbusService(&virtualKeyboardManager);
 
