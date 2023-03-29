@@ -45,6 +45,7 @@ void VirtualKeyboardManager::HideVirtualKeyboard() {
 }
 
 void VirtualKeyboardManager::VisibiltyChanged() {
+    emit virtualKeyboardVisibiltyChanged(virtualkeyboardVisible_);
     virtualKeyboardBackendInterface_->asyncCall("ProcessVisibilityEvent",
                                                 virtualkeyboardVisible_);
 }

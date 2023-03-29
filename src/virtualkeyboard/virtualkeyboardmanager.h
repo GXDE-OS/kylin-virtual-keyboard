@@ -68,6 +68,7 @@ signals:
     void reset();
     // TODO(linyuxuan): 使用更准确的类型替换QVariant
     void updateCurrentIMList(const QVariant &currentIMList);
+    void virtualKeyboardVisibiltyChanged(bool isShow);
 
 private:
     void initView();
