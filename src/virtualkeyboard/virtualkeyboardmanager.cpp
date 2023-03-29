@@ -20,7 +20,6 @@ VirtualKeyboardManager::~VirtualKeyboardManager() {
     HideVirtualKeyboard();
     serviceWatcher_.reset();
     virtualKeyboardBackendInterface_.reset();
-    eventHandler_.reset();
     placementModeManager_.reset();
     floatGeometryManager_.reset();
     expansionGeometryManager_.reset();
@@ -217,10 +216,6 @@ void VirtualKeyboardManager::initFcitx5ControllerInterface() {
         fcitx5ServiceControllerInterface, QDBusConnection::sessionBus(), this));
 }
 
-void VirtualKeyboardManager::initEventHandler() {
-    eventHandler_.reset(new EventHandler(this, this));
-}
-
 void VirtualKeyboardManager::initAppInputAreaManager() {
     appInputAreaManager_.reset(new AppInputAreaManager(this));
 }
@@ -262,6 +257,22 @@ void VirtualKeyboardManager::connectGeometryManagerSignals() {
             view_.get(), SLOT(resize(int, int)));
 }
 
+void VirtualKeyboardManager::selectCandidate(int index) {
+    virtualKeyboardBackendInterface_->asyncCall("SelectCandidate", index);
+}
+
+void VirtualKeyboardManager::setCurrentInputMethod(const QString &imName) {
+    fcitx5ControllerInterface_->asyncCall("SetCurrentIM", imName);
+}
+
+void VirtualKeyboardManager::processKeyEvent(const QString & /*keyval*/,
+                                             int keycode, int state,
+                                             bool isRelease, int time) {
+    virtualKeyboardBackendInterface_->asyncCall(
+        "ProcessKeyEvent", (uint)keycode, (uint)keycode, (uint)state, isRelease,
+        (uint)time);
+}
+
 void VirtualKeyboardManager::connectRootObjectSignals() {
     const auto *rootObject = view_->rootObject();
 
@@ -278,7 +289,12 @@ void VirtualKeyboardManager::connectRootObjectSignals() {
     connect(rootObject, SIGNAL(qmlDragEnded()), floatGeometryManager_.get(),
             SLOT(endDrag()));
 
-    eventHandler_->connectSignals(rootObject);
+    connect(rootObject, SIGNAL(qmlKeyEvent(QString, int, int, bool, int)), this,
+            SLOT(processKeyEvent(QString, int, int, bool, int)));
+    connect(rootObject, SIGNAL(qmlCandidateClicked(int)), this,
+            SLOT(selectCandidate(int)));
+    connect(rootObject, SIGNAL(qmlSetCurrentIM(QString)), this,
+            SLOT(setCurrentInputMethod(const QString &)));
 }
 
 void VirtualKeyboardManager::connectPlacementModeManagerSignals() {
@@ -306,7 +322,6 @@ void VirtualKeyboardManager::backendServiceRegistered(
     }
     initVirtualKeyboardBackendInterface();
     initFcitx5ControllerInterface();
-    initEventHandler();
 }
 
 void VirtualKeyboardManager::backendServiceUnregistered(
@@ -316,7 +331,6 @@ void VirtualKeyboardManager::backendServiceUnregistered(
     }
     HideVirtualKeyboard();
     virtualKeyboardBackendInterface_.reset();
-    eventHandler_.reset();
 }
 
 void VirtualKeyboardManager::raiseInputArea() {

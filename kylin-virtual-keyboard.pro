@@ -19,7 +19,6 @@ SOURCES += \
     src/localsettings/viewlocalsettings.cpp \
     src/main.cpp \
     src/screenmanager.cpp \
-    src/virtualkeyboard/eventhandler.cpp \
     src/virtualkeyboard/placementmodemanager.cpp \
     src/virtualkeyboard/virtualkeyboardmanager.cpp \
     src/virtualkeyboard/virtualkeyboardview.cpp \
@@ -58,7 +57,6 @@ HEADERS += \
     src/localsettings/localsettings.h \
     src/localsettings/viewlocalsettings.h \
     src/screenmanager.h \
-    src/virtualkeyboard/eventhandler.h \
     src/virtualkeyboard/placementmodemanager.h \
     src/virtualkeyboard/virtualkeyboardmanager.h \
     src/virtualkeyboard/virtualkeyboardstrategy.h \

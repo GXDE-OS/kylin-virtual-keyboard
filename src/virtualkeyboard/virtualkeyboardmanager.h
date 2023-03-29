@@ -17,7 +17,6 @@
 #include <QVariant>
 
 #include "appinputareamanager.h"
-#include "eventhandler.h"
 #include "geometrymanager/expansiongeometrymanager.h"
 #include "geometrymanager/floatgeometrymanager.h"
 #include "localsettings/viewlocalsettings.h"
@@ -30,12 +29,7 @@ class VirtualKeyboardManager : public QObject {
 public:
     explicit VirtualKeyboardManager(QObject *parent = nullptr);
     ~VirtualKeyboardManager();
-    QDBusInterface *getVirtualKeyboardBackendInterface() {
-        return virtualKeyboardBackendInterface_.get();
-    }
-    QDBusInterface *getFcitx5ControllerInterface() {
-        return fcitx5ControllerInterface_.get();
-    }
+
     void ShowVirtualKeyboard();
     void HideVirtualKeyboard();
     void VisibiltyChanged();
@@ -60,6 +54,11 @@ private slots:
     void raiseInputArea();
     void fallInputArea();
 
+    void selectCandidate(int index);
+    void setCurrentInputMethod(const QString &imName);
+    void processKeyEvent(const QString &keyval, int keycode, int state,
+                         bool isRelease, int time);
+
 signals:
     void updatePreeditCaret(int index);
     void updatePreeditArea(const QString &preeditText);
@@ -78,7 +77,6 @@ private:
     void initDBusServiceWatcher();
     void initVirtualKeyboardBackendInterface();
     void initFcitx5ControllerInterface();
-    void initEventHandler();
     void initAppInputAreaManager();
     void initPlacementModeManager();
     void initGeometryManager();
@@ -93,7 +91,6 @@ private:
 
     std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;
     std::unique_ptr<VirtualKeyboardView> view_ = nullptr;
-    std::unique_ptr<EventHandler> eventHandler_ = nullptr;
     std::unique_ptr<PlacementModeManager> placementModeManager_ = nullptr;
     std::unique_ptr<FloatGeometryManager> floatGeometryManager_ = nullptr;
     std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager_ =
