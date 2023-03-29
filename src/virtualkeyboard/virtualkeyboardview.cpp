@@ -2,23 +2,17 @@
 
 #include <QQuickItem>
 
-#include <Fcitx5Qt5/Fcitx5Qt5DBusAddons/fcitxqtcontrollerproxy.h>
-
-// static
-const QString VirtualKeyboardView::fcitx5Service = "org.fcitx.Fcitx5";
-// static
-const QString VirtualKeyboardView::fcitx5ServiceControllerPath = "/controller";
-// static
-const QString VirtualKeyboardView::fcitx5ServiceControllerInterface =
-    "org.fcitx.Fcitx.Controller1";
-
-VirtualKeyboardView::VirtualKeyboardView(QObject *parent)
-    : QObject(parent), view_(new QQuickView()) {
+VirtualKeyboardView::VirtualKeyboardView(
+    SyncInputMethodNameCallback syncInputMethodNameCallback)
+    : view_(new QQuickView()),
+      syncInputMethodNameCallback_(std::move(syncInputMethodNameCallback)) {
     init();
 
     connectSignals();
 
-    showView();
+    syncInputMethodName();
+
+    view_->show();
 }
 
 VirtualKeyboardView::~VirtualKeyboardView() {
@@ -33,21 +27,12 @@ VirtualKeyboardView::~VirtualKeyboardView() {
     view_.release()->deleteLater();
 }
 
-void VirtualKeyboardView::showView() {
-    fcitx::FcitxQtControllerProxy fcitxQtControllerProxy(
-        fcitx5Service, fcitx5ServiceControllerPath,
-        QDBusConnection::sessionBus(), this);
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(
-        fcitxQtControllerProxy.CurrentInputMethod(), this);
-    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, this,
-                     [this](QDBusPendingCallWatcher *watcher) {
-                         QDBusPendingReply<QString> reply = *watcher;
-                         if (!reply.isError()) {
-                             const QString &imName = reply.value();
-                             emit changeIM(imName);
-                         }
-                         view_->show();
-                     });
+void VirtualKeyboardView::syncInputMethodName() {
+    if (!syncInputMethodNameCallback_) {
+        return;
+    }
+
+    syncInputMethodNameCallback_();
 }
 
 QObject *VirtualKeyboardView::rootObject() const { return view_->rootObject(); }

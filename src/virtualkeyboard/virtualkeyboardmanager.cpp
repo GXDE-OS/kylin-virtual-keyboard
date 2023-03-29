@@ -77,21 +77,20 @@ void VirtualKeyboardManager::NotifyIMDeactivated(
     emit reset();
 }
 
-void VirtualKeyboardManager::NotifyIMListChanged() {
+void VirtualKeyboardManager::NotifyIMListChanged() { syncInputMethodName(); }
+
+void VirtualKeyboardManager::syncInputMethodName() {
     QDBusPendingReply<QString> reply = fcitx5Controller_->CurrentInputMethod();
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
-    QObject::connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher *)), this,
-                     SLOT(imListChanged(QDBusPendingCallWatcher *)));
-}
-
-void VirtualKeyboardManager::imListChanged(
-    QDBusPendingCallWatcher *imChangedCall) {
-    QDBusPendingReply<QString> reply = *imChangedCall;
-    if (!reply.isError()) {
-        const QString &imName = reply.value();
-        emit changeIM(imName);
-    }
-    imChangedCall->deleteLater();
+    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, this,
+                     [this](QDBusPendingCallWatcher *watcher) {
+                         QDBusPendingReply<QString> reply = *watcher;
+                         if (!reply.isError()) {
+                             const QString &imName = reply.value();
+                             emit changeIM(imName);
+                         }
+                         watcher->deleteLater();
+                     });
 }
 
 void VirtualKeyboardManager::hideVirtualKeyboard() { HideVirtualKeyboard(); }
@@ -170,7 +169,7 @@ void VirtualKeyboardManager::processResolutionChangedEvent() {
 }
 
 void VirtualKeyboardManager::initView() {
-    view_.reset(new VirtualKeyboardView(this));
+    view_.reset(new VirtualKeyboardView([this]() { syncInputMethodName(); }));
 
     connectSignals();
 

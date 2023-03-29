@@ -1,15 +1,21 @@
 #ifndef VIRTUALKEYBOARDVIEW_H
 #define VIRTUALKEYBOARDVIEW_H
 
+#include <functional>
+#include <memory>
+
 #include <QObject>
 #include <QQuickView>
 
-#include <memory>
-
 class VirtualKeyboardView : public QObject {
     Q_OBJECT
+
 public:
-    explicit VirtualKeyboardView(QObject *parent = nullptr);
+    using SyncInputMethodNameCallback = std::function<void()>;
+
+public:
+    explicit VirtualKeyboardView(
+        SyncInputMethodNameCallback syncInputMethodNameCallback);
     ~VirtualKeyboardView() override;
 
     QObject *rootObject() const;
@@ -34,14 +40,12 @@ public slots:
 private:
     void init();
     void connectSignals();
-    void showView();
+    void syncInputMethodName();
 
 private:
     std::unique_ptr<QQuickView> view_ = nullptr;
 
-    static const QString fcitx5Service;
-    static const QString fcitx5ServiceControllerPath;
-    static const QString fcitx5ServiceControllerInterface;
+    SyncInputMethodNameCallback syncInputMethodNameCallback_;
 };
 
 #endif // VIRTUALKEYBOARDVIEW_H

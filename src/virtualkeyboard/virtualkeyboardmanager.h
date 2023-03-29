@@ -49,7 +49,6 @@ public slots:
 private slots:
     void backendServiceRegistered(const QString &serviceName);
     void backendServiceUnregistered(const QString &serviceName);
-    void imListChanged(QDBusPendingCallWatcher *imChangedCall);
     void processResolutionChangedEvent();
     void raiseInputArea();
     void fallInputArea();
@@ -88,6 +87,8 @@ private:
     void connectRootObjectSignals();
     void connectPlacementModeManagerSignals();
     void connectSignals();
+
+    void syncInputMethodName();
 
     std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;
     std::unique_ptr<VirtualKeyboardView> view_ = nullptr;
