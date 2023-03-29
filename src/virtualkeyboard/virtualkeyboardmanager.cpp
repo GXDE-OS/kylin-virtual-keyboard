@@ -78,11 +78,7 @@ void VirtualKeyboardManager::NotifyIMDeactivated(
 }
 
 void VirtualKeyboardManager::NotifyIMListChanged() {
-    fcitx::FcitxQtControllerProxy fcitxQtControllerProxy(
-        fcitx5Service, fcitx5ServiceControllerPath,
-        QDBusConnection::sessionBus(), this);
-    QDBusPendingReply<QString> reply =
-        fcitxQtControllerProxy.CurrentInputMethod();
+    QDBusPendingReply<QString> reply = fcitx5Controller_->CurrentInputMethod();
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
     QObject::connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher *)), this,
                      SLOT(imListChanged(QDBusPendingCallWatcher *)));
@@ -210,10 +206,9 @@ void VirtualKeyboardManager::initVirtualKeyboardBackendInterface() {
         this));
 }
 
-void VirtualKeyboardManager::initFcitx5ControllerInterface() {
-    fcitx5ControllerInterface_.reset(new QDBusInterface(
-        fcitx5Service, fcitx5ServiceControllerPath,
-        fcitx5ServiceControllerInterface, QDBusConnection::sessionBus(), this));
+void VirtualKeyboardManager::initFcitx5Controller() {
+    fcitx5Controller_.reset(new fcitx::FcitxQtControllerProxy(
+        "org.fcitx.Fcitx5", "/controller", QDBusConnection::sessionBus()));
 }
 
 void VirtualKeyboardManager::initAppInputAreaManager() {
@@ -262,7 +257,7 @@ void VirtualKeyboardManager::selectCandidate(int index) {
 }
 
 void VirtualKeyboardManager::setCurrentInputMethod(const QString &imName) {
-    fcitx5ControllerInterface_->asyncCall("SetCurrentIM", imName);
+    fcitx5Controller_->SetCurrentIM(imName);
 }
 
 void VirtualKeyboardManager::processKeyEvent(const QString & /*keyval*/,
@@ -321,7 +316,7 @@ void VirtualKeyboardManager::backendServiceRegistered(
         return;
     }
     initVirtualKeyboardBackendInterface();
-    initFcitx5ControllerInterface();
+    initFcitx5Controller();
 }
 
 void VirtualKeyboardManager::backendServiceUnregistered(

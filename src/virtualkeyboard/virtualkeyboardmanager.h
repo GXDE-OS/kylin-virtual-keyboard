@@ -76,7 +76,7 @@ private:
 
     void initDBusServiceWatcher();
     void initVirtualKeyboardBackendInterface();
-    void initFcitx5ControllerInterface();
+    void initFcitx5Controller();
     void initAppInputAreaManager();
     void initPlacementModeManager();
     void initGeometryManager();
@@ -97,7 +97,7 @@ private:
         nullptr;
     std::unique_ptr<QDBusServiceWatcher> serviceWatcher_ = nullptr;
     std::unique_ptr<QDBusInterface> virtualKeyboardBackendInterface_ = nullptr;
-    std::unique_ptr<QDBusInterface> fcitx5ControllerInterface_ = nullptr;
+    std::unique_ptr<fcitx::FcitxQtControllerProxy> fcitx5Controller_ = nullptr;
     bool virtualkeyboardVisible_ = false;
 
     ViewLocalSettings viewSettings_{"kylinsoft", "kylin virtual keyboard"};
@@ -107,9 +107,6 @@ private:
     QString virtualKeyboardBackendServicePath = "/virtualkeyboard";
     QString virtualKeyboardBackendServiceInterface =
         "org.fcitx.Fcitx5.VirtualKeyboardBackend1";
-    QString fcitx5Service = "org.fcitx.Fcitx5";
-    QString fcitx5ServiceControllerPath = "/controller";
-    QString fcitx5ServiceControllerInterface = "org.fcitx.Fcitx.Controller1";
 };
 
 #endif // VIRTUALKEYBOARDMANAGER_H
