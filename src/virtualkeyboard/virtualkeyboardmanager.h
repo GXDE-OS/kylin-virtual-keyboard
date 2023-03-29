@@ -39,7 +39,7 @@ public:
     void ShowVirtualKeyboard();
     void HideVirtualKeyboard();
     void VisibiltyChanged();
-    bool IsVirtualKeyboardVisible();
+    bool IsVirtualKeyboardVisible() const;
     void UpdatePreeditCaret(int index);
     void UpdatePreeditArea(const QString &preeditText);
     void UpdateCandidateArea(const QStringList &candidateTextList, bool hasPrev,

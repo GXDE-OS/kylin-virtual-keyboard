@@ -50,7 +50,7 @@ void VirtualKeyboardManager::VisibiltyChanged() {
                                                 virtualkeyboardVisible_);
 }
 
-bool VirtualKeyboardManager::IsVirtualKeyboardVisible() {
+bool VirtualKeyboardManager::IsVirtualKeyboardVisible() const {
     return virtualkeyboardVisible_;
 }
 

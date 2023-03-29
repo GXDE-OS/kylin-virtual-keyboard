@@ -11,9 +11,8 @@ class TrayEntry : public QObject {
     Q_OBJECT
 
 public:
-    explicit TrayEntry(
-        const FcitxVirtualKeyboardService &virtualKeyboardService,
-        VirtualKeyboardManager *virtualKeyboardManager = nullptr);
+    TrayEntry(const FcitxVirtualKeyboardService &virtualKeyboardService,
+              const VirtualKeyboardManager &virtualKeyboardManager);
     ~TrayEntry() = default;
 
 private:
@@ -24,7 +23,7 @@ private slots:
 
 private:
     QSystemTrayIcon *mSystemTray = nullptr;
-    VirtualKeyboardManager *virtualKeyboardManager_ = nullptr;
+    const VirtualKeyboardManager &virtualKeyboardManager_;
     const FcitxVirtualKeyboardService &virtualKeyboardService_;
 };
 

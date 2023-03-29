@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 
     VirtualKeyboardManager virtualKeyboardManager;
     FcitxVirtualKeyboardServiceProxy virtualKeyboardService;
-    TrayEntry trayEntry(virtualKeyboardService, &virtualKeyboardManager);
+    TrayEntry trayEntry(virtualKeyboardService, virtualKeyboardManager);
 
     DBusService dbusService(&virtualKeyboardManager);
 
