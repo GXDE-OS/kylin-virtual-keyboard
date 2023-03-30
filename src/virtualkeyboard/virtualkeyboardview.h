@@ -26,7 +26,7 @@ signals:
     void updatePreeditArea(const QString &preeditText);
     void updateCandidateArea(const QVariant &candidateTextList, bool hasPrev,
                              bool hasNext, int pageIndex);
-    void changeIM(const QString &uniqueName);
+    void inputMethodNameArrived(const QString &uniqueName);
     void reset();
     void updateCurrentIMList(const QVariant &currentIMList);
 

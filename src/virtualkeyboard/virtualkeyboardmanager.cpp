@@ -70,7 +70,7 @@ void VirtualKeyboardManager::UpdateCandidateArea(
 }
 
 void VirtualKeyboardManager::NotifyIMActivated(const QString &uniqueName) {
-    emit changeIM(uniqueName);
+    emit inputMethodNameArrived(uniqueName);
 }
 
 void VirtualKeyboardManager::NotifyIMDeactivated(
@@ -87,8 +87,8 @@ void VirtualKeyboardManager::syncInputMethodName() {
                      [this](QDBusPendingCallWatcher *watcher) {
                          QDBusPendingReply<QString> reply = *watcher;
                          if (!reply.isError()) {
-                             const QString &imName = reply.value();
-                             emit changeIM(imName);
+                             const QString &inputMethodName = reply.value();
+                             emit inputMethodNameArrived(inputMethodName);
                          }
                          watcher->deleteLater();
                      });
@@ -234,8 +234,8 @@ void VirtualKeyboardManager::connectVirtualKeyboardManagerSignals() {
             SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)),
             view_.get(),
             SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)));
-    connect(this, SIGNAL(changeIM(const QString &)), view_.get(),
-            SIGNAL(changeIM(const QString &)));
+    connect(this, SIGNAL(inputMethodNameArrived(const QString &)), view_.get(),
+            SIGNAL(inputMethodNameArrived(const QString &)));
     connect(this, SIGNAL(reset()), view_.get(), SIGNAL(reset()));
     connect(this, SIGNAL(updateCurrentIMList(const QVariant &)), view_.get(),
             SIGNAL(updateCurrentIMList(const QVariant &)));

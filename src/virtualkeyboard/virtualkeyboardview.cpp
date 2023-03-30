@@ -63,7 +63,7 @@ void VirtualKeyboardView::connectSignals() {
     connect(this,
             SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)),
             rootObject(), SIGNAL(qmlUpdateCandidateList(QVariant)));
-    connect(this, SIGNAL(changeIM(const QString &)), rootObject(),
+    connect(this, SIGNAL(inputMethodNameArrived(const QString &)), rootObject(),
             SIGNAL(qmlChangeIM(QString)));
     connect(this, SIGNAL(reset()), rootObject(), SIGNAL(qmlReset()));
     connect(this, SIGNAL(updateCurrentIMList(const QVariant &)), rootObject(),
