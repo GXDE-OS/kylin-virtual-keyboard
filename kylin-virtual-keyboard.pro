@@ -21,6 +21,7 @@ SOURCES += \
     src/screenmanager.cpp \
     src/virtualkeyboard/placementmodemanager.cpp \
     src/virtualkeyboard/virtualkeyboardmanager.cpp \
+    src/virtualkeyboard/virtualkeyboardmodel.cpp \
     src/virtualkeyboard/virtualkeyboardview.cpp \
     src/virtualkeyboardentry/trayentry.cpp
 
@@ -59,6 +60,7 @@ HEADERS += \
     src/screenmanager.h \
     src/virtualkeyboard/placementmodemanager.h \
     src/virtualkeyboard/virtualkeyboardmanager.h \
+    src/virtualkeyboard/virtualkeyboardmodel.h \
     src/virtualkeyboard/virtualkeyboardstrategy.h \
     src/virtualkeyboard/virtualkeyboardview.h \
     src/virtualkeyboardentry/fcitxvirtualkeyboardservice.h \
