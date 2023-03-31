@@ -23,7 +23,7 @@ void TrayEntry::RegisterTrayEntry() {
 void TrayEntry::ActiveTray(QSystemTrayIcon::ActivationReason reason) {
     switch (reason) {
     case QSystemTrayIcon::Trigger: {
-        virtualKeyboardManager_.IsVirtualKeyboardVisible()
+        virtualKeyboardManager_.isVirtualKeyboardVisible()
             ? virtualKeyboardService_.hideVirtualKeyboard()
             : virtualKeyboardService_.showVirtualKeyboard();
         break;

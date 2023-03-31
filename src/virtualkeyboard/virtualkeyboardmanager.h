@@ -20,22 +20,22 @@ public:
     explicit VirtualKeyboardManager(QObject *parent = nullptr);
     ~VirtualKeyboardManager();
 
-    void ShowVirtualKeyboard();
-    void VisibiltyChanged();
-    bool IsVirtualKeyboardVisible() const;
-    void UpdatePreeditCaret(int index);
-    void UpdatePreeditArea(const QString &preeditText);
-    void UpdateCandidateArea(const QStringList &candidateTextList, bool hasPrev,
+    void showVirtualKeyboard();
+    void visibiltyChanged();
+    bool isVirtualKeyboardVisible() const;
+    void updatePreeditCaret(int index);
+    void updatePreeditArea(const QString &preeditText);
+    void updateCandidateArea(const QStringList &candidateTextList, bool hasPrev,
                              bool hasNext, int pageIndex);
-    void NotifyIMActivated(const QString &uniqueName);
-    void NotifyIMDeactivated(const QString &uniqueName);
-    void NotifyIMListChanged();
+    void notifyIMActivated(const QString &uniqueName);
+    void notifyIMDeactivated(const QString &uniqueName);
+    void notifyIMListChanged();
 
 signals:
     void virtualKeyboardVisibiltyChanged(bool isShow);
 
 public slots:
-    void HideVirtualKeyboard();
+    void hideVirtualKeyboard();
 
     void processResolutionChangedEvent();
 

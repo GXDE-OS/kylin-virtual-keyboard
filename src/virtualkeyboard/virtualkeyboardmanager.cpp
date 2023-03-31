@@ -18,7 +18,7 @@ VirtualKeyboardManager::VirtualKeyboardManager(QObject *parent)
 }
 
 VirtualKeyboardManager::~VirtualKeyboardManager() {
-    HideVirtualKeyboard();
+    hideVirtualKeyboard();
 
     placementModeManager_.reset();
     floatGeometryManager_.reset();
@@ -28,58 +28,58 @@ VirtualKeyboardManager::~VirtualKeyboardManager() {
     model_.reset();
 }
 
-void VirtualKeyboardManager::ShowVirtualKeyboard() {
+void VirtualKeyboardManager::showVirtualKeyboard() {
     if (virtualkeyboardVisible_) {
         return;
     }
     initView();
     virtualkeyboardVisible_ = true;
-    VisibiltyChanged();
+    visibiltyChanged();
 }
 
-void VirtualKeyboardManager::HideVirtualKeyboard() {
+void VirtualKeyboardManager::hideVirtualKeyboard() {
     if (!virtualkeyboardVisible_) {
         return;
     }
     virtualkeyboardVisible_ = false;
     destoryView();
-    VisibiltyChanged();
+    visibiltyChanged();
 }
 
-void VirtualKeyboardManager::VisibiltyChanged() {
+void VirtualKeyboardManager::visibiltyChanged() {
     emit virtualKeyboardVisibiltyChanged(virtualkeyboardVisible_);
     model_->processVisibilityEvent(virtualkeyboardVisible_);
 }
 
-bool VirtualKeyboardManager::IsVirtualKeyboardVisible() const {
+bool VirtualKeyboardManager::isVirtualKeyboardVisible() const {
     return virtualkeyboardVisible_;
 }
 
-void VirtualKeyboardManager::UpdatePreeditCaret(int index) {
+void VirtualKeyboardManager::updatePreeditCaret(int index) {
     emit model_->updatePreeditCaret(index);
 }
 
-void VirtualKeyboardManager::UpdatePreeditArea(const QString &preeditText) {
+void VirtualKeyboardManager::updatePreeditArea(const QString &preeditText) {
     emit model_->updatePreeditArea(preeditText);
 }
 
-void VirtualKeyboardManager::UpdateCandidateArea(
+void VirtualKeyboardManager::updateCandidateArea(
     const QStringList &candidateTextList, bool hasPrev, bool hasNext,
     int pageIndex) {
     emit model_->updateCandidateArea(QVariant(candidateTextList), hasPrev,
                                      hasNext, pageIndex);
 }
 
-void VirtualKeyboardManager::NotifyIMActivated(const QString &uniqueName) {
+void VirtualKeyboardManager::notifyIMActivated(const QString &uniqueName) {
     emit model_->inputMethodNameArrived(uniqueName);
 }
 
-void VirtualKeyboardManager::NotifyIMDeactivated(
+void VirtualKeyboardManager::notifyIMDeactivated(
     const QString & /*uniqueName*/) {
     emit model_->reset();
 }
 
-void VirtualKeyboardManager::NotifyIMListChanged() {
+void VirtualKeyboardManager::notifyIMListChanged() {
     model_->syncInputMethodName();
 }
 
@@ -142,7 +142,7 @@ void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
             view_.get(), SIGNAL(updateCurrentIMList(const QVariant &)));
 
     connect(model_.get(), SIGNAL(backendConnectionDisconnected()), this,
-            SLOT(HideVirtualKeyboard()));
+            SLOT(hideVirtualKeyboard()));
 }
 
 void VirtualKeyboardManager::connectGeometryManagerSignals() {
@@ -160,7 +160,7 @@ void VirtualKeyboardManager::connectRootObjectSignals() {
     const auto *rootObject = view_->rootObject();
 
     connect(rootObject, SIGNAL(qmlHideVirtualKeyboard()), this,
-            SLOT(HideVirtualKeyboard()));
+            SLOT(hideVirtualKeyboard()));
 
     connect(rootObject, SIGNAL(qmlPlacementModeButtonClicked()),
             placementModeManager_.get(), SLOT(flipPlacementMode()));

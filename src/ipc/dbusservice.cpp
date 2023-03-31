@@ -14,13 +14,13 @@ DBusService::~DBusService() { stopService(); }
 
 void DBusService::initRequestMerger() {
     virtualKeyboardVisibilityRequestMerger_.init(
-        [this]() { virtualKeyboardManager_->ShowVirtualKeyboard(); },
-        [this]() { virtualKeyboardManager_->HideVirtualKeyboard(); },
+        [this]() { virtualKeyboardManager_->showVirtualKeyboard(); },
+        [this]() { virtualKeyboardManager_->hideVirtualKeyboard(); },
         [this]() {
-            return !virtualKeyboardManager_->IsVirtualKeyboardVisible();
+            return !virtualKeyboardManager_->isVirtualKeyboardVisible();
         },
         [this]() {
-            return virtualKeyboardManager_->IsVirtualKeyboardVisible();
+            return virtualKeyboardManager_->isVirtualKeyboardVisible();
         });
 }
 
@@ -45,32 +45,32 @@ void DBusService::HideVirtualKeyboard() {
 }
 
 bool DBusService::IsVirtualKeyboardVisible() {
-    return virtualKeyboardManager_->IsVirtualKeyboardVisible();
+    return virtualKeyboardManager_->isVirtualKeyboardVisible();
 }
 
 void DBusService::UpdatePreeditCaret(int preeditCursor) {
-    virtualKeyboardManager_->UpdatePreeditCaret(preeditCursor);
+    virtualKeyboardManager_->updatePreeditCaret(preeditCursor);
 }
 
 void DBusService::UpdatePreeditArea(const QString &preeditText) {
-    virtualKeyboardManager_->UpdatePreeditArea(preeditText);
+    virtualKeyboardManager_->updatePreeditArea(preeditText);
 }
 
 void DBusService::UpdateCandidateArea(const QStringList &candidateTextList,
                                       bool hasPrev, bool hasNext,
                                       int pageIndex) {
-    virtualKeyboardManager_->UpdateCandidateArea(candidateTextList, hasPrev,
+    virtualKeyboardManager_->updateCandidateArea(candidateTextList, hasPrev,
                                                  hasNext, pageIndex);
 }
 
 void DBusService::NotifyIMActivated(const QString &uniqueName) {
-    virtualKeyboardManager_->NotifyIMActivated(uniqueName);
+    virtualKeyboardManager_->notifyIMActivated(uniqueName);
 }
 
 void DBusService::NotifyIMDeactivated(const QString &uniqueName) {
-    virtualKeyboardManager_->NotifyIMDeactivated(uniqueName);
+    virtualKeyboardManager_->notifyIMDeactivated(uniqueName);
 }
 
 void DBusService::NotifyIMListChanged() {
-    virtualKeyboardManager_->NotifyIMListChanged();
+    virtualKeyboardManager_->notifyIMListChanged();
 }
