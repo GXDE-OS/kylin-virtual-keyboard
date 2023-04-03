@@ -21,7 +21,7 @@ signals:
     void expansionModeEntered();
     void floatModeEntered();
 
-public slots:
+public:
     void flipPlacementMode();
 
 private:

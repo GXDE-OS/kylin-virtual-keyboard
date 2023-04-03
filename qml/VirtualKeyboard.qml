@@ -133,9 +133,15 @@ Rectangle {
                     bool isRelease, int time)
     signal qmlCandidateClicked(int index)
     signal qmlSelectInputMethod(string im)
-    signal qmlHideVirtualKeyboard()
+    function hideVirtualKeyboard() {
+        manager.hideVirtualKeyboard()
+    }
+
     signal qmlSetCurrentIM(string currentIm)
-    signal qmlPlacementModeButtonClicked()
+    function flipPlacementMode() {
+        manager.flipPlacementMode()
+    }
+
     signal qmlMoveBy(int offsetX, int offsetY)
     signal qmlDragEnded()
 

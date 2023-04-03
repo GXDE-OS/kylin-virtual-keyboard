@@ -21,6 +21,8 @@ public:
     ~VirtualKeyboardManager();
 
     void showVirtualKeyboard();
+    Q_INVOKABLE void hideVirtualKeyboard();
+    Q_INVOKABLE void flipPlacementMode();
     void visibiltyChanged();
     bool isVirtualKeyboardVisible() const;
     void updatePreeditCaret(int index);
@@ -35,8 +37,6 @@ signals:
     void virtualKeyboardVisibiltyChanged(bool isShow);
 
 public slots:
-    void hideVirtualKeyboard();
-
     void processResolutionChangedEvent();
 
     void raiseInputArea();

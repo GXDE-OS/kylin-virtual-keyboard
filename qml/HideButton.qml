@@ -23,7 +23,7 @@ Rectangle {
         }
 
         onReleased: {
-            qmlHideVirtualKeyboard()
+            virtualKeyboard.hideVirtualKeyboard()
         }
     }
 

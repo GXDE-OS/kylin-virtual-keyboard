@@ -19,7 +19,7 @@ Rectangle {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: qmlPlacementModeButtonClicked()
+        onClicked: virtualKeyboard.flipPlacementMode()
     }
 
     state: virtualKeyboard.placementMode

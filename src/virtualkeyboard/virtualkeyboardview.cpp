@@ -3,9 +3,9 @@
 #include <QQmlContext>
 #include <QQuickItem>
 
-VirtualKeyboardView::VirtualKeyboardView(QObject *model)
+VirtualKeyboardView::VirtualKeyboardView(QObject *manager, QObject *model)
     : view_(new QQuickView()) {
-    init(model);
+    init(manager, model);
 
     connectSignals();
 
@@ -38,7 +38,8 @@ void VirtualKeyboardView::resize(int width, int height) {
     view_->setHeight(height);
 }
 
-void VirtualKeyboardView::init(QObject *model) {
+void VirtualKeyboardView::init(QObject *manager, QObject *model) {
+    view_->rootContext()->setContextProperty("manager", manager);
     view_->rootContext()->setContextProperty("model", model);
 
     view_->setColor(QColor(Qt::transparent));

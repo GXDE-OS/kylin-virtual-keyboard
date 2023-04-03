@@ -46,6 +46,10 @@ void VirtualKeyboardManager::hideVirtualKeyboard() {
     visibiltyChanged();
 }
 
+void VirtualKeyboardManager::flipPlacementMode() {
+    placementModeManager_->flipPlacementMode();
+}
+
 void VirtualKeyboardManager::visibiltyChanged() {
     emit virtualKeyboardVisibiltyChanged(virtualkeyboardVisible_);
     model_->processVisibilityEvent(virtualkeyboardVisible_);
@@ -90,7 +94,7 @@ void VirtualKeyboardManager::processResolutionChangedEvent() {
 }
 
 void VirtualKeyboardManager::initView() {
-    view_.reset(new VirtualKeyboardView(model_.get()));
+    view_.reset(new VirtualKeyboardView(this, model_.get()));
 
     connectSignals();
 
@@ -153,12 +157,6 @@ void VirtualKeyboardManager::connectGeometryManagerSignals() {
 
 void VirtualKeyboardManager::connectRootObjectSignals() {
     const auto *rootObject = view_->rootObject();
-
-    connect(rootObject, SIGNAL(qmlHideVirtualKeyboard()), this,
-            SLOT(hideVirtualKeyboard()));
-
-    connect(rootObject, SIGNAL(qmlPlacementModeButtonClicked()),
-            placementModeManager_.get(), SLOT(flipPlacementMode()));
 
     connect(rootObject, SIGNAL(qmlMoveBy(int, int)),
             floatGeometryManager_.get(), SLOT(moveBy(int, int)));

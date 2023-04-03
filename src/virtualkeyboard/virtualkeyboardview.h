@@ -11,7 +11,7 @@ class VirtualKeyboardView : public QObject {
     Q_OBJECT
 
 public:
-    explicit VirtualKeyboardView(QObject *model);
+    VirtualKeyboardView(QObject *manager, QObject *model);
     ~VirtualKeyboardView() override;
 
     QObject *rootObject() const;
@@ -32,7 +32,7 @@ public slots:
     void resize(int width, int height);
 
 private:
-    void init(QObject *model);
+    void init(QObject *manager, QObject *model);
     void connectSignals();
 
 private:
