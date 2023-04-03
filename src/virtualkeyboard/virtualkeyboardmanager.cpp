@@ -71,7 +71,7 @@ void VirtualKeyboardManager::updateCandidateArea(
 }
 
 void VirtualKeyboardManager::notifyIMActivated(const QString &uniqueName) {
-    emit model_->inputMethodNameArrived(uniqueName);
+    model_->setUniqueName(uniqueName);
 }
 
 void VirtualKeyboardManager::notifyIMDeactivated(
@@ -80,7 +80,7 @@ void VirtualKeyboardManager::notifyIMDeactivated(
 }
 
 void VirtualKeyboardManager::notifyIMListChanged() {
-    model_->syncInputMethodName();
+    model_->syncCurrentIMList();
 }
 
 void VirtualKeyboardManager::processResolutionChangedEvent() {
@@ -90,8 +90,7 @@ void VirtualKeyboardManager::processResolutionChangedEvent() {
 }
 
 void VirtualKeyboardManager::initView() {
-    view_.reset(
-        new VirtualKeyboardView([this]() { model_->syncInputMethodName(); }));
+    view_.reset(new VirtualKeyboardView(model_.get()));
 
     connectSignals();
 
@@ -135,11 +134,7 @@ void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
             SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)),
             view_.get(),
             SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)));
-    connect(model_.get(), SIGNAL(inputMethodNameArrived(const QString &)),
-            view_.get(), SIGNAL(inputMethodNameArrived(const QString &)));
     connect(model_.get(), SIGNAL(reset()), view_.get(), SIGNAL(reset()));
-    connect(model_.get(), SIGNAL(updateCurrentIMList(const QVariant &)),
-            view_.get(), SIGNAL(updateCurrentIMList(const QVariant &)));
 
     connect(model_.get(), SIGNAL(backendConnectionDisconnected()), this,
             SLOT(hideVirtualKeyboard()));
@@ -170,8 +165,6 @@ void VirtualKeyboardManager::connectRootObjectSignals() {
     connect(rootObject, SIGNAL(qmlDragEnded()), floatGeometryManager_.get(),
             SLOT(endDrag()));
 
-    connect(rootObject, SIGNAL(qmlRequestCurrentIMList()), model_.get(),
-            SLOT(requestCurrentIMList()));
     connect(rootObject, SIGNAL(qmlKeyEvent(QString, int, int, bool, int)),
             model_.get(), SLOT(processKeyEvent(QString, int, int, bool, int)));
     connect(rootObject, SIGNAL(qmlCandidateClicked(int)), model_.get(),

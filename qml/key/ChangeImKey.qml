@@ -23,7 +23,6 @@ SwitchKey {
     }
     
     keyMouseArea.onPressed: {
-        virtualKeyboard.qmlRequestCurrentIMList()
         imList.currentIndex =
                 virtualKeyboard.currentIMList.indexOf(virtualKeyboard.currentIM)
     }

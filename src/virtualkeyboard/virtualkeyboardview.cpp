@@ -1,16 +1,13 @@
 #include "virtualkeyboardview.h"
 
+#include <QQmlContext>
 #include <QQuickItem>
 
-VirtualKeyboardView::VirtualKeyboardView(
-    SyncInputMethodNameCallback syncInputMethodNameCallback)
-    : view_(new QQuickView()),
-      syncInputMethodNameCallback_(std::move(syncInputMethodNameCallback)) {
-    init();
+VirtualKeyboardView::VirtualKeyboardView(QObject *model)
+    : view_(new QQuickView()) {
+    init(model);
 
     connectSignals();
-
-    syncInputMethodName();
 
     view_->show();
 }
@@ -27,14 +24,6 @@ VirtualKeyboardView::~VirtualKeyboardView() {
     view_.release()->deleteLater();
 }
 
-void VirtualKeyboardView::syncInputMethodName() {
-    if (!syncInputMethodNameCallback_) {
-        return;
-    }
-
-    syncInputMethodNameCallback_();
-}
-
 QObject *VirtualKeyboardView::rootObject() const { return view_->rootObject(); }
 
 QRect VirtualKeyboardView::geometry() const { return view_->geometry(); }
@@ -49,7 +38,9 @@ void VirtualKeyboardView::resize(int width, int height) {
     view_->setHeight(height);
 }
 
-void VirtualKeyboardView::init() {
+void VirtualKeyboardView::init(QObject *model) {
+    view_->rootContext()->setContextProperty("model", model);
+
     view_->setColor(QColor(Qt::transparent));
     view_->setSource(QUrl("qrc:/qml/VirtualKeyboard.qml"));
     view_->setFlags(Qt::Window | Qt::WindowDoesNotAcceptFocus |
@@ -63,11 +54,7 @@ void VirtualKeyboardView::connectSignals() {
     connect(this,
             SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)),
             rootObject(), SIGNAL(qmlUpdateCandidateList(QVariant)));
-    connect(this, SIGNAL(inputMethodNameArrived(const QString &)), rootObject(),
-            SIGNAL(qmlChangeIM(QString)));
     connect(this, SIGNAL(reset()), rootObject(), SIGNAL(qmlReset()));
-    connect(this, SIGNAL(updateCurrentIMList(const QVariant &)), rootObject(),
-            SIGNAL(qmlUpdateCurrentIMList(QVariant)));
 
     connect(this, SIGNAL(expansionModeEntered()), rootObject(),
             SIGNAL(qmlEnterExpansionPlacementMode()));

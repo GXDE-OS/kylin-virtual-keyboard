@@ -15,12 +15,24 @@ public:
     explicit VirtualKeyboardModel(QObject *parent = nullptr);
     ~VirtualKeyboardModel() override = default;
 
-    void syncInputMethodName();
+public:
+    Q_PROPERTY(QString uniqueName READ getUniqueName NOTIFY uniqueNameChanged);
+    Q_PROPERTY(QVariant currentIMList READ getCurrentIMList NOTIFY
+                   currentIMListChanged);
+
+signals:
+    void uniqueNameChanged();
+
+    void currentIMListChanged();
+
+public:
+    void setUniqueName(const QString &uniqueName);
+
+    void syncCurrentIMList();
 
     void processVisibilityEvent(bool visible);
 
 public slots:
-    void requestCurrentIMList();
     void selectCandidate(int index);
     void setCurrentInputMethod(const QString &imName);
     void processKeyEvent(const QString &keyval, int keycode, int state,
@@ -32,10 +44,7 @@ signals:
     // TODO(linyuxuan): 使用更准确的类型替换QVariant
     void updateCandidateArea(const QVariant &candidateTextList, bool hasPrev,
                              bool hasNext, int pageIndex);
-    void inputMethodNameArrived(const QString &uniqueName);
     void reset();
-    // TODO(linyuxuan): 使用更准确的类型替换QVariant
-    void updateCurrentIMList(const QVariant &currentIMList);
 
     void backendConnectionDisconnected();
 
@@ -48,10 +57,20 @@ private:
     void initDBusServiceWatcher();
     void initVirtualKeyboardBackendInterface();
 
+    QString getUniqueName() const;
+    void syncUniqueName();
+
+    QVariant getCurrentIMList() const;
+    void setCurrentIMList(const QVariant &currentIMList);
+
 private:
     std::unique_ptr<QDBusServiceWatcher> serviceWatcher_ = nullptr;
     std::unique_ptr<QDBusInterface> virtualKeyboardBackendInterface_ = nullptr;
     std::unique_ptr<fcitx::FcitxQtControllerProxy> fcitx5Controller_ = nullptr;
+
+    QString uniqueName_;
+
+    QVariant currentIMList_;
 
     QString virtualKeyboardBackendService =
         "org.fcitx.Fcitx5.VirtualKeyboardBackend";

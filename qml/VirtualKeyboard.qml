@@ -13,9 +13,9 @@ Rectangle {
     //候选词
     property var candidateList
     //可用输入法列表
-    property var currentIMList
+    property var currentIMList : model.currentIMList
     //当前输入法名称
-    property string uniqueName
+    property string uniqueName : model.uniqueName
     //当前输入法，组成为"uniqueName|localName|label"
     //TOOD 目前以“|”分割数据
     property string currentIM: "||"
@@ -125,8 +125,6 @@ Rectangle {
     signal qmlUpdatePreedit(string preeditText)
     signal qmlUpdateCandidateList(var candidateList)
     signal qmlReset()
-    signal qmlChangeIM(string uniqueName)
-    signal qmlUpdateCurrentIMList(var currentIMList)
     signal qmlEnterExpansionPlacementMode()
     signal qmlEnterFloatPlacementMode()
 
@@ -136,7 +134,6 @@ Rectangle {
     signal qmlCandidateClicked(int index)
     signal qmlSelectInputMethod(string im)
     signal qmlHideVirtualKeyboard()
-    signal qmlRequestCurrentIMList()
     signal qmlSetCurrentIM(string currentIm)
     signal qmlPlacementModeButtonClicked()
     signal qmlMoveBy(int offsetX, int offsetY)
@@ -160,12 +157,6 @@ Rectangle {
                 virtualKeyboard.candidateList = candidateList
                 showCandidateList()
             }
-        }
-        onQmlChangeIM: (uniqueName) =>{
-            virtualKeyboard.uniqueName = uniqueName
-        }
-        onQmlUpdateCurrentIMList: (currentIMList)=> {
-            virtualKeyboard.currentIMList = currentIMList
         }
         onQmlEnterExpansionPlacementMode: {
             virtualKeyboard.placementMode = "EXPANSION"
@@ -215,9 +206,6 @@ Rectangle {
     }
 
     onUniqueNameChanged: {
-        if(currentIMList === undefined){
-            qmlRequestCurrentIMList()
-        }
         for(var i = 0; i<currentIMList.length; i++){
             if(currentIMList[i].includes(uniqueName)){
                 currentIM = currentIMList[i]

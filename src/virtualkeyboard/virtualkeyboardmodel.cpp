@@ -9,20 +9,6 @@ VirtualKeyboardModel::VirtualKeyboardModel(QObject *parent) : QObject(parent) {
     initDBusServiceWatcher();
 }
 
-void VirtualKeyboardModel::syncInputMethodName() {
-    QDBusPendingReply<QString> reply = fcitx5Controller_->CurrentInputMethod();
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
-    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, this,
-                     [this](QDBusPendingCallWatcher *watcher) {
-                         QDBusPendingReply<QString> reply = *watcher;
-                         if (!reply.isError()) {
-                             const QString &inputMethodName = reply.value();
-                             emit inputMethodNameArrived(inputMethodName);
-                         }
-                         watcher->deleteLater();
-                     });
-}
-
 void VirtualKeyboardModel::processVisibilityEvent(bool visible) {
     virtualKeyboardBackendInterface_->asyncCall("ProcessVisibilityEvent",
                                                 visible);
@@ -78,23 +64,6 @@ void FcitxQtIMInfo::registerDBusMetaType() {
     qDBusRegisterMetaType<QList<FcitxQtIMInfo>>();
 }
 
-void VirtualKeyboardModel::requestCurrentIMList() {
-    FcitxQtIMInfo::registerDBusMetaType();
-    QDBusPendingReply<QList<FcitxQtIMInfo>> reply =
-        virtualKeyboardBackendInterface_->asyncCall("CurrentIMList");
-    reply.waitForFinished();
-
-    auto items = reply.value();
-
-    QStringList stringList;
-    for (const auto &imInfo : items) {
-        stringList.append(imInfo.getUniqueName() + "|" + imInfo.getLocalName() +
-                          "|" + imInfo.getLabel());
-    }
-
-    emit updateCurrentIMList(QVariant(stringList));
-}
-
 void VirtualKeyboardModel::selectCandidate(int index) {
     virtualKeyboardBackendInterface_->asyncCall("SelectCandidate", index);
 }
@@ -142,7 +111,9 @@ void VirtualKeyboardModel::backendServiceRegistered(
     }
     initVirtualKeyboardBackendInterface();
 
-    syncInputMethodName();
+    syncUniqueName();
+
+    syncCurrentIMList();
 }
 
 void VirtualKeyboardModel::backendServiceUnregistered(
@@ -154,4 +125,55 @@ void VirtualKeyboardModel::backendServiceUnregistered(
     emit backendConnectionDisconnected();
 
     virtualKeyboardBackendInterface_.reset();
+}
+
+QString VirtualKeyboardModel::getUniqueName() const { return uniqueName_; }
+
+void VirtualKeyboardModel::setUniqueName(const QString &uniqueName) {
+    if (uniqueName_ == uniqueName) {
+        return;
+    }
+
+    uniqueName_ = uniqueName;
+
+    emit uniqueNameChanged();
+}
+
+void VirtualKeyboardModel::syncUniqueName() {
+    QDBusPendingReply<QString> reply = fcitx5Controller_->CurrentInputMethod();
+    reply.waitForFinished();
+
+    setUniqueName(reply.value());
+}
+
+QVariant VirtualKeyboardModel::getCurrentIMList() const {
+    return currentIMList_;
+}
+
+void VirtualKeyboardModel::setCurrentIMList(
+    const QVariant &currentInputMethodList) {
+    if (currentIMList_ == currentInputMethodList) {
+        return;
+    }
+
+    currentIMList_ = currentInputMethodList;
+
+    emit currentIMListChanged();
+}
+
+void VirtualKeyboardModel::syncCurrentIMList() {
+    FcitxQtIMInfo::registerDBusMetaType();
+    QDBusPendingReply<QList<FcitxQtIMInfo>> reply =
+        virtualKeyboardBackendInterface_->asyncCall("CurrentIMList");
+    reply.waitForFinished();
+
+    auto items = reply.value();
+
+    QStringList stringList;
+    for (const auto &imInfo : items) {
+        stringList.append(imInfo.getUniqueName() + "|" + imInfo.getLocalName() +
+                          "|" + imInfo.getLabel());
+    }
+
+    setCurrentIMList(QVariant(stringList));
 }
