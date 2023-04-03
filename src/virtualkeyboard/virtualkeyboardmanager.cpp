@@ -50,6 +50,12 @@ void VirtualKeyboardManager::flipPlacementMode() {
     placementModeManager_->flipPlacementMode();
 }
 
+void VirtualKeyboardManager::moveBy(int offsetX, int offsetY) {
+    floatGeometryManager_->moveBy(offsetX, offsetY);
+}
+
+void VirtualKeyboardManager::endDrag() { floatGeometryManager_->endDrag(); }
+
 void VirtualKeyboardManager::visibiltyChanged() {
     emit virtualKeyboardVisibiltyChanged(virtualkeyboardVisible_);
     model_->processVisibilityEvent(virtualkeyboardVisible_);
@@ -157,11 +163,6 @@ void VirtualKeyboardManager::connectGeometryManagerSignals() {
 
 void VirtualKeyboardManager::connectRootObjectSignals() {
     const auto *rootObject = view_->rootObject();
-
-    connect(rootObject, SIGNAL(qmlMoveBy(int, int)),
-            floatGeometryManager_.get(), SLOT(moveBy(int, int)));
-    connect(rootObject, SIGNAL(qmlDragEnded()), floatGeometryManager_.get(),
-            SLOT(endDrag()));
 
     connect(rootObject, SIGNAL(qmlKeyEvent(QString, int, int, bool, int)),
             model_.get(), SLOT(processKeyEvent(QString, int, int, bool, int)));

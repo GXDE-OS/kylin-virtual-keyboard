@@ -23,6 +23,8 @@ public:
     void showVirtualKeyboard();
     Q_INVOKABLE void hideVirtualKeyboard();
     Q_INVOKABLE void flipPlacementMode();
+    Q_INVOKABLE void moveBy(int offsetX, int offsetY);
+    Q_INVOKABLE void endDrag();
     void visibiltyChanged();
     bool isVirtualKeyboardVisible() const;
     void updatePreeditCaret(int index);

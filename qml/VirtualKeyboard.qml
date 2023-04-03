@@ -142,8 +142,13 @@ Rectangle {
         manager.flipPlacementMode()
     }
 
-    signal qmlMoveBy(int offsetX, int offsetY)
-    signal qmlDragEnded()
+    function moveBy(offsetX, offsetY) {
+        manager.moveBy(offsetX, offsetY)
+    }
+
+    function endDrag() {
+        manager.endDrag()
+    }
 
     Connections {
         target: virtualKeyboard

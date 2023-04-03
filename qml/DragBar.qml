@@ -17,11 +17,11 @@ Rectangle {
             startY = mouseY
         }
         onPositionChanged: {
-            qmlMoveBy(mouseX - startX, mouseY - startY)
+            virtualKeyboard.moveBy(mouseX - startX, mouseY - startY)
         }
 
         onReleased: {
-            qmlDragEnded()
+            virtualKeyboard.endDrag()
         }
     }
 
