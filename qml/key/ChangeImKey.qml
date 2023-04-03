@@ -13,6 +13,13 @@ SwitchKey {
         value: virtualKeyboard.changeIMState
     }
     
+    Connections {
+        target: virtualKeyboard
+        onQmlImDeactivated: {
+            imList.close()
+        }
+    }
+
     keyMouseArea.onReleased: {
         if(virtualKeyboard.changeIMState == "NORMAL"){
             virtualKeyboard.changeIMState = "OPEN"
