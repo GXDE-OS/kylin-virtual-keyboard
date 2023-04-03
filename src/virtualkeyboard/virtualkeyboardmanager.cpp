@@ -86,7 +86,7 @@ void VirtualKeyboardManager::notifyIMActivated(const QString &uniqueName) {
 
 void VirtualKeyboardManager::notifyIMDeactivated(
     const QString & /*uniqueName*/) {
-    emit model_->reset();
+    emit model_->imDeactivated();
 }
 
 void VirtualKeyboardManager::notifyIMListChanged() {
@@ -144,7 +144,8 @@ void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
             SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)),
             view_.get(),
             SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)));
-    connect(model_.get(), SIGNAL(reset()), view_.get(), SIGNAL(reset()));
+    connect(model_.get(), SIGNAL(imDeactivated()), view_.get(),
+            SIGNAL(imDeactivated()));
 
     connect(model_.get(), SIGNAL(backendConnectionDisconnected()), this,
             SLOT(hideVirtualKeyboard()));

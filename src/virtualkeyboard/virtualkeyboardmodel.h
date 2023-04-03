@@ -44,7 +44,7 @@ signals:
     // TODO(linyuxuan): 使用更准确的类型替换QVariant
     void updateCandidateArea(const QVariant &candidateTextList, bool hasPrev,
                              bool hasNext, int pageIndex);
-    void reset();
+    void imDeactivated();
 
     void backendConnectionDisconnected();
 

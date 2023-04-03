@@ -124,7 +124,7 @@ Rectangle {
     //后台发送给前台的信号
     signal qmlUpdatePreedit(string preeditText)
     signal qmlUpdateCandidateList(var candidateList)
-    signal qmlReset()
+    signal qmlImDeactivated()
     signal qmlEnterExpansionPlacementMode()
     signal qmlEnterFloatPlacementMode()
 

@@ -20,7 +20,7 @@ signals:
     void updatePreeditArea(const QString &preeditText);
     void updateCandidateArea(const QVariant &candidateTextList, bool hasPrev,
                              bool hasNext, int pageIndex);
-    void reset();
+    void imDeactivated();
 
     void expansionModeEntered();
     void floatModeEntered();

@@ -55,7 +55,8 @@ void VirtualKeyboardView::connectSignals() {
     connect(this,
             SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)),
             rootObject, SIGNAL(qmlUpdateCandidateList(QVariant)));
-    connect(this, SIGNAL(reset()), rootObject, SIGNAL(qmlReset()));
+    connect(this, SIGNAL(imDeactivated()), rootObject,
+            SIGNAL(qmlImDeactivated()));
 
     connect(this, SIGNAL(expansionModeEntered()), rootObject,
             SIGNAL(qmlEnterExpansionPlacementMode()));
