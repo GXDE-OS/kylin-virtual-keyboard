@@ -14,8 +14,6 @@ public:
     VirtualKeyboardView(QObject *manager, QObject *model);
     ~VirtualKeyboardView() override;
 
-    QObject *rootObject() const;
-
     QRect geometry() const;
 
 signals:

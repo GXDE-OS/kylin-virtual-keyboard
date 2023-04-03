@@ -11,8 +11,8 @@ SwitchKey {
         } else {
             switchKeyState = "NORMAL"
             var modifierKeyState = Utils.getModifierKeyStates()
-            qmlKeyEvent(label, Utils.getKeyCode(label), modifierKeyState - Utils.getKeySym(label), false, Date())
-            qmlKeyEvent(label, Utils.getKeyCode(label), modifierKeyState, true, Date())
+            virtualKeyboard.processKeyEvent(label, Utils.getKeyCode(label), modifierKeyState - Utils.getKeySym(label), false, Date())
+            virtualKeyboard.processKeyEvent(label, Utils.getKeyCode(label), modifierKeyState, true, Date())
             temporarySwitchKeyClicked()
         }
         temporarySwitchKeyReleased(switchKeyState)

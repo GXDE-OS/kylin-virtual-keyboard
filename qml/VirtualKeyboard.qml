@@ -128,16 +128,23 @@ Rectangle {
     signal qmlEnterExpansionPlacementMode()
     signal qmlEnterFloatPlacementMode()
 
-    //前台发送给后台的信号
-    signal qmlKeyEvent(string key, int keycode, int modifierKeyStates,
-                    bool isRelease, int time)
-    signal qmlCandidateClicked(int index)
-    signal qmlSelectInputMethod(string im)
+    function processKeyEvent(key, keycode, modifierKeyStates,
+                    isRelease, time) {
+        model.processKeyEvent(key, keycode, modifierKeyStates, isRelease, time)
+    }
+
+    function selectCandidate(index) {
+        model.selectCandidate(index)
+    }
+
+    function setCurrentIM(imName) {
+        model.setCurrentIM(imName)
+    }
+
     function hideVirtualKeyboard() {
         manager.hideVirtualKeyboard()
     }
 
-    signal qmlSetCurrentIM(string currentIm)
     function flipPlacementMode() {
         manager.flipPlacementMode()
     }

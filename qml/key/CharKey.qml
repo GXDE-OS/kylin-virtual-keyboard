@@ -18,7 +18,7 @@ BaseKey {
             timer.stop()
             var modifierKeyState = Utils.getModifierKeyStates()
             var keycode = Utils.getKeyCode(keyLabel.text)
-            qmlKeyEvent(keyLabel.text, keycode, modifierKeyState, false, Date())
+            virtualKeyboard.processKeyEvent(keyLabel.text, keycode, modifierKeyState, false, Date())
             charKeyClicked()
         }
 
@@ -77,7 +77,7 @@ BaseKey {
         repeat: true
         onTriggered: {
             var modifierKeyState = Utils.getModifierKeyStates()
-            qmlKeyEvent(keyLabel.text, Utils.getKeyCode(keyLabel.text), modifierKeyState, false, Date())
+            virtualKeyboard.processKeyEvent(keyLabel.text, Utils.getKeyCode(keyLabel.text), modifierKeyState, false, Date())
         }
     }
 }

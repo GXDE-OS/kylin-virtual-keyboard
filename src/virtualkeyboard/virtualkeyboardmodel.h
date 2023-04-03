@@ -32,11 +32,11 @@ public:
 
     void processVisibilityEvent(bool visible);
 
-public slots:
-    void selectCandidate(int index);
-    void setCurrentInputMethod(const QString &imName);
-    void processKeyEvent(const QString &keyval, int keycode, int state,
-                         bool isRelease, int time);
+public:
+    Q_INVOKABLE void selectCandidate(int index);
+    Q_INVOKABLE void setCurrentIM(const QString &imName);
+    Q_INVOKABLE void processKeyEvent(const QString &keyval, int keycode,
+                                     int state, bool isRelease, int time);
 
 signals:
     void updatePreeditCaret(int index);

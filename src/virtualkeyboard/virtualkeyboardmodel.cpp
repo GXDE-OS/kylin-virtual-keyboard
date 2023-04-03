@@ -68,7 +68,7 @@ void VirtualKeyboardModel::selectCandidate(int index) {
     virtualKeyboardBackendInterface_->asyncCall("SelectCandidate", index);
 }
 
-void VirtualKeyboardModel::setCurrentInputMethod(const QString &imName) {
+void VirtualKeyboardModel::setCurrentIM(const QString &imName) {
     fcitx5Controller_->SetCurrentIM(imName);
 }
 

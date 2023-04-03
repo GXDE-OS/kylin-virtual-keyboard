@@ -36,7 +36,7 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        qmlCandidateClicked(index)
+                        virtualKeyboard.selectCandidate(index)
                         console.debug("点击了",index,modelData)
                     }
                 }

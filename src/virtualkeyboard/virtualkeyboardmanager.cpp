@@ -161,17 +161,6 @@ void VirtualKeyboardManager::connectGeometryManagerSignals() {
             view_.get(), SLOT(resize(int, int)));
 }
 
-void VirtualKeyboardManager::connectRootObjectSignals() {
-    const auto *rootObject = view_->rootObject();
-
-    connect(rootObject, SIGNAL(qmlKeyEvent(QString, int, int, bool, int)),
-            model_.get(), SLOT(processKeyEvent(QString, int, int, bool, int)));
-    connect(rootObject, SIGNAL(qmlCandidateClicked(int)), model_.get(),
-            SLOT(selectCandidate(int)));
-    connect(rootObject, SIGNAL(qmlSetCurrentIM(QString)), model_.get(),
-            SLOT(setCurrentInputMethod(const QString &)));
-}
-
 void VirtualKeyboardManager::connectPlacementModeManagerSignals() {
     connect(placementModeManager_.get(), SIGNAL(expansionModeEntered()),
             view_.get(), SIGNAL(expansionModeEntered()));
@@ -182,8 +171,6 @@ void VirtualKeyboardManager::connectPlacementModeManagerSignals() {
 
 void VirtualKeyboardManager::connectSignals() {
     connectVirtualKeyboardModelSignals();
-
-    connectRootObjectSignals();
 
     connectPlacementModeManagerSignals();
 

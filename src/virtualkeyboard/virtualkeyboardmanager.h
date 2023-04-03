@@ -59,7 +59,6 @@ private:
     void connectSignals();
     void connectVirtualKeyboardModelSignals();
     void connectGeometryManagerSignals();
-    void connectRootObjectSignals();
     void connectPlacementModeManagerSignals();
 
     std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;

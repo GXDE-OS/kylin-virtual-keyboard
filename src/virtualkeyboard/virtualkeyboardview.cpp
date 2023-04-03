@@ -24,8 +24,6 @@ VirtualKeyboardView::~VirtualKeyboardView() {
     view_.release()->deleteLater();
 }
 
-QObject *VirtualKeyboardView::rootObject() const { return view_->rootObject(); }
-
 QRect VirtualKeyboardView::geometry() const { return view_->geometry(); }
 
 void VirtualKeyboardView::move(int x, int y) {
@@ -50,15 +48,17 @@ void VirtualKeyboardView::init(QObject *manager, QObject *model) {
 }
 
 void VirtualKeyboardView::connectSignals() {
-    connect(this, SIGNAL(updatePreeditArea(const QString &)), rootObject(),
+    auto *rootObject = view_->rootObject();
+
+    connect(this, SIGNAL(updatePreeditArea(const QString &)), rootObject,
             SIGNAL(qmlUpdatePreedit(QString)));
     connect(this,
             SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)),
-            rootObject(), SIGNAL(qmlUpdateCandidateList(QVariant)));
-    connect(this, SIGNAL(reset()), rootObject(), SIGNAL(qmlReset()));
+            rootObject, SIGNAL(qmlUpdateCandidateList(QVariant)));
+    connect(this, SIGNAL(reset()), rootObject, SIGNAL(qmlReset()));
 
-    connect(this, SIGNAL(expansionModeEntered()), rootObject(),
+    connect(this, SIGNAL(expansionModeEntered()), rootObject,
             SIGNAL(qmlEnterExpansionPlacementMode()));
-    connect(this, SIGNAL(floatModeEntered()), rootObject(),
+    connect(this, SIGNAL(floatModeEntered()), rootObject,
             SIGNAL(qmlEnterFloatPlacementMode()));
 }

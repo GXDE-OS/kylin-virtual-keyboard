@@ -99,7 +99,7 @@ SwitchKey {
                     MouseArea{
                         anchors.fill: parent
                         onReleased: {
-                            virtualKeyboard.qmlSetCurrentIM(uniqueName)
+                            virtualKeyboard.setCurrentIM(uniqueName)
                             imList.close()
                         }
                     }
