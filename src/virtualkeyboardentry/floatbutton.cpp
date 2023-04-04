@@ -1,0 +1,133 @@
+#include "virtualkeyboardentry/floatbutton.h"
+
+#include <QBitmap>
+#include <QPainter>
+#include <QVariant>
+
+FloatButton::FloatButton(MouseClickedCallback mouseClickedCallback)
+    : mouseClickedCallback_(std::move(mouseClickedCallback)) {
+    // 主题框架默认禁用了move消息，因此，QPushButton需要禁用主题框架
+    setProperty("useStyleWindowManager", QVariant(false));
+    initStyle();
+}
+
+void FloatButton::move(int x, int y) { QPushButton::move(x, y); }
+
+void FloatButton::resize(int width, int height) {
+    setFixedSize(width, height);
+    setIconSize(size());
+    updateBorderRadius();
+    QPushButton::resize(width, height);
+}
+
+void FloatButton::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        startX_ = event->pos().x();
+        startY_ = event->pos().y();
+
+        startClickTimer();
+    }
+
+    QPushButton::mousePressEvent(event);
+}
+
+bool FloatButton::shouldPerformMouseClick() const {
+    return !isFloatButtonMoved() && clickTimer_->isActive();
+}
+
+void FloatButton::processMouseReleaseEvent() {
+    emit mouseReleased();
+
+    manhattonLength = 0;
+
+    startX_ = -1;
+    startY_ = -1;
+}
+
+void FloatButton::processMouseClickEvent() {
+    if (!mouseClickedCallback_) {
+        return;
+    }
+    mouseClickedCallback_();
+}
+
+void FloatButton::mouseReleaseEvent(QMouseEvent *event) {
+    QPushButton::mouseReleaseEvent(event);
+
+    if (event->button() != Qt::LeftButton) {
+        return;
+    }
+
+    bool couldPerformMouseClick = shouldPerformMouseClick();
+    stopClickTimer();
+
+    if (couldPerformMouseClick) {
+        processMouseClickEvent();
+
+        return;
+    }
+
+    if (isFloatButtonMoved()) {
+        processMouseReleaseEvent();
+    }
+}
+
+void FloatButton::updateManhattonLength(QMouseEvent *event) {
+    int offsetX = event->pos().x() - startX_;
+    int offsetY = event->pos().y() - startY_;
+
+    manhattonLength += std::abs(offsetX) + std::abs(offsetY);
+}
+
+bool FloatButton::isFloatButtonMoved() const {
+    return manhattonLength > manhattonLengthThreshold;
+}
+
+void FloatButton::processMouseMoveEvent(QMouseEvent *event) {
+    if (!isFloatButtonMoved()) {
+        updateManhattonLength(event);
+    } else {
+        emit mouseMoved(event->pos().x() - startX_, event->pos().y() - startY_);
+    }
+}
+
+void FloatButton::mouseMoveEvent(QMouseEvent *event) {
+    if (event->buttons() & Qt::LeftButton) {
+        processMouseMoveEvent(event);
+    }
+    QPushButton::mouseMoveEvent(event);
+}
+
+void FloatButton::initStyle() {
+    setAttribute(Qt::WA_TranslucentBackground);
+    setStyleSheet("QPushButton{border-image: "
+                  "url(:/floatbutton/img/floatbuttondefault.svg);}"
+                  "QPushButton:hover{border-image: "
+                  "url(:/floatbutton/img/floatbuttonhovered.svg);}"
+                  "QPushButton:pressed{border-image: "
+                  "url(:/floatbutton/img/floatbuttonpressed.svg);}");
+}
+
+void FloatButton::updateBorderRadius() {
+    int w = width();
+    int h = height();
+    QBitmap bmp(w, h);
+    bmp.fill();
+    QPainter p(&bmp);
+    p.setPen(Qt::NoPen);
+    p.setBrush(Qt::black);
+    p.drawRoundedRect(bmp.rect(), w, h);
+    setMask(bmp);
+}
+
+void FloatButton::startClickTimer() {
+    clickTimer_.reset(new QTimer());
+    clickTimer_->setSingleShot(true);
+    clickTimer_->start(clickTimeThreshold_);
+}
+
+void FloatButton::stopClickTimer() {
+    if (clickTimer_ == nullptr) {
+        clickTimer_.reset();
+    }
+}

@@ -23,6 +23,8 @@ SOURCES += \
     src/virtualkeyboard/virtualkeyboardmanager.cpp \
     src/virtualkeyboard/virtualkeyboardmodel.cpp \
     src/virtualkeyboard/virtualkeyboardview.cpp \
+    src/virtualkeyboardentry/floatbutton.cpp \
+    src/virtualkeyboardentry/floatbuttonmanager.cpp \
     src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp
 
 TRANSLATIONS = translations/translation.ts \
@@ -31,6 +33,7 @@ TRANSLATIONS = translations/translation.ts \
     translations/translation_zh_CN.ts
 
 RESOURCES += \
+    floatbutton.qrc \
     qml.qrc \
     translations.qrc
 
@@ -64,6 +67,9 @@ HEADERS += \
     src/virtualkeyboard/virtualkeyboardstrategy.h \
     src/virtualkeyboard/virtualkeyboardview.h \
     src/virtualkeyboardentry/fcitxvirtualkeyboardservice.h \
+    src/virtualkeyboardentry/floatbutton.h \
+    src/virtualkeyboardentry/floatbuttonmanager.h \
+    src/virtualkeyboardentry/floatbuttonstrategy.h \
     src/virtualkeyboardentry/virtualkeyboardtrayicon.h
 
 DISTFILES +=
