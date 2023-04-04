@@ -23,7 +23,7 @@ SOURCES += \
     src/virtualkeyboard/virtualkeyboardmanager.cpp \
     src/virtualkeyboard/virtualkeyboardmodel.cpp \
     src/virtualkeyboard/virtualkeyboardview.cpp \
-    src/virtualkeyboardentry/trayentry.cpp
+    src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp
 
 TRANSLATIONS = translations/translation.ts \
     translations/translation_bo_CN.ts \
@@ -64,7 +64,7 @@ HEADERS += \
     src/virtualkeyboard/virtualkeyboardstrategy.h \
     src/virtualkeyboard/virtualkeyboardview.h \
     src/virtualkeyboardentry/fcitxvirtualkeyboardservice.h \
-    src/virtualkeyboardentry/trayentry.h
+    src/virtualkeyboardentry/virtualkeyboardtrayicon.h
 
 DISTFILES +=
 
