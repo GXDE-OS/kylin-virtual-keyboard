@@ -57,10 +57,10 @@ void DBusService::UpdatePreeditArea(const QString &preeditText) {
 }
 
 void DBusService::UpdateCandidateArea(const QStringList &candidateTextList,
-                                      bool hasPrev, bool hasNext,
-                                      int pageIndex) {
-    virtualKeyboardManager_->updateCandidateArea(candidateTextList, hasPrev,
-                                                 hasNext, pageIndex);
+                                      bool hasPrev, bool hasNext, int pageIndex,
+                                      int globalCursorIndex /* = -1*/) {
+    virtualKeyboardManager_->updateCandidateArea(
+        candidateTextList, hasPrev, hasNext, pageIndex, globalCursorIndex);
 }
 
 void DBusService::NotifyIMActivated(const QString &uniqueName) {

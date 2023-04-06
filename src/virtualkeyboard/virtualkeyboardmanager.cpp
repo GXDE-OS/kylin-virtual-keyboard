@@ -75,9 +75,9 @@ void VirtualKeyboardManager::updatePreeditArea(const QString &preeditText) {
 
 void VirtualKeyboardManager::updateCandidateArea(
     const QStringList &candidateTextList, bool hasPrev, bool hasNext,
-    int pageIndex) {
-    emit model_->updateCandidateArea(QVariant(candidateTextList), hasPrev,
-                                     hasNext, pageIndex);
+    int pageIndex, int globalCursorIndex) {
+    model_->updateCandidateArea(QVariant(candidateTextList), hasPrev, hasNext,
+                                pageIndex, globalCursorIndex);
 }
 
 void VirtualKeyboardManager::notifyIMActivated(const QString &uniqueName) {
@@ -140,10 +140,8 @@ void VirtualKeyboardManager::initVirtualKeyboardModel() {
 void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
     connect(model_.get(), SIGNAL(updatePreeditArea(const QString &)),
             view_.get(), SIGNAL(updatePreeditArea(const QString &)));
-    connect(model_.get(),
-            SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)),
-            view_.get(),
-            SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)));
+    connect(model_.get(), SIGNAL(updateCandidateArea(const QVariant &, int)),
+            view_.get(), SIGNAL(updateCandidateArea(const QVariant &, int)));
     connect(model_.get(), SIGNAL(imDeactivated()), view_.get(),
             SIGNAL(imDeactivated()));
 

@@ -18,8 +18,8 @@ public:
 
 signals:
     void updatePreeditArea(const QString &preeditText);
-    void updateCandidateArea(const QVariant &candidateTextList, bool hasPrev,
-                             bool hasNext, int pageIndex);
+    void updateCandidateArea(const QVariant &candidateTextList,
+                             int globalCursorIndex);
     void imDeactivated();
 
     void expansionModeEntered();

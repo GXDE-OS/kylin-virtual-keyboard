@@ -52,9 +52,8 @@ void VirtualKeyboardView::connectSignals() {
 
     connect(this, SIGNAL(updatePreeditArea(const QString &)), rootObject,
             SIGNAL(qmlUpdatePreedit(QString)));
-    connect(this,
-            SIGNAL(updateCandidateArea(const QVariant &, bool, bool, int)),
-            rootObject, SIGNAL(qmlUpdateCandidateList(QVariant)));
+    connect(this, SIGNAL(updateCandidateArea(const QVariant &, int)),
+            rootObject, SIGNAL(qmlUpdateCandidateList(QVariant, int)));
     connect(this, SIGNAL(imDeactivated()), rootObject,
             SIGNAL(qmlImDeactivated()));
 

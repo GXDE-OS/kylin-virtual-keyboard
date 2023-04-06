@@ -32,6 +32,10 @@ public:
 
     void processVisibilityEvent(bool visible);
 
+    void updateCandidateArea(const QVariant &candidateTextList, bool hasPrev,
+                             bool hasNext, int pageIndex,
+                             int globalCursorIndex);
+
 public:
     Q_INVOKABLE void selectCandidate(int index);
     Q_INVOKABLE void setCurrentIM(const QString &imName);
@@ -42,8 +46,8 @@ signals:
     void updatePreeditCaret(int index);
     void updatePreeditArea(const QString &preeditText);
     // TODO(linyuxuan): 使用更准确的类型替换QVariant
-    void updateCandidateArea(const QVariant &candidateTextList, bool hasPrev,
-                             bool hasNext, int pageIndex);
+    void updateCandidateArea(const QVariant &candidateTextList,
+                             int globalCursorIndex);
     void imDeactivated();
 
     void backendConnectionDisconnected();

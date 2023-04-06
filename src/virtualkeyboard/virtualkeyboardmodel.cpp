@@ -14,6 +14,12 @@ void VirtualKeyboardModel::processVisibilityEvent(bool visible) {
                                                 visible);
 }
 
+void VirtualKeyboardModel::updateCandidateArea(
+    const QVariant &candidateTextList, bool /*hasPrev*/, bool /*hasNext*/,
+    int /*pageIndex*/, int globalCursorIndex) {
+    emit updateCandidateArea(candidateTextList, globalCursorIndex);
+}
+
 class FcitxQtIMInfo {
 public:
     friend QDBusArgument &operator<<(QDBusArgument &argument,

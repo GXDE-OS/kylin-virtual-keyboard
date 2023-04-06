@@ -12,6 +12,8 @@ Rectangle {
     property string preeditText
     //候选词
     property var candidateList
+    //候选列表高亮候选的索引
+    property int globalCursorIndex : -1
     //可用输入法列表
     property var currentIMList : model.currentIMList
     //当前输入法名称
@@ -123,7 +125,7 @@ Rectangle {
 
     //后台发送给前台的信号
     signal qmlUpdatePreedit(string preeditText)
-    signal qmlUpdateCandidateList(var candidateList)
+    signal qmlUpdateCandidateList(var candidateList, int globalCursorIndex)
     signal qmlImDeactivated()
     signal qmlEnterExpansionPlacementMode()
     signal qmlEnterFloatPlacementMode()
@@ -168,11 +170,12 @@ Rectangle {
         onQmlUpdatePreedit: (preeditText) => {
             virtualKeyboard.preeditText = preeditText
         }
-        onQmlUpdateCandidateList: (candidateList) => {
+        onQmlUpdateCandidateList: (candidateList, globalCursorIndex) => {
             if(candidateList.length === 0) {
                 showToolbar()
             } else {
                 virtualKeyboard.candidateList = candidateList
+                virtualKeyboard.globalCursorIndex = globalCursorIndex
                 showCandidateList()
             }
         }

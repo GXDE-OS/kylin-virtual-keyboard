@@ -27,7 +27,8 @@ public slots:
     void UpdatePreeditCaret(int preeditCursor);
     void UpdatePreeditArea(const QString &preeditText);
     void UpdateCandidateArea(const QStringList &candidateTextList, bool hasPrev,
-                             bool hasNext, int pageIndex);
+                             bool hasNext, int pageIndex,
+                             int globalCursorIndex = -1);
     void NotifyIMActivated(const QString &uniqueName);
     void NotifyIMDeactivated(const QString &uniqueName);
     void NotifyIMListChanged();

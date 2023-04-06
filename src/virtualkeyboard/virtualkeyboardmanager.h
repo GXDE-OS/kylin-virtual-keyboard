@@ -30,7 +30,8 @@ public:
     void updatePreeditCaret(int index);
     void updatePreeditArea(const QString &preeditText);
     void updateCandidateArea(const QStringList &candidateTextList, bool hasPrev,
-                             bool hasNext, int pageIndex);
+                             bool hasNext, int pageIndex,
+                             int globalCursorIndex);
     void notifyIMActivated(const QString &uniqueName);
     void notifyIMDeactivated(const QString &uniqueName);
     void notifyIMListChanged();
