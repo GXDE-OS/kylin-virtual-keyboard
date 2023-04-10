@@ -131,9 +131,6 @@ void FloatButtonManager::connectFloatButtonSignals() {
                     showFloatButton();
                 }
             });
-
-    connect(floatButtonView_.get(), &QPushButton::clicked, this,
-            [this]() { fcitxVirtualKeyboardService_.showVirtualKeyboard(); });
 }
 
 void FloatButtonManager::updateFloatButtonEnabled(bool enabled) {

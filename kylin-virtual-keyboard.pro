@@ -25,6 +25,7 @@ SOURCES += \
     src/virtualkeyboard/virtualkeyboardview.cpp \
     src/virtualkeyboardentry/floatbutton.cpp \
     src/virtualkeyboardentry/floatbuttonmanager.cpp \
+    src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp \
     src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp
 
 TRANSLATIONS = translations/translation.ts \
@@ -70,6 +71,7 @@ HEADERS += \
     src/virtualkeyboardentry/floatbutton.h \
     src/virtualkeyboardentry/floatbuttonmanager.h \
     src/virtualkeyboardentry/floatbuttonstrategy.h \
+    src/virtualkeyboardentry/virtualkeyboardentrymanager.h \
     src/virtualkeyboardentry/virtualkeyboardtrayicon.h
 
 DISTFILES +=

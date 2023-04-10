@@ -5,7 +5,7 @@
 #include "ipc/dbusservice.h"
 #include "ipc/fcitxvirtualkeyboardserviceproxy.h"
 #include "virtualkeyboard/virtualkeyboardmanager.h"
-#include "virtualkeyboardentry/virtualkeyboardtrayicon.h"
+#include "virtualkeyboardentry/virtualkeyboardentrymanager.h"
 
 int main(int argc, char *argv[]) {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -19,8 +19,8 @@ int main(int argc, char *argv[]) {
 
     VirtualKeyboardManager virtualKeyboardManager;
     FcitxVirtualKeyboardServiceProxy virtualKeyboardService;
-    VirtualKeyboardTrayIcon trayIcon(virtualKeyboardManager,
-                                     virtualKeyboardService);
+    VirtualKeyboardEntryManager entryManager(virtualKeyboardManager,
+                                             virtualKeyboardService);
 
     DBusService dbusService(&virtualKeyboardManager);
 

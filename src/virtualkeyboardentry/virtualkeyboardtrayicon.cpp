@@ -1,7 +1,8 @@
-#include <QIcon>
-
-#include "virtualkeyboard/virtualkeyboardmanager.h"
 #include "virtualkeyboardentry/virtualkeyboardtrayicon.h"
+
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QIcon>
 
 VirtualKeyboardTrayIcon::VirtualKeyboardTrayIcon(
     VirtualKeyboardManager &virtualKeyboardManager,
@@ -10,6 +11,13 @@ VirtualKeyboardTrayIcon::VirtualKeyboardTrayIcon(
       fcitxVirtualKeyboardService_(fcitxVirtualKeyboardService) {
     initTrayIcon();
 }
+
+void VirtualKeyboardTrayIcon::setContextMenu(
+    std::shared_ptr<QMenu> contextMenu) {
+    contextMenu_ = contextMenu;
+}
+
+void VirtualKeyboardTrayIcon::hideContextMenu() { contextMenu_->hide(); }
 
 void VirtualKeyboardTrayIcon::initTrayIcon() {
     trayIcon_ = new QSystemTrayIcon(this);
@@ -20,13 +28,40 @@ void VirtualKeyboardTrayIcon::initTrayIcon() {
     trayIcon_->setVisible(true);
 }
 
+void VirtualKeyboardTrayIcon::toggleVirtualKeyboard() {
+    if (virtualKeyboardManager_.isVirtualKeyboardVisible()) {
+        fcitxVirtualKeyboardService_.hideVirtualKeyboard();
+    } else {
+        fcitxVirtualKeyboardService_.showVirtualKeyboard();
+    }
+}
+
+void VirtualKeyboardTrayIcon::ensuareVirtualKeyboardInvisible() {
+    if (!virtualKeyboardManager_.isVirtualKeyboardVisible()) {
+        return;
+    }
+
+    virtualKeyboardManager_.hideVirtualKeyboard();
+}
+
+void VirtualKeyboardTrayIcon::showContextMenu() {
+    QSize menuSize = contextMenu_->sizeHint();
+    QPoint point = QCursor::pos();
+    QRect deskRect = QApplication::desktop()->availableGeometry();
+    contextMenu_->move(point.x(), deskRect.height() - menuSize.height());
+    contextMenu_->show();
+}
+
 void VirtualKeyboardTrayIcon::onTrayIconActivated(
     QSystemTrayIcon::ActivationReason reason) {
     switch (reason) {
     case QSystemTrayIcon::Trigger: {
-        virtualKeyboardManager_.isVirtualKeyboardVisible()
-            ? fcitxVirtualKeyboardService_.hideVirtualKeyboard()
-            : fcitxVirtualKeyboardService_.showVirtualKeyboard();
+        toggleVirtualKeyboard();
+        break;
+    };
+    case QSystemTrayIcon::Context: {
+        ensuareVirtualKeyboardInvisible();
+        showContextMenu();
         break;
     };
     default:
