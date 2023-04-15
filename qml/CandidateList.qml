@@ -29,6 +29,9 @@ Rectangle {
             delegate: Text {
                 id: candidate
                 text: modelData
+                color: ListView.isCurrentItem
+                       ? virtualKeyboard.candidateHighlightColor
+                       : virtualKeyboard.candidateDefaultColor
                 font.pointSize: virtualKeyboard.candidateFontSize
                 // TODO(litian): 使用更好的方式使候选词居中
                 /*设置居中，设置anchors.verticalCenter: parent.verticalCenter会报错

@@ -86,6 +86,8 @@ Rectangle {
 
     property color currentIMColor: "#328AF0"  /*输入法列表中当前输入法高亮*/
     property color candidateListBackgroundColor: "#DDE0E4"  /*候选词列表背景色*/
+    property color candidateDefaultColor: "#262626"  /*候选词默认前景色*/
+    property color candidateHighlightColor: "#3790FA"  /*候选词高亮前景色*/
     property color preeditBottomColor: "#E4E6E9" /*预编辑下方分割线颜色*/
     property color dragBarIndicatorColor: "#1D1D1D" /*拖拽条指示器颜色*/
 
