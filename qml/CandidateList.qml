@@ -25,6 +25,7 @@ Rectangle {
             orientation: ListView.Horizontal
             model: virtualKeyboard.candidateList
             spacing: 20
+            currentIndex: virtualKeyboard.globalCursorIndex
             delegate: Text {
                 id: candidate
                 text: modelData
