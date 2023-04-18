@@ -17,6 +17,10 @@ public:
     void fallInputArea();
 
 private:
+    void connectSignal();
+
+private:
+    QRect virtualKeyboardRect_;
     QWidget dummyWidget_;
     QTimer oneshotTimer_;
     // 经过指定时间之后顶起应用程序，避免桌面在虚拟键盘显示之前可见
