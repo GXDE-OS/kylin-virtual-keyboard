@@ -2,13 +2,13 @@
 
 // static
 const QString FcitxVirtualKeyboardServiceProxy::serviceName_ =
-    "org.fcitx.virtualkeyboard.service";
+    "org.fcitx.Fcitx5";
 // static
 const QString FcitxVirtualKeyboardServiceProxy::servicePath_ =
     "/virtualkeyboard";
 // static
 const QString FcitxVirtualKeyboardServiceProxy::serviceInterface_ =
-    "org.fcitx.virtualkeyboard.service";
+    "org.fcitx.Fcitx.VirtualKeyboard1";
 
 FcitxVirtualKeyboardServiceProxy::FcitxVirtualKeyboardServiceProxy() {
     virtualKeyboardService.reset(
