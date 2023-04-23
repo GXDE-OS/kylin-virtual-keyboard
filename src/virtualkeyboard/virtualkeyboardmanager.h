@@ -1,6 +1,7 @@
 #ifndef VIRTUALKEYBOARDMANAGER_H
 #define VIRTUALKEYBOARDMANAGER_H
 
+#include <functional>
 #include <memory>
 
 #include <QObject>
@@ -17,11 +18,16 @@ class VirtualKeyboardManager : public QObject {
     Q_OBJECT
 
 public:
-    explicit VirtualKeyboardManager(QObject *parent = nullptr);
+    using HideVirtualKeyboardCallback = std::function<void()>;
+
+public:
+    explicit VirtualKeyboardManager(
+        HideVirtualKeyboardCallback hideVirtualKeyboardCallback);
     ~VirtualKeyboardManager();
 
     void showVirtualKeyboard();
-    Q_INVOKABLE void hideVirtualKeyboard();
+
+    Q_INVOKABLE void hide();
     Q_INVOKABLE void flipPlacementMode();
     Q_INVOKABLE void moveBy(int offsetX, int offsetY);
     Q_INVOKABLE void endDrag();
@@ -44,6 +50,8 @@ public slots:
 
     void raiseInputArea();
     void fallInputArea();
+
+    void hideVirtualKeyboard();
 
 private:
     void initAppInputAreaManager();
@@ -70,6 +78,8 @@ private:
     std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager_ =
         nullptr;
     bool virtualkeyboardVisible_ = false;
+
+    HideVirtualKeyboardCallback hideVirtualKeyboardCallback_;
 
     ViewLocalSettings viewSettings_{"kylinsoft", "kylin virtual keyboard"};
 };

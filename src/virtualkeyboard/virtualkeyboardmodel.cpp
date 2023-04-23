@@ -9,11 +9,6 @@ VirtualKeyboardModel::VirtualKeyboardModel(QObject *parent) : QObject(parent) {
     initDBusServiceWatcher();
 }
 
-void VirtualKeyboardModel::processVisibilityEvent(bool visible) {
-    virtualKeyboardBackendInterface_->asyncCall("ProcessVisibilityEvent",
-                                                visible);
-}
-
 void VirtualKeyboardModel::updateCandidateArea(
     const QVariant &candidateTextList, bool /*hasPrev*/, bool /*hasNext*/,
     int /*pageIndex*/, int globalCursorIndex) {

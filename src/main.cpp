@@ -17,8 +17,10 @@ int main(int argc, char *argv[]) {
         app.installTranslator(&translator);
     }
 
-    VirtualKeyboardManager virtualKeyboardManager;
     FcitxVirtualKeyboardServiceProxy virtualKeyboardService;
+    VirtualKeyboardManager virtualKeyboardManager([&virtualKeyboardService]() {
+        virtualKeyboardService.hideVirtualKeyboard();
+    });
     VirtualKeyboardEntryManager entryManager(virtualKeyboardManager,
                                              virtualKeyboardService);
 

@@ -5,8 +5,9 @@
 
 #include "virtualkeyboardstrategy.h"
 
-VirtualKeyboardManager::VirtualKeyboardManager(QObject *parent)
-    : QObject(parent) {
+VirtualKeyboardManager::VirtualKeyboardManager(
+    HideVirtualKeyboardCallback hideVirtualKeyboardCallback)
+    : hideVirtualKeyboardCallback_(std::move(hideVirtualKeyboardCallback)) {
     initVirtualKeyboardModel();
 
     initAppInputAreaManager();
@@ -46,6 +47,14 @@ void VirtualKeyboardManager::hideVirtualKeyboard() {
     visibiltyChanged();
 }
 
+void VirtualKeyboardManager::hide() {
+    if (!hideVirtualKeyboardCallback_) {
+        return;
+    }
+
+    hideVirtualKeyboardCallback_();
+}
+
 void VirtualKeyboardManager::flipPlacementMode() {
     placementModeManager_->flipPlacementMode();
 }
@@ -58,7 +67,6 @@ void VirtualKeyboardManager::endDrag() { floatGeometryManager_->endDrag(); }
 
 void VirtualKeyboardManager::visibiltyChanged() {
     emit virtualKeyboardVisibiltyChanged(virtualkeyboardVisible_);
-    model_->processVisibilityEvent(virtualkeyboardVisible_);
 }
 
 bool VirtualKeyboardManager::isVirtualKeyboardVisible() const {

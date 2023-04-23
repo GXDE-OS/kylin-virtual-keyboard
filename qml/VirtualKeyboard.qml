@@ -146,7 +146,7 @@ Rectangle {
     }
 
     function hideVirtualKeyboard() {
-        manager.hideVirtualKeyboard()
+        manager.hide()
     }
 
     function flipPlacementMode() {

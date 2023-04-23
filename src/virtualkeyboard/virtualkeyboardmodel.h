@@ -30,8 +30,6 @@ public:
 
     void syncCurrentIMList();
 
-    void processVisibilityEvent(bool visible);
-
     void updateCandidateArea(const QVariant &candidateTextList, bool hasPrev,
                              bool hasNext, int pageIndex,
                              int globalCursorIndex);
