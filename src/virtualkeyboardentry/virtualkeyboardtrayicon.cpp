@@ -1,7 +1,5 @@
 #include "virtualkeyboardentry/virtualkeyboardtrayicon.h"
 
-#include <QApplication>
-#include <QDesktopWidget>
 #include <QIcon>
 
 VirtualKeyboardTrayIcon::VirtualKeyboardTrayIcon(
@@ -12,12 +10,13 @@ VirtualKeyboardTrayIcon::VirtualKeyboardTrayIcon(
     initTrayIcon();
 }
 
-void VirtualKeyboardTrayIcon::setContextMenu(
-    std::shared_ptr<QMenu> contextMenu) {
-    contextMenu_ = contextMenu;
+void VirtualKeyboardTrayIcon::setContextMenu(QMenu *contextMenu) {
+    trayIcon_->setContextMenu(contextMenu);
 }
 
-void VirtualKeyboardTrayIcon::hideContextMenu() { contextMenu_->hide(); }
+void VirtualKeyboardTrayIcon::hideContextMenu() {
+    trayIcon_->contextMenu()->hide();
+}
 
 void VirtualKeyboardTrayIcon::initTrayIcon() {
     trayIcon_ = new QSystemTrayIcon(this);
@@ -36,32 +35,11 @@ void VirtualKeyboardTrayIcon::toggleVirtualKeyboard() {
     }
 }
 
-void VirtualKeyboardTrayIcon::ensuareVirtualKeyboardInvisible() {
-    if (!virtualKeyboardManager_.isVirtualKeyboardVisible()) {
-        return;
-    }
-
-    virtualKeyboardManager_.hideVirtualKeyboard();
-}
-
-void VirtualKeyboardTrayIcon::showContextMenu() {
-    QSize menuSize = contextMenu_->sizeHint();
-    QPoint point = QCursor::pos();
-    QRect deskRect = QApplication::desktop()->availableGeometry();
-    contextMenu_->move(point.x(), deskRect.height() - menuSize.height());
-    contextMenu_->show();
-}
-
 void VirtualKeyboardTrayIcon::onTrayIconActivated(
     QSystemTrayIcon::ActivationReason reason) {
     switch (reason) {
     case QSystemTrayIcon::Trigger: {
         toggleVirtualKeyboard();
-        break;
-    };
-    case QSystemTrayIcon::Context: {
-        ensuareVirtualKeyboardInvisible();
-        showContextMenu();
         break;
     };
     default:

@@ -29,6 +29,7 @@ private:
     QMenu *createFloatButtonContextMenu(const QString &icon,
                                         const QString &text,
                                         MenuTriggeredCallback callback);
+    void initContextMenuSignalConnection(QMenu *menu);
     void initFloatButtonEnabledContextMenu();
     void initFloatButtonDisabledContextMenu();
     void initTrayIcon(
@@ -41,8 +42,8 @@ private:
 
     std::unique_ptr<VirtualKeyboardTrayIcon> trayIconEntry_ = nullptr;
 
-    std::shared_ptr<QMenu> floatButtonEnabledContextMenu_ = nullptr;
-    std::shared_ptr<QMenu> floatButtonDisabledContextMenu_ = nullptr;
+    std::unique_ptr<QMenu> floatButtonEnabledContextMenu_ = nullptr;
+    std::unique_ptr<QMenu> floatButtonDisabledContextMenu_ = nullptr;
 };
 
 #endif // VIRTUALKEYBOARDENTRYMANAGER_H

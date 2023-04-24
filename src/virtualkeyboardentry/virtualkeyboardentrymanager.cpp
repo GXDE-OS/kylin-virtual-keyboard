@@ -32,12 +32,14 @@ void VirtualKeyboardEntryManager::initTrayIcon(
 void VirtualKeyboardEntryManager::connectSignals() {
     connect(floatButtonManager_.get(), &FloatButtonManager::floatButtonEnabled,
             this, [this]() {
-                trayIconEntry_->setContextMenu(floatButtonEnabledContextMenu_);
+                trayIconEntry_->setContextMenu(
+                    floatButtonEnabledContextMenu_.get());
             });
 
     connect(floatButtonManager_.get(), &FloatButtonManager::floatButtonDisabled,
             this, [this]() {
-                trayIconEntry_->setContextMenu(floatButtonDisabledContextMenu_);
+                trayIconEntry_->setContextMenu(
+                    floatButtonDisabledContextMenu_.get());
             });
 
     connect(&virtualKeyboardManager_,
@@ -72,11 +74,18 @@ QMenu *VirtualKeyboardEntryManager::createFloatButtonContextMenu(
     return menu;
 }
 
+void VirtualKeyboardEntryManager::initContextMenuSignalConnection(QMenu *menu) {
+    connect(menu, &QMenu::aboutToShow, this,
+            [this]() { virtualKeyboardManager_.hide(); });
+}
+
 void VirtualKeyboardEntryManager::initFloatButtonEnabledContextMenu() {
     floatButtonEnabledContextMenu_.reset(createFloatButtonContextMenu(
         ":/floatbutton/img/disablefloatbutton.svg",
         tr("Disable the float button"),
         [this]() { floatButtonManager_->disableFloatButton(); }));
+
+    initContextMenuSignalConnection(floatButtonEnabledContextMenu_.get());
 }
 
 void VirtualKeyboardEntryManager::initFloatButtonDisabledContextMenu() {
@@ -84,4 +93,6 @@ void VirtualKeyboardEntryManager::initFloatButtonDisabledContextMenu() {
         ":/floatbutton/img/enablefloatbutton.svg",
         tr("Enable the float button"),
         [this]() { floatButtonManager_->enableFloatButton(); }));
+
+    initContextMenuSignalConnection(floatButtonDisabledContextMenu_.get());
 }
