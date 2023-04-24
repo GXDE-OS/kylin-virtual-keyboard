@@ -143,6 +143,9 @@ void VirtualKeyboardManager::initGeometryManager() {
 
 void VirtualKeyboardManager::initVirtualKeyboardModel() {
     model_.reset(new VirtualKeyboardModel(this));
+
+    connect(model_.get(), SIGNAL(backendConnectionDisconnected()), this,
+            SLOT(hideVirtualKeyboard()));
 }
 
 void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
@@ -152,9 +155,6 @@ void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
             view_.get(), SIGNAL(updateCandidateArea(const QVariant &, int)));
     connect(model_.get(), SIGNAL(imDeactivated()), view_.get(),
             SIGNAL(imDeactivated()));
-
-    connect(model_.get(), SIGNAL(backendConnectionDisconnected()), this,
-            SLOT(hideVirtualKeyboard()));
 }
 
 void VirtualKeyboardManager::connectGeometryManagerSignals() {
