@@ -12,9 +12,9 @@ VirtualKeyboardEntryManager::VirtualKeyboardEntryManager(
     : virtualKeyboardManager_(virtualKeyboardManager),
       floatButtonManager_(new FloatButtonManager(virtualKeyboardManager,
                                                  fcitxVirtualKeyboardService)) {
-    initFloatButtonEnabledContextMenu();
-    initFloatButtonDisabledContextMenu();
     initTrayIcon(fcitxVirtualKeyboardService);
+
+    initFloatButtonContextMenuAndAction();
 
     connectSignals();
 
@@ -29,17 +29,42 @@ void VirtualKeyboardEntryManager::initTrayIcon(
         virtualKeyboardManager_, fcitxVirtualKeyboardService));
 }
 
+void VirtualKeyboardEntryManager::initFloatButtonContextMenuAndAction() {
+    floatButtonContextMenu_.reset(new QMenu);
+    floatButtonContextMenuAction_.reset(new QAction);
+
+    floatButtonContextMenu_->addAction(floatButtonContextMenuAction_.get());
+
+    trayIconEntry_->setContextMenu(floatButtonContextMenu_.get());
+
+    connect(floatButtonContextMenu_.get(), &QMenu::aboutToShow, this,
+            [this]() { virtualKeyboardManager_.hide(); });
+
+    connect(floatButtonContextMenuAction_.get(), &QAction::triggered, this,
+            [this](bool) {
+                if (!actionTriggeredCallback_) {
+                    return;
+                }
+
+                actionTriggeredCallback_();
+            });
+}
+
 void VirtualKeyboardEntryManager::connectSignals() {
     connect(floatButtonManager_.get(), &FloatButtonManager::floatButtonEnabled,
             this, [this]() {
-                trayIconEntry_->setContextMenu(
-                    floatButtonEnabledContextMenu_.get());
+                updateFloatButtonContextMenuAction(
+                    ":/floatbutton/img/disablefloatbutton.svg",
+                    tr("Disable the float button"),
+                    [this]() { floatButtonManager_->disableFloatButton(); });
             });
 
     connect(floatButtonManager_.get(), &FloatButtonManager::floatButtonDisabled,
             this, [this]() {
-                trayIconEntry_->setContextMenu(
-                    floatButtonDisabledContextMenu_.get());
+                updateFloatButtonContextMenuAction(
+                    ":/floatbutton/img/enablefloatbutton.svg",
+                    tr("Enable the float button"),
+                    [this]() { floatButtonManager_->enableFloatButton(); });
             });
 
     connect(&virtualKeyboardManager_,
@@ -53,46 +78,11 @@ void VirtualKeyboardEntryManager::connectSignals() {
             });
 }
 
-QMenu *VirtualKeyboardEntryManager::createFloatButtonContextMenu(
-    const QString &icon, const QString &text, MenuTriggeredCallback callback) {
-    QMenu *menu = new QMenu();
+void VirtualKeyboardEntryManager::updateFloatButtonContextMenuAction(
+    const QString &icon, const QString &text,
+    ActionTriggeredCallback callback) {
+    floatButtonContextMenuAction_->setIcon(QIcon(icon));
+    floatButtonContextMenuAction_->setText(text);
 
-    QAction *action = new QAction(menu);
-    action->setIcon(QIcon(icon));
-    action->setText(text);
-
-    menu->addAction(action);
-
-    connect(action, &QAction::triggered, this, [callback](bool) {
-        if (!callback) {
-            return;
-        }
-
-        callback();
-    });
-
-    return menu;
-}
-
-void VirtualKeyboardEntryManager::initContextMenuSignalConnection(QMenu *menu) {
-    connect(menu, &QMenu::aboutToShow, this,
-            [this]() { virtualKeyboardManager_.hide(); });
-}
-
-void VirtualKeyboardEntryManager::initFloatButtonEnabledContextMenu() {
-    floatButtonEnabledContextMenu_.reset(createFloatButtonContextMenu(
-        ":/floatbutton/img/disablefloatbutton.svg",
-        tr("Disable the float button"),
-        [this]() { floatButtonManager_->disableFloatButton(); }));
-
-    initContextMenuSignalConnection(floatButtonEnabledContextMenu_.get());
-}
-
-void VirtualKeyboardEntryManager::initFloatButtonDisabledContextMenu() {
-    floatButtonDisabledContextMenu_.reset(createFloatButtonContextMenu(
-        ":/floatbutton/img/enablefloatbutton.svg",
-        tr("Enable the float button"),
-        [this]() { floatButtonManager_->enableFloatButton(); }));
-
-    initContextMenuSignalConnection(floatButtonDisabledContextMenu_.get());
+    actionTriggeredCallback_ = std::move(callback);
 }

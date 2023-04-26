@@ -22,18 +22,17 @@ public:
     ~VirtualKeyboardEntryManager() override;
 
 private:
-    using MenuTriggeredCallback = std::function<void()>;
+    using ActionTriggeredCallback = std::function<void()>;
 
 private:
     void connectSignals();
-    QMenu *createFloatButtonContextMenu(const QString &icon,
-                                        const QString &text,
-                                        MenuTriggeredCallback callback);
-    void initContextMenuSignalConnection(QMenu *menu);
-    void initFloatButtonEnabledContextMenu();
-    void initFloatButtonDisabledContextMenu();
     void initTrayIcon(
         const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService);
+
+    void initFloatButtonContextMenuAndAction();
+    void updateFloatButtonContextMenuAction(const QString &icon,
+                                            const QString &text,
+                                            ActionTriggeredCallback callback);
 
 private:
     VirtualKeyboardManager &virtualKeyboardManager_;
@@ -42,8 +41,9 @@ private:
 
     std::unique_ptr<VirtualKeyboardTrayIcon> trayIconEntry_ = nullptr;
 
-    std::unique_ptr<QMenu> floatButtonEnabledContextMenu_ = nullptr;
-    std::unique_ptr<QMenu> floatButtonDisabledContextMenu_ = nullptr;
+    std::unique_ptr<QMenu> floatButtonContextMenu_ = nullptr;
+    std::unique_ptr<QAction> floatButtonContextMenuAction_ = nullptr;
+    ActionTriggeredCallback actionTriggeredCallback_;
 };
 
 #endif // VIRTUALKEYBOARDENTRYMANAGER_H
