@@ -20,7 +20,7 @@ void VirtualKeyboardTrayIcon::hideContextMenu() {
 
 void VirtualKeyboardTrayIcon::initTrayIcon() {
     trayIcon_ = new QSystemTrayIcon(this);
-    trayIcon_->setIcon(QIcon::fromTheme("input-keyboard-symbolic"));
+    trayIcon_->setIcon(QIcon::fromTheme("ukui-virtual-keyboard-symbolic"));
     trayIcon_->setToolTip(tr("kylin-virtual-keyboard"));
     connect(trayIcon_, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(onTrayIconActivated(QSystemTrayIcon::ActivationReason)));
