@@ -52,7 +52,7 @@ private:
     int period_ = LEAST_PERIOD;
     QTimer timer_;
 
-    std::shared_ptr<State> currentSate_ = nullptr;
+    std::shared_ptr<State> currentState_ = nullptr;
     std::shared_ptr<State> idleState_ = nullptr;
     std::shared_ptr<State> activationState_ = nullptr;
     std::shared_ptr<State> deactivationState_ = nullptr;

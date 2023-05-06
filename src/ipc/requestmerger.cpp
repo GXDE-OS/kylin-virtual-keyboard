@@ -115,16 +115,16 @@ void RequestMerger::init(ExecuteCallback activationExecuteCallback,
     updateCurrentState(idleState_);
 }
 
-void RequestMerger::activate() { currentSate_->activate(); }
+void RequestMerger::activate() { currentState_->activate(); }
 
-void RequestMerger::deactivate() { currentSate_->deactivate(); }
+void RequestMerger::deactivate() { currentState_->deactivate(); }
 
 void RequestMerger::start() { timer_.start(period_); }
 
 void RequestMerger::stop() { timer_.stop(); }
 
 void RequestMerger::updateCurrentState(std::shared_ptr<State> newState) {
-    currentSate_ = newState;
+    currentState_ = newState;
 }
 
 void RequestMerger::enterIdleState() {
@@ -140,4 +140,4 @@ void RequestMerger::enterDeactivationState() {
     start();
 }
 
-void RequestMerger::execute() { currentSate_->execute(); }
+void RequestMerger::execute() { currentState_->execute(); }
