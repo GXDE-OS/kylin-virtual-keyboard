@@ -1,11 +1,16 @@
 #ifndef VIEWLOCALSETTINGS_H
 #define VIEWLOCALSETTINGS_H
 
-#include <QSettings>
+#include <QFutureWatcher>
+#include <QMap>
 
 #include "localsettings.h"
 
 class ViewLocalSettings : public LocalSettings {
+public:
+    using SettingMap = QMap<QString, QVariant>;
+    using GroupSettingMap = QMap<QString, SettingMap>;
+
 public:
     ViewLocalSettings(const QString &organization, const QString &application);
     ~ViewLocalSettings() override;
@@ -16,7 +21,14 @@ public:
                   const QVariant &value) override;
 
 private:
-    QSettings settings;
+    void saveSettingsAsync();
+
+private:
+    const QString organization_;
+    const QString application_;
+
+    GroupSettingMap groupSettingMap_;
+    QFutureWatcher<void> futureWatcher_;
 };
 
 #endif // VIEWLOCALSETTINGS_H

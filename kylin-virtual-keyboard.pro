@@ -1,4 +1,5 @@
 QT += quick
+QT += concurrent
 QT += dbus
 QT += core gui
 QT += KWindowSystem
