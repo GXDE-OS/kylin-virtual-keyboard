@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QSize>
 #include <QTimer>
+#include <QPaintEvent>
 
 class FloatButton : public QPushButton {
     Q_OBJECT
@@ -31,6 +32,7 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
 private:
     bool shouldPerformMouseClick() const;
@@ -42,7 +44,6 @@ private:
     bool isFloatButtonMoved() const;
 
     void initStyle();
-    void updateBorderRadius();
 
     void startClickTimer();
     void stopClickTimer();

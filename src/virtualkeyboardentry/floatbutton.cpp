@@ -16,7 +16,6 @@ void FloatButton::move(int x, int y) { QPushButton::move(x, y); }
 void FloatButton::resize(int width, int height) {
     setFixedSize(width, height);
     setIconSize(size());
-    updateBorderRadius();
     QPushButton::resize(width, height);
 }
 
@@ -98,6 +97,21 @@ void FloatButton::mouseMoveEvent(QMouseEvent *event) {
     QPushButton::mouseMoveEvent(event);
 }
 
+void FloatButton::paintEvent(QPaintEvent *event) {
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setBrush(QBrush(Qt::white)); 
+    painter.setPen(Qt::transparent); 
+    
+    QRect rect = this->rect(); 
+    rect.setWidth(rect.width()); 
+    rect.setHeight(rect.height()); 
+
+    painter.drawEllipse(rect); 
+    
+    QPushButton::paintEvent(event);
+}
+
 void FloatButton::initStyle() {
     setAttribute(Qt::WA_TranslucentBackground);
     setStyleSheet("QPushButton{border-image: "
@@ -106,18 +120,6 @@ void FloatButton::initStyle() {
                   "url(:/floatbutton/img/floatbuttonhovered.svg);}"
                   "QPushButton:pressed{border-image: "
                   "url(:/floatbutton/img/floatbuttonpressed.svg);}");
-}
-
-void FloatButton::updateBorderRadius() {
-    int w = width();
-    int h = height();
-    QBitmap bmp(w, h);
-    bmp.fill();
-    QPainter p(&bmp);
-    p.setPen(Qt::NoPen);
-    p.setBrush(Qt::black);
-    p.drawRoundedRect(bmp.rect(), w, h);
-    setMask(bmp);
 }
 
 void FloatButton::startClickTimer() {
