@@ -35,9 +35,11 @@ const QString floatButtonEnabledKey = "floatButtonEnabled";
 
 FloatButtonManager::FloatButtonManager(
     const VirtualKeyboardManager &virtualKeyboardManager,
-    const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService)
+    const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService,
+    LocalSettings &floatButtonSettings)
     : virtualKeyboardManager_(virtualKeyboardManager),
-      fcitxVirtualKeyboardService_(fcitxVirtualKeyboardService) {
+      fcitxVirtualKeyboardService_(fcitxVirtualKeyboardService),
+      floatButtonSettings_(floatButtonSettings) {
     initGeometryManager();
 
     initInternalSignalConnections();

@@ -28,7 +28,8 @@ VirtualKeyboardEntryManager::VirtualKeyboardEntryManager(
     const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService)
     : virtualKeyboardManager_(virtualKeyboardManager),
       floatButtonManager_(new FloatButtonManager(virtualKeyboardManager,
-                                                 fcitxVirtualKeyboardService)) {
+                                                 fcitxVirtualKeyboardService,
+                                                 floatButtonSettings_)) {
     initTrayIcon(fcitxVirtualKeyboardService);
 
     initFloatButtonContextMenuAndAction();

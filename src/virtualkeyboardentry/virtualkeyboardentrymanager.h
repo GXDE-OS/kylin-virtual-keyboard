@@ -25,6 +25,7 @@
 #include <QObject>
 
 #include "ipc/fcitxvirtualkeyboardserviceproxy.h"
+#include "localsettings/viewlocalsettings.h"
 #include "virtualkeyboard/virtualkeyboardmanager.h"
 #include "virtualkeyboardentry/floatbuttonmanager.h"
 #include "virtualkeyboardentry/virtualkeyboardtrayicon.h"
@@ -54,6 +55,7 @@ private:
 private:
     VirtualKeyboardManager &virtualKeyboardManager_;
 
+    ViewLocalSettings floatButtonSettings_{"kylinsoft", "kylin float button"};
     std::unique_ptr<FloatButtonManager> floatButtonManager_ = nullptr;
 
     std::unique_ptr<VirtualKeyboardTrayIcon> trayIconEntry_ = nullptr;

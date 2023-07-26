@@ -24,7 +24,7 @@
 #include <QObject>
 #include <QPushButton>
 
-#include "localsettings/viewlocalsettings.h"
+#include "localsettings/localsettings.h"
 #include "virtualkeyboard/virtualkeyboardmanager.h"
 #include "virtualkeyboardentry/fcitxvirtualkeyboardservice.h"
 #include "virtualkeyboardentry/floatbutton.h"
@@ -35,7 +35,8 @@ class FloatButtonManager : public QObject {
 public:
     FloatButtonManager(
         const VirtualKeyboardManager &virtualKeyboardManager,
-        const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService);
+        const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService,
+        LocalSettings &floatButtonSettings);
     ~FloatButtonManager() override = default;
 
     void loadFloatButtonAvailability();
@@ -73,10 +74,10 @@ private:
 private:
     bool floatButtonEnabled_ = true;
 
-    ViewLocalSettings floatButtonSettings_{"kylinsoft", "kylin float button"};
-
     const VirtualKeyboardManager &virtualKeyboardManager_;
     const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService_;
+
+    LocalSettings &floatButtonSettings_;
 
     std::unique_ptr<FloatButton> floatButton_ = nullptr;
 
