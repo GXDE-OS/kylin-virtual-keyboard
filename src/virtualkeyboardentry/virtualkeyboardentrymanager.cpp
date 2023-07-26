@@ -47,8 +47,8 @@ void VirtualKeyboardEntryManager::initTrayIcon(
 }
 
 void VirtualKeyboardEntryManager::initFloatButtonContextMenuAndAction() {
-    floatButtonContextMenu_.reset(new QMenu);
-    floatButtonContextMenuAction_.reset(new QAction);
+    floatButtonContextMenu_.reset(new QMenu());
+    floatButtonContextMenuAction_.reset(new QAction());
 
     floatButtonContextMenu_->addAction(floatButtonContextMenuAction_.get());
 
