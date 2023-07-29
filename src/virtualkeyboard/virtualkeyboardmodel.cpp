@@ -32,56 +32,6 @@ void VirtualKeyboardModel::updateCandidateArea(
     emit updateCandidateArea(candidateTextList, globalCursorIndex);
 }
 
-class FcitxQtIMInfo {
-public:
-    friend QDBusArgument &operator<<(QDBusArgument &argument,
-                                     const FcitxQtIMInfo &arg);
-    friend const QDBusArgument &operator>>(const QDBusArgument &argument,
-                                           FcitxQtIMInfo &arg);
-    static void registerDBusMetaType();
-    void setUniqueName(const QString &uniqueName) { uniqueName_ = uniqueName; }
-    void setLocalName(const QString &localName) { localName_ = localName; }
-    void setLabel(const QString &label) { label_ = label; }
-    const QString &getUniqueName() const { return uniqueName_; }
-    const QString &getLocalName() const { return localName_; }
-    const QString &getLabel() const { return label_; }
-
-private:
-    QString uniqueName_;
-    QString localName_;
-    QString label_;
-};
-
-QDBusArgument &operator<<(QDBusArgument &argument, const FcitxQtIMInfo &arg) {
-    argument.beginStructure();
-    argument << arg.uniqueName_;
-    argument << arg.localName_;
-    argument << arg.label_;
-    argument.endStructure();
-    return argument;
-}
-
-const QDBusArgument &operator>>(const QDBusArgument &argument,
-                                FcitxQtIMInfo &arg) {
-    QString uniqueName;
-    QString localName;
-    QString label;
-    argument.beginStructure();
-    argument >> uniqueName >> localName >> label;
-    argument.endStructure();
-    arg.setUniqueName(uniqueName);
-    arg.setLocalName(localName);
-    arg.setLabel(label);
-    return argument;
-}
-
-Q_DECLARE_METATYPE(FcitxQtIMInfo)
-
-void FcitxQtIMInfo::registerDBusMetaType() {
-    qDBusRegisterMetaType<FcitxQtIMInfo>();
-    qDBusRegisterMetaType<QList<FcitxQtIMInfo>>();
-}
-
 void VirtualKeyboardModel::selectCandidate(int index) {
     virtualKeyboardBackendInterface_->asyncCall("SelectCandidate", index);
 }
