@@ -99,6 +99,8 @@ void VirtualKeyboardModel::processKeyEvent(const QString & /*keyval*/,
 }
 
 void VirtualKeyboardModel::initFcitx5Controller() {
+    fcitx::registerFcitxQtDBusTypes();
+
     fcitx5Controller_.reset(new fcitx::FcitxQtControllerProxy(
         "org.fcitx.Fcitx5", "/controller", QDBusConnection::sessionBus()));
 }
@@ -180,17 +182,15 @@ void VirtualKeyboardModel::setCurrentIMList(
 }
 
 void VirtualKeyboardModel::syncCurrentIMList() {
-    FcitxQtIMInfo::registerDBusMetaType();
-    QDBusPendingReply<QList<FcitxQtIMInfo>> reply =
-        virtualKeyboardBackendInterface_->asyncCall("CurrentIMList");
+    auto reply = fcitx5Controller_->FullInputMethodGroupInfo("");
     reply.waitForFinished();
 
-    auto items = reply.value();
-
     QStringList stringList;
-    for (const auto &imInfo : items) {
-        stringList.append(imInfo.getUniqueName() + "|" + imInfo.getLocalName() +
-                          "|" + imInfo.getLabel());
+    auto inputMethodEntryList = reply.argumentAt<4>();
+    for (const auto &inputMethodEntry : inputMethodEntryList) {
+        stringList.append(inputMethodEntry.uniqueName() + "|" +
+                          inputMethodEntry.name() + "|" +
+                          inputMethodEntry.label());
     }
 
     setCurrentIMList(QVariant(stringList));
