@@ -39,7 +39,7 @@ public:
         LocalSettings &floatButtonSettings);
     ~FloatButtonManager() override = default;
 
-    void loadFloatButtonAvailability();
+    void updateFloatButtonEnabled(bool enabled);
 
     void enableFloatButton();
     void disableFloatButton();
@@ -66,13 +66,10 @@ private:
     void showFloatButton();
     void hideFloatButton();
 
-    void updateFloatButtonEnabled(bool enabled);
     void setFloatButtonEnabled(bool enabled);
 
-    void saveFloatButtonAvailablity();
-
 private:
-    bool floatButtonEnabled_ = true;
+    bool floatButtonEnabled_ = false;
 
     const VirtualKeyboardManager &virtualKeyboardManager_;
     const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService_;

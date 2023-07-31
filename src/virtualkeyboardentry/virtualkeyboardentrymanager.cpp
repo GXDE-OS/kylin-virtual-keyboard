@@ -22,6 +22,10 @@
 
 #include "geometrymanager/geometrymanager.h"
 #include "virtualkeyboardentry/floatbuttonstrategy.h"
+#include "virtualkeyboardsettings/virtualkeyboardsettings.h"
+
+static const QString floatButtonGroup = "floatButton";
+static const QString floatButtonEnabledKey = "floatButtonEnabled";
 
 VirtualKeyboardEntryManager::VirtualKeyboardEntryManager(
     VirtualKeyboardManager &virtualKeyboardManager,
@@ -30,13 +34,16 @@ VirtualKeyboardEntryManager::VirtualKeyboardEntryManager(
       floatButtonManager_(new FloatButtonManager(virtualKeyboardManager,
                                                  fcitxVirtualKeyboardService,
                                                  floatButtonSettings_)) {
+    moveValueFromLocalSettings();
+
     initTrayIcon(fcitxVirtualKeyboardService);
 
     initFloatButtonContextMenuAndAction();
 
     connectSignals();
 
-    floatButtonManager_->loadFloatButtonAvailability();
+    floatButtonManager_->updateFloatButtonEnabled(
+        VirtualKeyboardSettings::getInstance().isFloatButtonEnabled());
 }
 
 VirtualKeyboardEntryManager::~VirtualKeyboardEntryManager() = default;
@@ -73,16 +80,20 @@ void VirtualKeyboardEntryManager::connectSignals() {
             this, [this]() {
                 updateFloatButtonContextMenuAction(
                     ":/floatbutton/img/disablefloatbutton.svg",
-                    tr("Disable the float button"),
-                    [this]() { floatButtonManager_->disableFloatButton(); });
+                    tr("Disable the float button"), [this]() {
+                        VirtualKeyboardSettings::getInstance()
+                            .updateFloatButtonAvailability(false);
+                    });
             });
 
     connect(floatButtonManager_.get(), &FloatButtonManager::floatButtonDisabled,
             this, [this]() {
                 updateFloatButtonContextMenuAction(
                     ":/floatbutton/img/enablefloatbutton.svg",
-                    tr("Enable the float button"),
-                    [this]() { floatButtonManager_->enableFloatButton(); });
+                    tr("Enable the float button"), [this]() {
+                        VirtualKeyboardSettings::getInstance()
+                            .updateFloatButtonAvailability(true);
+                    });
             });
 
     connect(&virtualKeyboardManager_,
@@ -94,6 +105,14 @@ void VirtualKeyboardEntryManager::connectSignals() {
 
                 trayIconEntry_->hideContextMenu();
             });
+
+    connect(&VirtualKeyboardSettings::getInstance(),
+            &VirtualKeyboardSettings::requestFloatButtonEnabled, this,
+            [this]() { floatButtonManager_->enableFloatButton(); });
+
+    connect(&VirtualKeyboardSettings::getInstance(),
+            &VirtualKeyboardSettings::requestFloatButtonDisabled, this,
+            [this]() { floatButtonManager_->disableFloatButton(); });
 }
 
 void VirtualKeyboardEntryManager::updateFloatButtonContextMenuAction(
@@ -103,4 +122,18 @@ void VirtualKeyboardEntryManager::updateFloatButtonContextMenuAction(
     floatButtonContextMenuAction_->setText(text);
 
     actionTriggeredCallback_ = std::move(callback);
+}
+
+void VirtualKeyboardEntryManager::moveValueFromLocalSettings() {
+    if (!floatButtonSettings_.contains(floatButtonEnabledKey)) {
+        return;
+    }
+
+    const bool value =
+        floatButtonSettings_.getValue(floatButtonGroup, floatButtonEnabledKey)
+            .value<bool>();
+
+    floatButtonSettings_.remove(floatButtonEnabledKey);
+
+    VirtualKeyboardSettings::getInstance().updateFloatButtonAvailability(value);
 }

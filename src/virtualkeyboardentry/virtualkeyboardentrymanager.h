@@ -47,6 +47,8 @@ private:
     void initTrayIcon(
         const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService);
 
+    void moveValueFromLocalSettings();
+
     void initFloatButtonContextMenuAndAction();
     void updateFloatButtonContextMenuAction(const QString &icon,
                                             const QString &text,

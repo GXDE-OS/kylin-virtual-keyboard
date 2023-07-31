@@ -28,11 +28,6 @@
 #include "geometrymanager/geometrymanager.h"
 #include "virtualkeyboardentry/floatbuttonstrategy.h"
 
-// static
-const QString floatButtonGroup = "floatButton";
-// static
-const QString floatButtonEnabledKey = "floatButtonEnabled";
-
 FloatButtonManager::FloatButtonManager(
     const VirtualKeyboardManager &virtualKeyboardManager,
     const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService,
@@ -44,14 +39,6 @@ FloatButtonManager::FloatButtonManager(
 
     initInternalSignalConnections();
     initScreenSignalConnections();
-}
-
-void FloatButtonManager::loadFloatButtonAvailability() {
-    const bool floatButtonEnabled =
-        floatButtonSettings_
-            .getValue(floatButtonGroup, floatButtonEnabledKey, true)
-            .value<bool>();
-    updateFloatButtonEnabled(floatButtonEnabled);
 }
 
 void FloatButtonManager::enableFloatButton() { setFloatButtonEnabled(true); }
@@ -168,11 +155,4 @@ void FloatButtonManager::setFloatButtonEnabled(bool enabled) {
     }
 
     updateFloatButtonEnabled(enabled);
-
-    saveFloatButtonAvailablity();
-}
-
-void FloatButtonManager::saveFloatButtonAvailablity() {
-    floatButtonSettings_.setValue(floatButtonGroup, floatButtonEnabledKey,
-                                  floatButtonEnabled_);
 }
