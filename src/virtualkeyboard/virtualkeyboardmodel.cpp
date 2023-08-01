@@ -134,6 +134,10 @@ void VirtualKeyboardModel::setCurrentIMList(
 void VirtualKeyboardModel::syncCurrentIMList() {
     auto reply = fcitx5Controller_->FullInputMethodGroupInfo("");
     reply.waitForFinished();
+    if (!reply.isValid()) {
+        qWarning() << reply.error();
+        return;
+    }
 
     QStringList stringList;
     auto inputMethodEntryList = reply.argumentAt<4>();
