@@ -32,10 +32,14 @@ public:
     ViewLocalSettings(const QString &organization, const QString &application);
     ~ViewLocalSettings() override;
 
+    QVariant getValue(const QString &group, const QString &key);
+
     QVariant getValue(const QString &group, const QString &key,
                       const QVariant &defaultValue) override;
     void setValue(const QString &group, const QString &key,
                   const QVariant &value) override;
+    void remove(const QString &key);
+    bool contains(const QString &key) const;
 
 private:
     void saveSettingsAsync();

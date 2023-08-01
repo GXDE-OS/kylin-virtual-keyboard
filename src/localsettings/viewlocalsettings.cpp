@@ -61,6 +61,18 @@ ViewLocalSettings::ViewLocalSettings(const QString &organization,
 
 ViewLocalSettings::~ViewLocalSettings() = default;
 
+QVariant ViewLocalSettings::getValue(const QString &group, const QString &key) {
+    QSettings settings(organization_, application_);
+
+    settings.beginGroup(group);
+
+    auto value = settings.value(key);
+
+    settings.endGroup();
+
+    return value;
+}
+
 QVariant
 ViewLocalSettings::getValue(const QString &group, const QString &key,
                             const QVariant &defaultValue /*= QVariant()*/) {
@@ -91,4 +103,16 @@ void ViewLocalSettings::saveSettingsAsync() {
         QtConcurrent::run([this, oneshotGroupSettingMap]() {
             saveSettings(organization_, application_, oneshotGroupSettingMap);
         }));
+}
+
+void ViewLocalSettings::remove(const QString &key) {
+    QSettings settings(organization_, application_);
+
+    settings.remove(key);
+}
+
+bool ViewLocalSettings::contains(const QString &key) const {
+    QSettings settings(organization_, application_);
+
+    return settings.contains(key);
 }
