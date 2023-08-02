@@ -35,6 +35,8 @@ private:
     VirtualKeyboardSettings();
     ~VirtualKeyboardSettings() override = default;
 
+    Q_DISABLE_COPY(VirtualKeyboardSettings)
+
     void init();
     void emitFloatButtonAvailabilityChanged();
 

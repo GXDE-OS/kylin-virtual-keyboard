@@ -23,7 +23,6 @@
 #include "ipc/fcitxvirtualkeyboardserviceproxy.h"
 #include "virtualkeyboard/virtualkeyboardmanager.h"
 #include "virtualkeyboardentry/virtualkeyboardentrymanager.h"
-#include "virtualkeyboardsettings/virtualkeyboardsettings.h"
 
 int main(int argc, char *argv[]) {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
