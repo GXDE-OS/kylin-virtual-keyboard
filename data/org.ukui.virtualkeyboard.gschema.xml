@@ -1,0 +1,9 @@
+<schemalist gettext-domain="kylin-virtual-keyboard">
+  <schema id="org.ukui.virtualkeyboard" path="/org/ukui/virtualkeyboard/">
+    <key name="float-button-enabled" type="b">
+      <default>false</default>
+      <summary>Controls the availability of float button</summary>
+      <description>Controls the availability of float button</description>
+    </key>
+  </schema>
+</schemalist>

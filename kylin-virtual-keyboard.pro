@@ -3,6 +3,9 @@ QT += concurrent
 QT += dbus
 QT += core gui
 QT += KWindowSystem
+CONFIG += link_pkgconfig
+PKGCONFIG += gsettings-qt
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -27,7 +30,8 @@ SOURCES += \
     src/virtualkeyboardentry/floatbutton.cpp \
     src/virtualkeyboardentry/floatbuttonmanager.cpp \
     src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp \
-    src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp
+    src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp \
+    src/virtualkeyboardsettings/virtualkeyboardsettings.cpp 
 
 TRANSLATIONS = translations/translation.ts \
     translations/translation_bo_CN.ts \
@@ -73,9 +77,14 @@ HEADERS += \
     src/virtualkeyboardentry/floatbuttonmanager.h \
     src/virtualkeyboardentry/floatbuttonstrategy.h \
     src/virtualkeyboardentry/virtualkeyboardentrymanager.h \
-    src/virtualkeyboardentry/virtualkeyboardtrayicon.h
+    src/virtualkeyboardentry/virtualkeyboardtrayicon.h \
+    src/virtualkeyboardsettings/virtualkeyboardsettings.h 
 
 DISTFILES +=
 
 LIBS += -lFcitx5Qt5DBusAddons
+
+INSTALLS += target_gsettings_file
+target_gsettings_file.path = /usr/share/glib-2.0/schemas/
+target_gsettings_file.files += data/org.ukui.virtualkeyboard.gschema.xml
 
