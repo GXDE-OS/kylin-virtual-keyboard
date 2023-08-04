@@ -38,7 +38,7 @@ VirtualKeyboardView::~VirtualKeyboardView() {
         view_->hide();
     }
 
-    view_.release()->deleteLater();
+    view_.reset();
 }
 
 QRect VirtualKeyboardView::geometry() const { return view_->geometry(); }
