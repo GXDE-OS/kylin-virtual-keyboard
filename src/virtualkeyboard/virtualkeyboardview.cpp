@@ -43,6 +43,8 @@ VirtualKeyboardView::~VirtualKeyboardView() {
 
 QRect VirtualKeyboardView::geometry() const { return view_->geometry(); }
 
+bool VirtualKeyboardView::isVisible() const { return view_->isVisible(); }
+
 void VirtualKeyboardView::move(int x, int y) {
     view_->setX(x);
     view_->setY(y);

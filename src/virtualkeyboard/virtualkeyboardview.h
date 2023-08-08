@@ -33,6 +33,8 @@ public:
 
     QRect geometry() const;
 
+    bool isVisible() const;
+
 signals:
     void updatePreeditArea(const QString &preeditText);
     void updateCandidateArea(const QVariant &candidateTextList,

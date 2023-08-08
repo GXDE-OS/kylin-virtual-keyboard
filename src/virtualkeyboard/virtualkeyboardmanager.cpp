@@ -47,19 +47,19 @@ VirtualKeyboardManager::~VirtualKeyboardManager() {
 }
 
 void VirtualKeyboardManager::showVirtualKeyboard() {
-    if (virtualkeyboardVisible_) {
+    if (isVirtualKeyboardVisible()) {
         return;
     }
+
     initView();
-    virtualkeyboardVisible_ = true;
     visibiltyChanged();
 }
 
 void VirtualKeyboardManager::hideVirtualKeyboard() {
-    if (!virtualkeyboardVisible_) {
+    if (!isVirtualKeyboardVisible()) {
         return;
     }
-    virtualkeyboardVisible_ = false;
+
     destoryView();
     visibiltyChanged();
 }
@@ -83,11 +83,11 @@ void VirtualKeyboardManager::moveBy(int offsetX, int offsetY) {
 void VirtualKeyboardManager::endDrag() { floatGeometryManager_->endDrag(); }
 
 void VirtualKeyboardManager::visibiltyChanged() {
-    emit virtualKeyboardVisibiltyChanged(virtualkeyboardVisible_);
+    emit virtualKeyboardVisibiltyChanged(isVirtualKeyboardVisible());
 }
 
 bool VirtualKeyboardManager::isVirtualKeyboardVisible() const {
-    return virtualkeyboardVisible_;
+    return view_ != nullptr && view_->isVisible();
 }
 
 void VirtualKeyboardManager::updatePreeditCaret(int index) {
@@ -119,7 +119,7 @@ void VirtualKeyboardManager::notifyIMListChanged() {
 }
 
 void VirtualKeyboardManager::processResolutionChangedEvent() {
-    if (virtualkeyboardVisible_) {
+    if (isVirtualKeyboardVisible()) {
         placementModeManager_->updatePlacementMode();
     }
 }

@@ -94,7 +94,6 @@ private:
     std::unique_ptr<FloatGeometryManager> floatGeometryManager_ = nullptr;
     std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager_ =
         nullptr;
-    bool virtualkeyboardVisible_ = false;
 
     HideVirtualKeyboardCallback hideVirtualKeyboardCallback_;
 
