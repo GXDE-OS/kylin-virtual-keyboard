@@ -39,7 +39,7 @@ public slots:
     void endDrag();
 
 private:
-    QPoint calculateViewPosition() override;
+    QPoint calculateViewPosition() const override;
     int calculateViewWidth() const override;
     int calculateViewHeight() const override;
 

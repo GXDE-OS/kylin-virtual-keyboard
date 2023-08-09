@@ -44,7 +44,7 @@ int ExpansionGeometryManager::calculateViewHeight() const {
     }
 }
 
-QPoint ExpansionGeometryManager::calculateViewPosition() {
+QPoint ExpansionGeometryManager::calculateViewPosition() const {
     QSize viewPortSize = ScreenManager::getPrimaryScreenSize();
 
     return QPoint(0, viewPortSize.height() - calculateViewHeight());

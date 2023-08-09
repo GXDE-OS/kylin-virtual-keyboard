@@ -28,7 +28,7 @@ public:
 private:
     int calculateViewWidth() const override;
     int calculateViewHeight() const override;
-    QPoint calculateViewPosition() override;
+    QPoint calculateViewPosition() const override;
 
 private:
     constexpr static float viewHeightRatio_ = 512.0 / 1620.0;

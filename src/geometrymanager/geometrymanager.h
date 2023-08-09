@@ -45,7 +45,7 @@ private:
     virtual int calculateViewWidth() const = 0;
     virtual int calculateViewHeight() const = 0;
 
-    virtual QPoint calculateViewPosition() = 0;
+    virtual QPoint calculateViewPosition() const = 0;
 };
 
 #endif // GEOMETRYMANAGER_H

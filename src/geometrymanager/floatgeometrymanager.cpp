@@ -118,7 +118,7 @@ QPoint FloatGeometryManager::calculateNormalizedPositionFromRatio(
         calculatePositionFromRatio(leftMarginRatio, topMarginRatio));
 }
 
-QPoint FloatGeometryManager::calculateViewPosition() {
+QPoint FloatGeometryManager::calculateViewPosition() const {
     return calculateNormalizedPosition(calculateCurrentPosition());
 }
 
