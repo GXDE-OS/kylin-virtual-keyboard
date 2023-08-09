@@ -253,16 +253,38 @@ Rectangle {
         }
     }
 
-    DragBar{id: dragBar}
-    Preedit{id: preedit}
-    ToolbarAndCandidateArea{id: toolbarAndCandidate}
-    KeyboardLayoutArea{
-        visible: isKeyBoardLayoutVisible
-        anchors.bottom: virtualKeyboard.bottom
+    Rectangle {
+        id: virtualKeyboardComponent
+        color: virtualKeyboard.virtualKeyboardColor
         radius: virtualKeyboard.radius
-    }
 
-    Separator{
-        id: separator
+        width: parent.width
+        height: parent.height
+        
+        DragBar {
+            id: dragBar
+            anchors.top: parent.top
+        }
+
+        Preedit {
+            id: preedit
+            anchors.top: dragBar.visible ? dragBar.bottom : parent.top
+        }
+
+        Separator {
+            id: separator
+            anchors.top: preedit.bottom
+        }
+        
+        ToolbarAndCandidateArea {
+            id: toolbarAndCandidate
+            anchors.top: separator.bottom
+        }
+        
+        KeyboardLayoutArea {
+            id: keyboardLayoutArea
+            anchors.bottom: virtualKeyboardComponent.bottom
+        }
+        
     }
 }

@@ -19,8 +19,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 
 Rectangle {
-        anchors.top: preedit.bottom
-        width: virtualKeyboard.width
+        width: parent.width
         height: 1
         color: virtualKeyboard.preeditBottomColor
 }

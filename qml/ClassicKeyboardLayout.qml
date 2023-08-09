@@ -19,7 +19,7 @@ import QtQuick 2.0
 import "key/"
 
 Column {
-    width: virtualKeyboard.width
+    width: parent.width
     spacing: virtualKeyboard.keySpacing
     visible: virtualKeyboard.layout == "classic" ? true : false
 

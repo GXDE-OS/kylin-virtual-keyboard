@@ -19,7 +19,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 
 Rectangle {
-    width: virtualKeyboard.width
+    width: parent.width
     height: virtualKeyboard.toolAndCandidateHeight
     color: virtualKeyboard.virtualKeyboardColor
     visible: !virtualKeyboard.isToolbarVisible

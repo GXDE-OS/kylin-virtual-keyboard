@@ -19,11 +19,14 @@ import QtQuick 2.0
 import QtQuick.Window 2.0
 
 Rectangle {
-    width: virtualKeyboard.width
+    visible: isKeyBoardLayoutVisible
+
+    width: parent.width
     height: virtualKeyboard.keyboardLayoutHeight
-    anchors.top: toolbarAndCandidate.bottom
-    anchors.topMargin: keySpacing * 2
+    radius: virtualKeyboard.radius
     color: virtualKeyboard.virtualKeyboardColor
+
+    anchors.topMargin: keySpacing * 2
 
     ClassicKeyboardLayout{}
 }

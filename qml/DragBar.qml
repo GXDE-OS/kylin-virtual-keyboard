@@ -18,8 +18,7 @@
 import QtQuick 2.0
 
 Rectangle {
-    id: dragBar
-    width: virtualKeyboard.width
+    width: parent.width
     height: virtualKeyboard.dragBarHeight
     color: virtualKeyboard.virtualKeyboardColor
     radius: virtualKeyboard.virtualKeyboardFloatPlacementRadius
