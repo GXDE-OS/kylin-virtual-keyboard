@@ -8,6 +8,7 @@
         <file>qml/KeyboardLayoutArea.qml</file>
         <file>qml/ClassicKeyboardLayout.qml</file>
         <file>qml/HideButton.qml</file>
+        <file>qml/Separator.qml</file>
         <file>qml/key/ActionKey.qml</file>
         <file>qml/key/AltKey.qml</file>
         <file>qml/key/BaseKey.qml</file>

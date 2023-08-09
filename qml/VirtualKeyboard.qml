@@ -262,10 +262,7 @@ Rectangle {
         radius: virtualKeyboard.radius
     }
 
-    Rectangle {
-        anchors.top: preedit.bottom
-        width: virtualKeyboard.width
-        height: 1
-        color: virtualKeyboard.preeditBottomColor
+    Separator{
+        id: separator
     }
 }
