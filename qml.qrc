@@ -7,7 +7,6 @@
         <file>qml/CandidateList.qml</file>
         <file>qml/KeyboardLayoutArea.qml</file>
         <file>qml/ClassicKeyboardLayout.qml</file>
-        <file>qml/ToolArea.qml</file>
         <file>qml/HideButton.qml</file>
         <file>qml/key/ActionKey.qml</file>
         <file>qml/key/AltKey.qml</file>

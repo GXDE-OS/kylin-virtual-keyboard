@@ -261,7 +261,6 @@ Rectangle {
         anchors.bottom: virtualKeyboard.bottom
         radius: virtualKeyboard.radius
     }
-    ToolArea{}
 
     Rectangle {
         anchors.top: preedit.bottom
