@@ -31,6 +31,8 @@ VirtualKeyboardManager::VirtualKeyboardManager(
     initPlacementModeManager();
     initGeometryManager();
 
+    initVirtualKeyboardView();
+
     initScreenSignalConnections();
     initPlacementModeManagerSignalConnections();
 }
@@ -43,6 +45,7 @@ VirtualKeyboardManager::~VirtualKeyboardManager() {
     expansionGeometryManager_.reset();
     appInputAreaManager_.reset();
 
+    view_.reset();
     model_.reset();
 }
 
@@ -51,7 +54,10 @@ void VirtualKeyboardManager::showVirtualKeyboard() {
         return;
     }
 
-    initView();
+    view_->show();
+
+    placementModeManager_->updatePlacementMode();
+
     visibiltyChanged();
 }
 
@@ -60,7 +66,10 @@ void VirtualKeyboardManager::hideVirtualKeyboard() {
         return;
     }
 
-    destoryView();
+    appInputAreaManager_->fallInputArea();
+
+    view_->hide();
+
     visibiltyChanged();
 }
 
@@ -87,7 +96,7 @@ void VirtualKeyboardManager::visibiltyChanged() {
 }
 
 bool VirtualKeyboardManager::isVirtualKeyboardVisible() const {
-    return view_ != nullptr && view_->isVisible();
+    return view_->isVisible();
 }
 
 void VirtualKeyboardManager::updatePreeditCaret(int index) {
@@ -124,24 +133,6 @@ void VirtualKeyboardManager::processResolutionChangedEvent() {
     }
 }
 
-void VirtualKeyboardManager::initView() {
-    view_.reset(new VirtualKeyboardView(this, model_.get()));
-
-    connectSignals();
-
-    placementModeManager_->updatePlacementMode();
-}
-
-void VirtualKeyboardManager::destoryView() {
-    appInputAreaManager_->fallInputArea();
-
-    if (view_ == nullptr) {
-        return;
-    }
-
-    view_.reset();
-}
-
 void VirtualKeyboardManager::initAppInputAreaManager() {
     appInputAreaManager_.reset(new AppInputAreaManager(this));
 }
@@ -163,6 +154,16 @@ void VirtualKeyboardManager::initVirtualKeyboardModel() {
 
     connect(model_.get(), SIGNAL(backendConnectionDisconnected()), this,
             SLOT(hideVirtualKeyboard()));
+}
+
+void VirtualKeyboardManager::initVirtualKeyboardView() {
+    view_.reset(new VirtualKeyboardView(*this, *model_));
+
+    connectVirtualKeyboardModelSignals();
+
+    connectPlacementModeManagerSignals();
+
+    connectGeometryManagerSignals();
 }
 
 void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
@@ -191,14 +192,6 @@ void VirtualKeyboardManager::connectPlacementModeManagerSignals() {
 
     connect(placementModeManager_.get(), SIGNAL(floatModeEntered()),
             view_.get(), SIGNAL(floatModeEntered()));
-}
-
-void VirtualKeyboardManager::connectSignals() {
-    connectVirtualKeyboardModelSignals();
-
-    connectPlacementModeManagerSignals();
-
-    connectGeometryManagerSignals();
 }
 
 void VirtualKeyboardManager::raiseInputArea() {

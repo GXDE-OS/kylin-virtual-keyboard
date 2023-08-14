@@ -79,17 +79,14 @@ private:
     void initScreenSignalConnections();
     void initPlacementModeManagerSignalConnections();
 
-    void initView();
-    void destoryView();
-
-    void connectSignals();
+    void initVirtualKeyboardView();
     void connectVirtualKeyboardModelSignals();
     void connectGeometryManagerSignals();
     void connectPlacementModeManagerSignals();
 
     std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;
-    std::unique_ptr<VirtualKeyboardView> view_ = nullptr;
     std::unique_ptr<VirtualKeyboardModel> model_ = nullptr;
+    std::unique_ptr<VirtualKeyboardView> view_ = nullptr;
     std::unique_ptr<PlacementModeManager> placementModeManager_ = nullptr;
     std::unique_ptr<FloatGeometryManager> floatGeometryManager_ = nullptr;
     std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager_ =

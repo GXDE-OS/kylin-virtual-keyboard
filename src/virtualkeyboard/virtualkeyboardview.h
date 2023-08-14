@@ -28,12 +28,14 @@ class VirtualKeyboardView : public QObject {
     Q_OBJECT
 
 public:
-    VirtualKeyboardView(QObject *manager, QObject *model);
+    VirtualKeyboardView(QObject &manager, QObject &model);
     ~VirtualKeyboardView() override;
 
     QRect geometry() const;
 
     bool isVisible() const;
+    void show();
+    void hide();
 
 signals:
     void updatePreeditArea(const QString &preeditText);
@@ -49,10 +51,13 @@ public slots:
     void resize(int width, int height);
 
 private:
-    void init(QObject *manager, QObject *model);
+    void initView();
     void connectSignals();
+    void destroyView();
 
 private:
+    QObject &manager_;
+    QObject &model_;
     std::unique_ptr<QQuickView> view_ = nullptr;
 };
 
