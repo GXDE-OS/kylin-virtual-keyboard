@@ -65,10 +65,11 @@ signals:
 public slots:
     void processResolutionChangedEvent();
 
-    void raiseInputArea();
-    void fallInputArea();
-
     void hideVirtualKeyboard();
+
+private slots:
+    void onExpansionModeEntered();
+    void onFloatModeEntered();
 
 private:
     void initAppInputAreaManager();

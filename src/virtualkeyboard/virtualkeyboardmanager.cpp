@@ -194,28 +194,28 @@ void VirtualKeyboardManager::connectPlacementModeManagerSignals() {
             view_.get(), SIGNAL(floatModeEntered()));
 }
 
-void VirtualKeyboardManager::raiseInputArea() {
-    appInputAreaManager_->raiseInputArea(view_->geometry());
-}
-
-void VirtualKeyboardManager::fallInputArea() {
-    appInputAreaManager_->fallInputArea();
-}
-
 void VirtualKeyboardManager::initScreenSignalConnections() {
     connect(QGuiApplication::primaryScreen(),
             SIGNAL(geometryChanged(const QRect &)), this,
             SLOT(processResolutionChangedEvent()));
 }
 
-void VirtualKeyboardManager::initPlacementModeManagerSignalConnections() {
-    connect(placementModeManager_.get(), SIGNAL(expansionModeEntered()),
-            expansionGeometryManager_.get(), SLOT(updateGeometry()));
-    connect(placementModeManager_.get(), SIGNAL(expansionModeEntered()), this,
-            SLOT(raiseInputArea()));
+void VirtualKeyboardManager::onExpansionModeEntered() {
+    expansionGeometryManager_->updateGeometry();
+    appInputAreaManager_->raiseInputArea(view_->geometry());
+}
 
-    connect(placementModeManager_.get(), SIGNAL(floatModeEntered()),
-            floatGeometryManager_.get(), SLOT(updateGeometry()));
-    connect(placementModeManager_.get(), SIGNAL(floatModeEntered()), this,
-            SLOT(fallInputArea()));
+void VirtualKeyboardManager::onFloatModeEntered() {
+    floatGeometryManager_->updateGeometry();
+    appInputAreaManager_->fallInputArea();
+}
+
+void VirtualKeyboardManager::initPlacementModeManagerSignalConnections() {
+    connect(placementModeManager_.get(),
+            &PlacementModeManager::expansionModeEntered, this,
+            &VirtualKeyboardManager::onExpansionModeEntered);
+
+    connect(placementModeManager_.get(),
+            &PlacementModeManager::floatModeEntered, this,
+            &VirtualKeyboardManager::onFloatModeEntered);
 }
