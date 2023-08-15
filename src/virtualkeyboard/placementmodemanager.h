@@ -31,9 +31,6 @@ public:
 
     void updatePlacementMode();
 
-    enum PlacementMode { Expansion, Float };
-    Q_ENUM(PlacementMode)
-
 signals:
     void expansionModeEntered();
     void floatModeEntered();
@@ -42,14 +39,14 @@ public:
     void flipPlacementMode();
 
 private:
-    void setPlacementMode(PlacementMode placementMode);
+    void setPlacementMode(bool isFloatMode);
     void enterExpansionMode();
     void enterFloatMode();
     void savePlacementMode();
     void loadPlacementMode();
 
 private:
-    PlacementMode placementMode_ = PlacementMode::Expansion;
+    bool isFloatMode_ = false;
 
     LocalSettings &viewSettings_;
 

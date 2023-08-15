@@ -32,44 +32,42 @@ PlacementModeManager::PlacementModeManager(LocalSettings &viewSettings)
 PlacementModeManager::~PlacementModeManager() { savePlacementMode(); }
 
 void PlacementModeManager::updatePlacementMode() {
-    if (placementMode_ == PlacementMode::Expansion) {
-        enterExpansionMode();
-    } else {
+    if (isFloatMode_) {
         enterFloatMode();
+    } else {
+        enterExpansionMode();
     }
 }
 
 void PlacementModeManager::flipPlacementMode() {
-    if (placementMode_ == PlacementMode::Expansion) {
-        enterFloatMode();
-    } else {
+    if (isFloatMode_) {
         enterExpansionMode();
+    } else {
+        enterFloatMode();
     }
 }
 
-void PlacementModeManager::setPlacementMode(PlacementMode placementMode) {
-    placementMode_ = placementMode;
+void PlacementModeManager::setPlacementMode(bool isFloatMode) {
+    isFloatMode_ = isFloatMode;
     savePlacementMode();
 }
 
 void PlacementModeManager::enterExpansionMode() {
-    setPlacementMode(PlacementMode::Expansion);
+    setPlacementMode(false);
     emit expansionModeEntered();
 }
 
 void PlacementModeManager::enterFloatMode() {
-    setPlacementMode(PlacementMode::Float);
+    setPlacementMode(true);
     emit floatModeEntered();
 }
 
 void PlacementModeManager::savePlacementMode() {
-    viewSettings_.setValue(placementModeGroup, placementModeKey,
-                           placementMode_);
+    viewSettings_.setValue(placementModeGroup, placementModeKey, isFloatMode_);
 }
 
 void PlacementModeManager::loadPlacementMode() {
-    placementMode_ = viewSettings_
-                         .getValue(placementModeGroup, placementModeKey,
-                                   PlacementModeManager::Expansion)
-                         .value<PlacementModeManager::PlacementMode>();
+    isFloatMode_ =
+        viewSettings_.getValue(placementModeGroup, placementModeKey, false)
+            .value<bool>();
 }
