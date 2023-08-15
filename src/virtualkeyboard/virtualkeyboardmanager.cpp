@@ -161,8 +161,6 @@ void VirtualKeyboardManager::initVirtualKeyboardView() {
 
     connectVirtualKeyboardModelSignals();
 
-    connectPlacementModeManagerSignals();
-
     connectGeometryManagerSignals();
 }
 
@@ -186,14 +184,6 @@ void VirtualKeyboardManager::connectGeometryManagerSignals() {
             view_.get(), SLOT(resize(int, int)));
 }
 
-void VirtualKeyboardManager::connectPlacementModeManagerSignals() {
-    connect(placementModeManager_.get(), SIGNAL(expansionModeEntered()),
-            view_.get(), SIGNAL(expansionModeEntered()));
-
-    connect(placementModeManager_.get(), SIGNAL(floatModeEntered()),
-            view_.get(), SIGNAL(floatModeEntered()));
-}
-
 void VirtualKeyboardManager::initScreenSignalConnections() {
     connect(QGuiApplication::primaryScreen(),
             SIGNAL(geometryChanged(const QRect &)), this,
@@ -203,11 +193,15 @@ void VirtualKeyboardManager::initScreenSignalConnections() {
 void VirtualKeyboardManager::onExpansionModeEntered() {
     expansionGeometryManager_->updateGeometry();
     appInputAreaManager_->raiseInputArea(view_->geometry());
+
+    emit isFloatModeChanged();
 }
 
 void VirtualKeyboardManager::onFloatModeEntered() {
     floatGeometryManager_->updateGeometry();
     appInputAreaManager_->fallInputArea();
+
+    emit isFloatModeChanged();
 }
 
 void VirtualKeyboardManager::initPlacementModeManagerSignalConnections() {

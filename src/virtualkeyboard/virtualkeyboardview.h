@@ -43,9 +43,6 @@ signals:
                              int globalCursorIndex);
     void imDeactivated();
 
-    void expansionModeEntered();
-    void floatModeEntered();
-
 public slots:
     void move(int x, int y);
     void resize(int width, int height);

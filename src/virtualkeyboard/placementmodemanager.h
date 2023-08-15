@@ -31,6 +31,8 @@ public:
 
     void updatePlacementMode();
 
+    bool isFloatMode() const { return isFloatMode_; }
+
 signals:
     void expansionModeEntered();
     void floatModeEntered();

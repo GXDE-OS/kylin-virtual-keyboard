@@ -73,11 +73,6 @@ void VirtualKeyboardView::connectSignals() {
             rootObject, SIGNAL(qmlUpdateCandidateList(QVariant, int)));
     connect(this, SIGNAL(imDeactivated()), rootObject,
             SIGNAL(qmlImDeactivated()));
-
-    connect(this, SIGNAL(expansionModeEntered()), rootObject,
-            SIGNAL(qmlEnterExpansionPlacementMode()));
-    connect(this, SIGNAL(floatModeEntered()), rootObject,
-            SIGNAL(qmlEnterFloatPlacementMode()));
 }
 
 void VirtualKeyboardView::destroyView() {

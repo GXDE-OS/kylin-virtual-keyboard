@@ -44,6 +44,8 @@ public:
 
     void showVirtualKeyboard();
 
+    Q_PROPERTY(bool isFloatMode READ isFloatMode NOTIFY isFloatModeChanged);
+
     Q_INVOKABLE void hide();
     Q_INVOKABLE void flipPlacementMode();
     Q_INVOKABLE void moveBy(int offsetX, int offsetY);
@@ -61,6 +63,8 @@ public:
 
 signals:
     void virtualKeyboardVisibiltyChanged(bool isShow);
+
+    void isFloatModeChanged();
 
 public slots:
     void processResolutionChangedEvent();
@@ -83,7 +87,8 @@ private:
     void initVirtualKeyboardView();
     void connectVirtualKeyboardModelSignals();
     void connectGeometryManagerSignals();
-    void connectPlacementModeManagerSignals();
+
+    bool isFloatMode() const { return placementModeManager_->isFloatMode(); }
 
     std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;
     std::unique_ptr<VirtualKeyboardModel> model_ = nullptr;

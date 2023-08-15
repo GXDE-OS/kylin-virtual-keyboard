@@ -21,9 +21,10 @@ import QtQuick.Window 2.0
 
 Rectangle {
     id: virtualKeyboard
+    property bool isFloatMode : manager.isFloatMode
     anchors.fill: parent
     color: virtualKeyboardColor
-    radius: placementMode === "EXPANSION" ? 0 : virtualKeyboardFloatPlacementRadius
+    radius: isFloatMode ? virtualKeyboardFloatPlacementRadius :  0
 
     //预编辑
     property string preeditText
@@ -41,7 +42,7 @@ Rectangle {
 
     //大小相关
     /*设置默认值，防止报错，fontSize为0时会报错，加载qml文件时height为0，会导致fontSize为0*/
-    property real cardinalNumber: height == 0 ? 8 : height/(placementMode === "EXPANSION" ? 64.0 : 68.5)
+    property real cardinalNumber: height == 0 ? 8 : height/(isFloatMode ? 68.5 : 64)
     property int dragBarHeight: cardinalNumber * 4.5
     property int preeditHeight: cardinalNumber * 5
     property int toolAndCandidateHeight: cardinalNumber * 8
@@ -54,8 +55,8 @@ Rectangle {
     property int firstRowKeyHeight: keyHeight * 7/9
     property int keyLableAlignment: keyWidth / 3
     property int keyIconAlignment: keyWidth / 3
-    property int virtualKeyboardAvailableHeight: placementMode === "EXPANSION" ? virtualKeyboard.height
-                                                                 : virtualKeyboard.height - dragBar.height
+    property int virtualKeyboardAvailableHeight: isFloatMode ? virtualKeyboard.height - dragBar.height
+                                                                 : virtualKeyboard.height
     property int imListItemHeight: virtualKeyboardAvailableHeight * 1/10
     property int imListItemWidth: virtualKeyboardAvailableHeight * 5/13
     property real fontSize: keyHeight * 6/11 * 7/12
@@ -123,7 +124,7 @@ Rectangle {
     property string winState: "NORMAL"
     property string changeIMState: "NORMAL"
     property string switchLayoutButtonState: "NORMAL"
-    property string placementMode: "EXPANSION"
+    property string placementMode: isFloatMode ? "FLOAT" : "EXPANSION"
 
     //可见性相关
     property bool isToolbarVisible: true
@@ -146,8 +147,6 @@ Rectangle {
     signal qmlUpdatePreedit(string preeditText)
     signal qmlUpdateCandidateList(var candidateList, int globalCursorIndex)
     signal qmlImDeactivated()
-    signal qmlEnterExpansionPlacementMode()
-    signal qmlEnterFloatPlacementMode()
 
     function processKeyEvent(key, keycode, modifierKeyStates,
                     isRelease, time) {
@@ -197,12 +196,6 @@ Rectangle {
                 virtualKeyboard.globalCursorIndex = globalCursorIndex
                 showCandidateList()
             }
-        }
-        onQmlEnterExpansionPlacementMode: {
-            virtualKeyboard.placementMode = "EXPANSION"
-        }
-        onQmlEnterFloatPlacementMode: {
-            virtualKeyboard.placementMode = "FLOAT"
         }
     }
 
