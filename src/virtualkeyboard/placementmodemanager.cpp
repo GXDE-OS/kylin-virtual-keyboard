@@ -31,14 +31,6 @@ PlacementModeManager::PlacementModeManager(LocalSettings &viewSettings)
 
 PlacementModeManager::~PlacementModeManager() { savePlacementMode(); }
 
-void PlacementModeManager::updatePlacementMode() {
-    if (isFloatMode_) {
-        enterFloatMode();
-    } else {
-        enterExpansionMode();
-    }
-}
-
 void PlacementModeManager::flipPlacementMode() {
     if (isFloatMode_) {
         enterExpansionMode();

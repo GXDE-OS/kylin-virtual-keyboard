@@ -29,8 +29,6 @@ public:
     explicit PlacementModeManager(LocalSettings &viewSettings);
     ~PlacementModeManager() override;
 
-    void updatePlacementMode();
-
     bool isFloatMode() const { return isFloatMode_; }
 
 signals:
