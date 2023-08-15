@@ -35,6 +35,7 @@ public:
     ~VirtualKeyboardView() override;
 
     QRect geometry() const;
+    void updateGeometry();
 
     bool isVisible() const;
     void show();

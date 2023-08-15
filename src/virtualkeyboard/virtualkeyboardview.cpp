@@ -29,6 +29,14 @@ VirtualKeyboardView::~VirtualKeyboardView() { destroyView(); }
 
 QRect VirtualKeyboardView::geometry() const { return view_->geometry(); }
 
+void VirtualKeyboardView::updateGeometry() {
+    if (!isVisible()) {
+        return;
+    }
+
+    view_->setGeometry(geometryManager_->geometry());
+}
+
 bool VirtualKeyboardView::isVisible() const {
     return view_ != nullptr && view_->isVisible();
 }

@@ -131,7 +131,7 @@ void VirtualKeyboardManager::notifyIMListChanged() {
 
 void VirtualKeyboardManager::processResolutionChangedEvent() {
     if (isVirtualKeyboardVisible()) {
-        placementModeManager_->updatePlacementMode();
+        view_->updateGeometry();
     }
 }
 
