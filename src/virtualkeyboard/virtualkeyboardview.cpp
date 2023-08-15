@@ -20,8 +20,10 @@
 #include <QQmlContext>
 #include <QQuickItem>
 
-VirtualKeyboardView::VirtualKeyboardView(QObject &manager, QObject &model)
-    : manager_(manager), model_(model) {}
+VirtualKeyboardView::VirtualKeyboardView(
+    QObject &manager, QObject &model,
+    std::shared_ptr<GeometryManager> geometryManager)
+    : manager_(manager), model_(model), geometryManager_(geometryManager) {}
 
 VirtualKeyboardView::~VirtualKeyboardView() { destroyView(); }
 
@@ -40,6 +42,11 @@ void VirtualKeyboardView::show() {
 }
 
 void VirtualKeyboardView::hide() { destroyView(); }
+
+void VirtualKeyboardView::setGeometryManager(
+    std::shared_ptr<GeometryManager> geometryManager) {
+    geometryManager_ = geometryManager;
+}
 
 void VirtualKeyboardView::move(int x, int y) {
     view_->setX(x);
@@ -62,6 +69,8 @@ void VirtualKeyboardView::initView() {
     view_->setFlags(Qt::Window | Qt::WindowDoesNotAcceptFocus |
                     Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
                     Qt::BypassWindowManagerHint);
+
+    view_->setGeometry(geometryManager_->geometry());
 }
 
 void VirtualKeyboardView::connectSignals() {

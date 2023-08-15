@@ -24,11 +24,14 @@
 #include <QQuickView>
 #include <QString>
 
+#include "geometrymanager/geometrymanager.h"
+
 class VirtualKeyboardView : public QObject {
     Q_OBJECT
 
 public:
-    VirtualKeyboardView(QObject &manager, QObject &model);
+    VirtualKeyboardView(QObject &manager, QObject &model,
+                        std::shared_ptr<GeometryManager> geometryManager);
     ~VirtualKeyboardView() override;
 
     QRect geometry() const;
@@ -36,6 +39,8 @@ public:
     bool isVisible() const;
     void show();
     void hide();
+
+    void setGeometryManager(std::shared_ptr<GeometryManager> geometryManager);
 
 signals:
     void updatePreeditArea(const QString &preeditText);
@@ -56,6 +61,8 @@ private:
     QObject &manager_;
     QObject &model_;
     std::unique_ptr<QQuickView> view_ = nullptr;
+
+    std::shared_ptr<GeometryManager> geometryManager_ = nullptr;
 };
 
 #endif // VIRTUALKEYBOARDVIEW_H

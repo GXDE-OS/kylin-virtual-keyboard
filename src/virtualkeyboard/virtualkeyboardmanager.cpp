@@ -56,7 +56,9 @@ void VirtualKeyboardManager::showVirtualKeyboard() {
 
     view_->show();
 
-    placementModeManager_->updatePlacementMode();
+    if (!placementModeManager_->isFloatMode()) {
+        appInputAreaManager_->raiseInputArea(view_->geometry());
+    }
 
     visibiltyChanged();
 }
@@ -156,8 +158,18 @@ void VirtualKeyboardManager::initVirtualKeyboardModel() {
             SLOT(hideVirtualKeyboard()));
 }
 
+std::shared_ptr<GeometryManager>
+VirtualKeyboardManager::getCurrentGeometryManager() const {
+    if (placementModeManager_->isFloatMode()) {
+        return floatGeometryManager_;
+    }
+
+    return expansionGeometryManager_;
+}
+
 void VirtualKeyboardManager::initVirtualKeyboardView() {
-    view_.reset(new VirtualKeyboardView(*this, *model_));
+    view_.reset(
+        new VirtualKeyboardView(*this, *model_, getCurrentGeometryManager()));
 
     connectVirtualKeyboardModelSignals();
 
@@ -191,6 +203,7 @@ void VirtualKeyboardManager::initScreenSignalConnections() {
 }
 
 void VirtualKeyboardManager::onExpansionModeEntered() {
+    view_->setGeometryManager(expansionGeometryManager_);
     expansionGeometryManager_->updateGeometry();
     appInputAreaManager_->raiseInputArea(view_->geometry());
 
@@ -198,6 +211,7 @@ void VirtualKeyboardManager::onExpansionModeEntered() {
 }
 
 void VirtualKeyboardManager::onFloatModeEntered() {
+    view_->setGeometryManager(floatGeometryManager_);
     floatGeometryManager_->updateGeometry();
     appInputAreaManager_->fallInputArea();
 

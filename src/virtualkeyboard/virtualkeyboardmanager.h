@@ -84,6 +84,7 @@ private:
     void initScreenSignalConnections();
     void initPlacementModeManagerSignalConnections();
 
+    std::shared_ptr<GeometryManager> getCurrentGeometryManager() const;
     void initVirtualKeyboardView();
     void connectVirtualKeyboardModelSignals();
     void connectGeometryManagerSignals();
@@ -94,8 +95,8 @@ private:
     std::unique_ptr<VirtualKeyboardModel> model_ = nullptr;
     std::unique_ptr<VirtualKeyboardView> view_ = nullptr;
     std::unique_ptr<PlacementModeManager> placementModeManager_ = nullptr;
-    std::unique_ptr<FloatGeometryManager> floatGeometryManager_ = nullptr;
-    std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager_ =
+    std::shared_ptr<FloatGeometryManager> floatGeometryManager_ = nullptr;
+    std::shared_ptr<ExpansionGeometryManager> expansionGeometryManager_ =
         nullptr;
 
     HideVirtualKeyboardCallback hideVirtualKeyboardCallback_;
