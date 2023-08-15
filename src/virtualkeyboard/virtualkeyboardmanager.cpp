@@ -186,14 +186,8 @@ void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
 }
 
 void VirtualKeyboardManager::connectGeometryManagerSignals() {
-    connect(expansionGeometryManager_.get(), SIGNAL(viewMoved(int, int)),
-            view_.get(), SLOT(move(int, int)));
-    connect(expansionGeometryManager_.get(), SIGNAL(viewResized(int, int)),
-            view_.get(), SLOT(resize(int, int)));
     connect(floatGeometryManager_.get(), SIGNAL(viewMoved(int, int)),
             view_.get(), SLOT(move(int, int)));
-    connect(floatGeometryManager_.get(), SIGNAL(viewResized(int, int)),
-            view_.get(), SLOT(resize(int, int)));
 }
 
 void VirtualKeyboardManager::initScreenSignalConnections() {
@@ -203,16 +197,16 @@ void VirtualKeyboardManager::initScreenSignalConnections() {
 }
 
 void VirtualKeyboardManager::onExpansionModeEntered() {
-    view_->setGeometryManager(expansionGeometryManager_);
-    expansionGeometryManager_->updateGeometry();
+    view_->flip(expansionGeometryManager_);
+
     appInputAreaManager_->raiseInputArea(view_->geometry());
 
     emit isFloatModeChanged();
 }
 
 void VirtualKeyboardManager::onFloatModeEntered() {
-    view_->setGeometryManager(floatGeometryManager_);
-    floatGeometryManager_->updateGeometry();
+    view_->flip(floatGeometryManager_);
+
     appInputAreaManager_->fallInputArea();
 
     emit isFloatModeChanged();

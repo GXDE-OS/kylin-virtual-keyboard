@@ -40,8 +40,7 @@ public:
     bool isVisible() const;
     void show();
     void hide();
-
-    void setGeometryManager(std::shared_ptr<GeometryManager> geometryManager);
+    void flip(std::shared_ptr<GeometryManager> newGeometryManager);
 
 signals:
     void updatePreeditArea(const QString &preeditText);
@@ -51,7 +50,6 @@ signals:
 
 public slots:
     void move(int x, int y);
-    void resize(int width, int height);
 
 private:
     void initView();

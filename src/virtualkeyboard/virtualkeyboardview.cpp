@@ -51,19 +51,16 @@ void VirtualKeyboardView::show() {
 
 void VirtualKeyboardView::hide() { destroyView(); }
 
-void VirtualKeyboardView::setGeometryManager(
-    std::shared_ptr<GeometryManager> geometryManager) {
-    geometryManager_ = geometryManager;
+void VirtualKeyboardView::flip(
+    std::shared_ptr<GeometryManager> newGeometryManager) {
+    geometryManager_ = newGeometryManager;
+
+    updateGeometry();
 }
 
 void VirtualKeyboardView::move(int x, int y) {
     view_->setX(x);
     view_->setY(y);
-}
-
-void VirtualKeyboardView::resize(int width, int height) {
-    view_->setWidth(width);
-    view_->setHeight(height);
 }
 
 void VirtualKeyboardView::initView() {
