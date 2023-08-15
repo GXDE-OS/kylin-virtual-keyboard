@@ -29,6 +29,8 @@ class GeometryManager : public QObject {
 public:
     ~GeometryManager() override = default;
 
+    QRect geometry() const;
+
 public slots:
     void updateGeometry();
 

@@ -25,6 +25,10 @@ QSize GeometryManager::calculateViewSize() const {
     return QSize(calculateViewWidth(), calculateViewHeight());
 }
 
+QRect GeometryManager::geometry() const {
+    return QRect(calculateViewPosition(), calculateViewSize());
+}
+
 void GeometryManager::updateGeometry() {
     QPoint position = calculateViewPosition();
     emit viewMoved(position.x(), position.y());
