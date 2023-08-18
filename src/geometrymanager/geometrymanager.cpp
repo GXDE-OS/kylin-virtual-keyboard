@@ -19,10 +19,38 @@
 
 #include "screenmanager.h"
 
-GeometryManager::GeometryManager() : QObject() {}
+Scaler::Scaler(ScaleFactorCallback widthScaleFactorCallback,
+               ScaleFactorCallback heightScaleFactorCallback,
+               ScaleFactorCallback contentScaleFactorCallback)
+    : widthScaleFactorCallback_(std::move(widthScaleFactorCallback)),
+      heightScaleFactorCallback_(std::move(heightScaleFactorCallback)),
+      contentScaleFactorCallback_(std::move(contentScaleFactorCallback)) {}
+
+float Scaler::getScaleFactor(ScaleFactorCallback callback) {
+    if (callback == nullptr) {
+        return 1.0f;
+    }
+
+    return callback();
+}
+
+float Scaler::getWidthScaleFactor() const {
+    return getScaleFactor(widthScaleFactorCallback_);
+}
+
+float Scaler::getHeightScaleFactor() const {
+    return getScaleFactor(heightScaleFactorCallback_);
+}
+
+float Scaler::getContentScaleFactor() const {
+    return getScaleFactor(contentScaleFactorCallback_);
+}
+
+GeometryManager::GeometryManager(Scaler &&scaler)
+    : QObject(), scaler_(std::move(scaler)) {}
 
 QSize GeometryManager::calculateViewSize() const {
-    return QSize(calculateViewWidth(), calculateViewHeight());
+    return QSize(calculateScaledViewWidth(), calculateScaledViewHeight());
 }
 
 QRect GeometryManager::geometry() const {
@@ -35,4 +63,20 @@ void GeometryManager::updateGeometry() {
 
     QSize size = calculateViewSize();
     emit viewResized(size.width(), size.height());
+}
+
+int GeometryManager::calculateScaledViewWidth() const {
+    return calculateViewWidth() * scaler_.getWidthScaleFactor();
+}
+
+int GeometryManager::calculateScaledViewHeight() const {
+    return calculateViewHeight() * scaler_.getHeightScaleFactor();
+}
+
+int GeometryManager::getViewContentWidth() const {
+    return calculateViewWidth() * scaler_.getContentScaleFactor();
+}
+
+int GeometryManager::getViewContentHeight() const {
+    return calculateViewHeight() * scaler_.getContentScaleFactor();
 }

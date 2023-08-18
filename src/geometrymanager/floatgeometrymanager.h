@@ -32,6 +32,8 @@ public:
 public:
     FloatGeometryManager(std::unique_ptr<Strategy> strategy,
                          LocalSettings &viewSettings);
+    FloatGeometryManager(std::unique_ptr<Strategy> strategy,
+                         LocalSettings &viewSettings, Scaler &&scaler);
     ~FloatGeometryManager() override;
 
 public slots:

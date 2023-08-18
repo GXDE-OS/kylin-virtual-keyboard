@@ -21,8 +21,9 @@
 #include "geometrymanager.h"
 
 class ExpansionGeometryManager : public GeometryManager {
+
 public:
-    ExpansionGeometryManager();
+    explicit ExpansionGeometryManager(Scaler &&scaler);
     ~ExpansionGeometryManager() override = default;
 
 private:

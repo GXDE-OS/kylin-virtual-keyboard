@@ -34,8 +34,15 @@ public:
                         std::shared_ptr<GeometryManager> geometryManager);
     ~VirtualKeyboardView() override;
 
+    Q_PROPERTY(
+        int contentHeight READ getContentHeight NOTIFY contentHeightChanged);
+    Q_PROPERTY(
+        int contentWidth READ getContentWidth NOTIFY contentWidthChanged);
+
     QRect geometry() const;
     void updateGeometry();
+
+    void emitContentGeometrySignals();
 
     bool isVisible() const;
     void show();
@@ -43,6 +50,9 @@ public:
     void flip(std::shared_ptr<GeometryManager> newGeometryManager);
 
 signals:
+    void contentHeightChanged();
+    void contentWidthChanged();
+
     void updatePreeditArea(const QString &preeditText);
     void updateCandidateArea(const QVariant &candidateTextList,
                              int globalCursorIndex);
@@ -55,6 +65,8 @@ private:
     void initView();
     void connectSignals();
     void destroyView();
+    int getContentHeight();
+    int getContentWidth();
 
 private:
     QObject &manager_;

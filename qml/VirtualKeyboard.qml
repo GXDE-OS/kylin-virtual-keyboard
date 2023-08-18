@@ -48,7 +48,7 @@ Rectangle {
     property int toolAndCandidateHeight: cardinalNumber * 8
     property int keyboardLayoutHeight: cardinalNumber * 49
     property int keySpacing: cardinalNumber
-    property int keyWidth: (width - 5*cardinalNumber) * 2/31 - cardinalNumber
+    property int keyWidth: (virtualKeyboardContent.width - 5*cardinalNumber) * 2/31 - cardinalNumber
     /*暂时删除win键，将空格键长度从keyWidth * 5.5 + keySpacing * 5修改为keyWidth * 6.5 + keySpacing * 6*/
     property int spaceKeyWidth: keyWidth * 6.5 + keySpacing * 6
     property int keyHeight: cardinalNumber * 9
@@ -68,7 +68,7 @@ Rectangle {
     property real candidateFontSize: fontSize * 3/4
     property real imListFontSize: fontSize * 3/4
     property int preeditX: cardinalNumber * 3.5
-    property int candidateListWidth: width - 7*cardinalNumber
+    property int candidateListWidth: virtualKeyboardContent.width - 7*cardinalNumber
     property int toolbarSize: cardinalNumber * 3
     property int candidateListX: cardinalNumber * 2
     property int candidateListSpacing: cardinalNumber * 3
@@ -250,9 +250,10 @@ Rectangle {
         id: virtualKeyboardContent
         color: virtualKeyboard.virtualKeyboardColor
         radius: virtualKeyboard.radius
+        width: view.contentWidth
+        height: view.contentHeight
 
-        width: parent.width
-        height: parent.height
+        anchors.horizontalCenter: parent.horizontalCenter
         
         DragBar {
             id: dragBar

@@ -33,7 +33,12 @@ const QString FloatGeometryManager::topMarginRatioKey = "topMarginRatio";
 
 FloatGeometryManager::FloatGeometryManager(std::unique_ptr<Strategy> strategy,
                                            LocalSettings &viewSettings)
-    : GeometryManager(), strategy_(std::move(strategy)),
+    : FloatGeometryManager(std::move(strategy), viewSettings, Scaler()) {}
+
+FloatGeometryManager::FloatGeometryManager(std::unique_ptr<Strategy> strategy,
+                                           LocalSettings &viewSettings,
+                                           Scaler &&scaler)
+    : GeometryManager(std::move(scaler)), strategy_(std::move(strategy)),
       viewSettings_(viewSettings) {
     loadMarginRatioMap();
 }
@@ -70,7 +75,7 @@ int FloatGeometryManager::calculateNormalizedX(int positionX) const {
         return geometry.left();
     }
 
-    const auto viewWidth = calculateViewWidth();
+    const auto viewWidth = calculateScaledViewWidth();
     if (positionX + viewWidth > geometry.right()) {
         return geometry.right() - viewWidth;
     }
@@ -85,7 +90,7 @@ int FloatGeometryManager::calculateNormalizedY(int positionY) const {
         return geometry.top();
     }
 
-    const auto viewHeight = calculateViewHeight();
+    const auto viewHeight = calculateScaledViewHeight();
     if (positionY + viewHeight > geometry.bottom()) {
         return geometry.bottom() - viewHeight;
     }

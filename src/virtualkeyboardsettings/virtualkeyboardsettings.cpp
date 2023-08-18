@@ -40,6 +40,8 @@ void VirtualKeyboardSettings::init() {
 
                 if (key == floatButtonEnabledKey_) {
                     emitFloatButtonAvailabilityChanged();
+                } else if (key == virtualKeyboardScaleFactorKey_) {
+                    emit scaleFactorChanged();
                 }
             });
 }
@@ -69,6 +71,12 @@ bool VirtualKeyboardSettings::isFloatButtonEnabled() const {
     }
 
     return gsettings_->get(floatButtonEnabledKey_).toBool();
+}
+
+float VirtualKeyboardSettings::calculateVirtualKeyboardScaleFactor() const {
+    return static_cast<float>(
+               gsettings_->get(virtualKeyboardScaleFactorKey_).toInt()) /
+           100;
 }
 
 VirtualKeyboardSettings &VirtualKeyboardSettings::getInstance() {

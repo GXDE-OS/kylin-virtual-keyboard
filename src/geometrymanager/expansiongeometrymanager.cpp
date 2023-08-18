@@ -19,7 +19,8 @@
 
 #include "screenmanager.h"
 
-ExpansionGeometryManager::ExpansionGeometryManager() : GeometryManager() {}
+ExpansionGeometryManager::ExpansionGeometryManager(Scaler &&scaler)
+    : GeometryManager(std::move(scaler)) {}
 
 int ExpansionGeometryManager::calculateViewWidth() const {
     return ScreenManager::getPrimaryScreenSize().width();
@@ -35,5 +36,5 @@ int ExpansionGeometryManager::calculateViewHeight() const {
 QPoint ExpansionGeometryManager::calculateViewPosition() const {
     QSize viewPortSize = ScreenManager::getPrimaryScreenSize();
 
-    return QPoint(0, viewPortSize.height() - calculateViewHeight());
+    return QPoint(0, viewPortSize.height() - calculateScaledViewHeight());
 }

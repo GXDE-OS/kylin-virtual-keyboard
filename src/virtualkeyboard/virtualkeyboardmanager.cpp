@@ -20,6 +20,7 @@
 #include <QGuiApplication>
 #include <QScreen>
 
+#include "virtualkeyboardsettings/virtualkeyboardsettings.h"
 #include "virtualkeyboardstrategy.h"
 
 VirtualKeyboardManager::VirtualKeyboardManager(
@@ -56,9 +57,7 @@ void VirtualKeyboardManager::showVirtualKeyboard() {
 
     view_->show();
 
-    if (!placementModeManager_->isFloatMode()) {
-        appInputAreaManager_->raiseInputArea(view_->geometry());
-    }
+    raiseInputAreaIfNecessary();
 
     visibiltyChanged();
 }
@@ -143,12 +142,42 @@ void VirtualKeyboardManager::initPlacementModeManager() {
     placementModeManager_.reset(new PlacementModeManager(viewSettings_));
 }
 
+Scaler VirtualKeyboardManager::createFloatModeScaler() {
+    return Scaler(
+        []() {
+            return VirtualKeyboardSettings::getInstance()
+                .calculateVirtualKeyboardScaleFactor();
+        },
+        []() {
+            return VirtualKeyboardSettings::getInstance()
+                .calculateVirtualKeyboardScaleFactor();
+        },
+        []() {
+            return VirtualKeyboardSettings::getInstance()
+                .calculateVirtualKeyboardScaleFactor();
+        });
+}
+
+Scaler VirtualKeyboardManager::createExpansionModeScaler() {
+    return Scaler([]() { return 1.0f; },
+                  []() {
+                      return VirtualKeyboardSettings::getInstance()
+                          .calculateVirtualKeyboardScaleFactor();
+                  },
+                  []() {
+                      return VirtualKeyboardSettings::getInstance()
+                          .calculateVirtualKeyboardScaleFactor();
+                  });
+}
+
 void VirtualKeyboardManager::initGeometryManager() {
     floatGeometryManager_.reset(new FloatGeometryManager(
         std::unique_ptr<FloatGeometryManager::Strategy>(
             new VirtualKeyboardStrategy()),
-        viewSettings_));
-    expansionGeometryManager_.reset(new ExpansionGeometryManager());
+        viewSettings_, createFloatModeScaler()));
+
+    expansionGeometryManager_.reset(
+        new ExpansionGeometryManager(createExpansionModeScaler()));
 }
 
 void VirtualKeyboardManager::initVirtualKeyboardModel() {
@@ -174,6 +203,8 @@ void VirtualKeyboardManager::initVirtualKeyboardView() {
     connectVirtualKeyboardModelSignals();
 
     connectGeometryManagerSignals();
+
+    connectVirtualKeyboardSettingsSignal();
 }
 
 void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
@@ -190,6 +221,15 @@ void VirtualKeyboardManager::connectGeometryManagerSignals() {
             view_.get(), SLOT(move(int, int)));
 }
 
+void VirtualKeyboardManager::connectVirtualKeyboardSettingsSignal() {
+    connect(&VirtualKeyboardSettings::getInstance(),
+            &VirtualKeyboardSettings::scaleFactorChanged, view_.get(),
+            [this]() {
+                view_->updateGeometry();
+                raiseInputAreaIfNecessary();
+            });
+}
+
 void VirtualKeyboardManager::initScreenSignalConnections() {
     connect(QGuiApplication::primaryScreen(),
             SIGNAL(geometryChanged(const QRect &)), this,
@@ -199,7 +239,7 @@ void VirtualKeyboardManager::initScreenSignalConnections() {
 void VirtualKeyboardManager::onExpansionModeEntered() {
     view_->flip(expansionGeometryManager_);
 
-    appInputAreaManager_->raiseInputArea(view_->geometry());
+    raiseInputAreaIfNecessary();
 
     emit isFloatModeChanged();
 }
@@ -220,4 +260,16 @@ void VirtualKeyboardManager::initPlacementModeManagerSignalConnections() {
     connect(placementModeManager_.get(),
             &PlacementModeManager::floatModeEntered, this,
             &VirtualKeyboardManager::onFloatModeEntered);
+}
+
+void VirtualKeyboardManager::raiseInputAreaIfNecessary() {
+    if (!view_->isVisible()) {
+        return;
+    }
+
+    if (isFloatMode()) {
+        return;
+    }
+
+    appInputAreaManager_->raiseInputArea(view_->geometry());
 }

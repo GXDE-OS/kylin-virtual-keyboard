@@ -78,6 +78,8 @@ private slots:
 private:
     void initAppInputAreaManager();
     void initPlacementModeManager();
+    static Scaler createFloatModeScaler();
+    static Scaler createExpansionModeScaler();
     void initGeometryManager();
     void initVirtualKeyboardModel();
 
@@ -88,8 +90,10 @@ private:
     void initVirtualKeyboardView();
     void connectVirtualKeyboardModelSignals();
     void connectGeometryManagerSignals();
+    void connectVirtualKeyboardSettingsSignal();
 
     bool isFloatMode() const { return placementModeManager_->isFloatMode(); }
+    void raiseInputAreaIfNecessary();
 
     std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;
     std::unique_ptr<VirtualKeyboardModel> model_ = nullptr;

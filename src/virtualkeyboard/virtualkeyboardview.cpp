@@ -35,6 +35,8 @@ void VirtualKeyboardView::updateGeometry() {
     }
 
     view_->setGeometry(geometryManager_->geometry());
+
+    emitContentGeometrySignals();
 }
 
 bool VirtualKeyboardView::isVisible() const {
@@ -68,6 +70,7 @@ void VirtualKeyboardView::initView() {
 
     view_->rootContext()->setContextProperty("manager", &manager_);
     view_->rootContext()->setContextProperty("model", &model_);
+    view_->rootContext()->setContextProperty("view", this);
 
     view_->setColor(QColor(Qt::transparent));
     view_->setSource(QUrl("qrc:/qml/VirtualKeyboard.qml"));
@@ -99,4 +102,17 @@ void VirtualKeyboardView::destroyView() {
     }
 
     view_.reset();
+}
+
+void VirtualKeyboardView::emitContentGeometrySignals() {
+    emit contentHeightChanged();
+    emit contentWidthChanged();
+}
+
+int VirtualKeyboardView::getContentWidth() {
+    return geometryManager_->getViewContentWidth();
+}
+
+int VirtualKeyboardView::getContentHeight() {
+    return geometryManager_->getViewContentHeight();
 }

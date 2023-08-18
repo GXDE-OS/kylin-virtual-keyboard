@@ -30,6 +30,7 @@ public:
     static VirtualKeyboardSettings &getInstance();
     void updateFloatButtonAvailability(bool value);
     bool isFloatButtonEnabled() const;
+    float calculateVirtualKeyboardScaleFactor() const;
 
 private:
     VirtualKeyboardSettings();
@@ -43,10 +44,12 @@ private:
 signals:
     void requestFloatButtonEnabled();
     void requestFloatButtonDisabled();
+    void scaleFactorChanged();
 
 private:
     std::unique_ptr<QGSettings> gsettings_;
     const QString gsettingsId_ = "org.ukui.virtualkeyboard";
     const QString floatButtonEnabledKey_ = "floatButtonEnabled";
+    const QString virtualKeyboardScaleFactorKey_ = "virtualKeyboardScaleFactor";
 };
 #endif
