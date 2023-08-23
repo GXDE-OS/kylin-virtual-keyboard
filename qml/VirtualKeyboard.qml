@@ -247,7 +247,7 @@ Rectangle {
     }
 
     Rectangle {
-        id: virtualKeyboardComponent
+        id: virtualKeyboardContent
         color: virtualKeyboard.virtualKeyboardColor
         radius: virtualKeyboard.radius
 
@@ -276,7 +276,7 @@ Rectangle {
         
         KeyboardLayoutArea {
             id: keyboardLayoutArea
-            anchors.bottom: virtualKeyboardComponent.bottom
+            anchors.bottom: virtualKeyboardContent.bottom
         }
         
     }
