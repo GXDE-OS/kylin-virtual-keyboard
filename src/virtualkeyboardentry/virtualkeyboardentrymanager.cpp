@@ -80,7 +80,7 @@ void VirtualKeyboardEntryManager::connectSignals() {
             this, [this]() {
                 updateFloatButtonContextMenuAction(
                     ":/floatbutton/img/disablefloatbutton.svg",
-                    tr("Disable the float button"), [this]() {
+                    tr("Disable the float button"), []() {
                         VirtualKeyboardSettings::getInstance()
                             .updateFloatButtonAvailability(false);
                     });
@@ -90,7 +90,7 @@ void VirtualKeyboardEntryManager::connectSignals() {
             this, [this]() {
                 updateFloatButtonContextMenuAction(
                     ":/floatbutton/img/enablefloatbutton.svg",
-                    tr("Enable the float button"), [this]() {
+                    tr("Enable the float button"), []() {
                         VirtualKeyboardSettings::getInstance()
                             .updateFloatButtonAvailability(true);
                     });
