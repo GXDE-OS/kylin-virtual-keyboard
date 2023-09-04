@@ -28,9 +28,11 @@ SwitchKey {
         } else {
             virtualKeyboard.capslockState = "NORMAL"
         }
+
+        var keysym = Utils.getKeysymByKeyLabel(label)
         var modifierKeyState = Utils.getModifierKeyStates()
-        virtualKeyboard.processKeyEvent(label, Utils.getKeyCode(label), modifierKeyState, false, Date())
-        virtualKeyboard.processKeyEvent(label, Utils.getKeyCode(label), modifierKeyState, true, Date())
+        virtualKeyboard.processKeyEvent(keysym, keycode, modifierKeyState, false, Date())
+        virtualKeyboard.processKeyEvent(keysym, keycode, modifierKeyState, true, Date())
     }
 
     state: virtualKeyboard.capslockState

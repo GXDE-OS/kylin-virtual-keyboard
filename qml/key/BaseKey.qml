@@ -20,6 +20,7 @@ import QtQuick.Controls 2.0
 import QtGraphicalEffects 1.0
 
 ToolButton {
+    property int keycode
     width: virtualKeyboard.keyWidth
     height: virtualKeyboard.keyHeight
     property string label: ""

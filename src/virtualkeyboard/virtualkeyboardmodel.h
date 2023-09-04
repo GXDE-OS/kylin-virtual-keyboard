@@ -54,8 +54,8 @@ public:
 public:
     Q_INVOKABLE void selectCandidate(int index);
     Q_INVOKABLE void setCurrentIM(const QString &imName);
-    Q_INVOKABLE void processKeyEvent(const QString &keyval, int keycode,
-                                     int state, bool isRelease, int time);
+    Q_INVOKABLE void processKeyEvent(int keysym, int keycode, int state,
+                                     bool isRelease, int time);
 
 signals:
     void updatePreeditCaret(int index);

@@ -21,7 +21,11 @@ SymbolKey {
     height: virtualKeyboard.firstRowKeyHeight
 
     property string fnValue
+    property int fnKeycode
+    property int numberKeycode
     
+    keycode: virtualKeyboard.fnSymbolState == "FN" ? fnKeycode : numberKeycode
+
     fontSize: virtualKeyboard.fnSymbolKeyFontSize
 
     state: virtualKeyboard.fnSymbolState

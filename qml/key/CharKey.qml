@@ -25,6 +25,20 @@ BaseKey {
     property color pressedColor: virtualKeyboard.charKeyPressedColor
     property color hoverColor: virtualKeyboard.charKeyHoverColor
 
+    function sendKeyEvent(isRelease) {
+        var keysym = Utils.getKeysymByKeyLabel(keyLabel.text)
+        var modifierKeyState = Utils.getModifierKeyStates()
+        virtualKeyboard.processKeyEvent(keysym, keycode, modifierKeyState, isRelease, Date())
+    }
+
+    function sendKeyPressEvent() {
+        sendKeyEvent(false)
+    }
+
+    function sendKeyReleaseEvent() {
+        sendKeyEvent(true);
+    }
+
     MouseArea {
         id: keyMouseArea
         anchors.fill: parent
@@ -33,15 +47,14 @@ BaseKey {
         onReleased: {
             keyBackground.state = "NORMAL"
             timer.stop()
-            var modifierKeyState = Utils.getModifierKeyStates()
-            var keycode = Utils.getKeyCode(keyLabel.text)
-            virtualKeyboard.processKeyEvent(keyLabel.text, keycode, modifierKeyState, false, Date())
+            sendKeyReleaseEvent()
             charKeyClicked()
         }
 
         onPressed: {
             keyBackground.state = "PRESSED"
             timer.start()
+            sendKeyPressEvent()
         }
 
         onEntered: {
@@ -93,8 +106,7 @@ BaseKey {
         interval: virtualKeyboard.longPressInterval
         repeat: true
         onTriggered: {
-            var modifierKeyState = Utils.getModifierKeyStates()
-            virtualKeyboard.processKeyEvent(keyLabel.text, Utils.getKeyCode(keyLabel.text), modifierKeyState, false, Date())
+            sendKeyPressEvent()
         }
     }
 }

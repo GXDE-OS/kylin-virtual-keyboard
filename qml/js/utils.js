@@ -36,14 +36,11 @@ function getModifierKeyStates(){
     return result
 }
 
-function getKeyCode(keyName){
-    var keyCodeList = {
+function getKeysymByKeyLabel(keyLabel) {
+    var keysymMap = {
         "esc": 0xff1b,
         "tab": 0xff09,
         "caps": 0xffe5,
-        "shift": 0xffe1,
-        "ctrl": 0xffe3,
-        "alt": 0xffe9,
         "win": 0xffeb,
         "backspace": 0xff08,
         "enter": 0xff0d,
@@ -66,12 +63,31 @@ function getKeyCode(keyName){
         "f11": 0xffc8,
         "f12": 0xffc9
     }
-    if(keyCodeList.hasOwnProperty(keyName.toLowerCase())){
-        return keyCodeList[keyName.toLowerCase()]
-    }else{
-        return keyName[0].charCodeAt(0)
+
+    if (keysymMap.hasOwnProperty(keyLabel.toLowerCase())) {
+        return keysymMap[keyLabel.toLowerCase()]
     }
+
+    return keyLabel[0].charCodeAt(0)
 }
+
+function getKeysymByKeycode(keycode) {
+    var keysymMap = {
+        "50": 0xffe1,   // Shift_L
+        "62": 0xffe2,   // Shift_R
+        "37": 0xffe3,   // Ctrl_L
+        "105": 0xffe4,  // Ctrl_R
+        "64": 0xffe9,   // Alt_L
+        "108": 0xffea   // Alt_R
+    }
+
+    if (keysymMap.hasOwnProperty(keycode)) {
+        return keysymMap[keycode]
+    }
+
+    return 0;
+}
+
 
 
 

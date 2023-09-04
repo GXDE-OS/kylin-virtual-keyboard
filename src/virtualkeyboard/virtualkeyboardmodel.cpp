@@ -40,12 +40,11 @@ void VirtualKeyboardModel::setCurrentIM(const QString &imName) {
     fcitx5Controller_->SetCurrentIM(imName);
 }
 
-void VirtualKeyboardModel::processKeyEvent(const QString & /*keyval*/,
-                                           int keycode, int state,
+void VirtualKeyboardModel::processKeyEvent(int keysym, int keycode, int state,
                                            bool isRelease, int time) {
-    virtualKeyboardBackendInterface_->asyncCall(
-        "ProcessKeyEvent", (uint)keycode, (uint)keycode, (uint)state, isRelease,
-        (uint)time);
+    virtualKeyboardBackendInterface_->asyncCall("ProcessKeyEvent", (uint)keysym,
+                                                (uint)keycode, (uint)state,
+                                                isRelease, (uint)time);
 }
 
 void VirtualKeyboardModel::initFcitx5Controller() {
