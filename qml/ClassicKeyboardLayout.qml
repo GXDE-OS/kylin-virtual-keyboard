@@ -27,7 +27,7 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: virtualKeyboard.keySpacing
         ActionKey{ label: "Esc" ;height: virtualKeyboard.keyHeight * 3/4}
-        FnSymbolKey{ label: "`"; shiftedText: "~"; fnValue:"~" }
+        SymbolKey{ label: "`"; shiftedText: "~"; height: virtualKeyboard.firstRowKeyHeight; }
         FnSymbolKey{ label: "1"; shiftedText: "!"; fnValue:"F1" }
         FnSymbolKey{ label: "2"; shiftedText: "@"; fnValue:"F2" }
         FnSymbolKey{ label: "3"; shiftedText: "#"; fnValue:"F3" }
