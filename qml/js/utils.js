@@ -51,7 +51,7 @@ function getKeyCode(keyName){
         "up": 0xff52,
         "right": 0xff53,
         "down": 0xff54,
-        "del": 0xff9f,
+        "del": 0xffff,
         "space": 0x0020,
         "f1": 0xffbe,
         "f2": 0xffbf,
