@@ -61,6 +61,7 @@ INCLUDEPATH  += src/
 
 HEADERS += \
     src/animation/animationfactory.h \
+    src/animation/animator.h \
     src/animation/expansionanimationfactory.h \
     src/animation/floatanimationfactory.h \
     src/appinputareamanager.h \
