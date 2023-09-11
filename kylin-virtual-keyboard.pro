@@ -13,6 +13,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/animation/animationfactory.cpp \
     src/appinputareamanager.cpp \
     src/geometrymanager/expansiongeometrymanager.cpp \
     src/geometrymanager/floatgeometrymanager.cpp \
@@ -57,6 +58,7 @@ else: unix:!android: target.path = /usr/bin
 INCLUDEPATH  += src/
 
 HEADERS += \
+    src/animation/animationfactory.h \
     src/appinputareamanager.h \
     src/geometrymanager/expansiongeometrymanager.h \
     src/geometrymanager/floatgeometrymanager.h \
