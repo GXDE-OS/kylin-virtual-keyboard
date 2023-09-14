@@ -20,12 +20,23 @@
 #include <QQmlContext>
 #include <QQuickItem>
 
+#include "screenmanager.h"
+
 VirtualKeyboardView::VirtualKeyboardView(
     QObject &manager, QObject &model,
     std::shared_ptr<GeometryManager> geometryManager)
     : manager_(manager), model_(model), geometryManager_(geometryManager) {}
 
-VirtualKeyboardView::~VirtualKeyboardView() { destroyView(); }
+VirtualKeyboardView::~VirtualKeyboardView() {
+    destroyView();
+
+    currentState_.reset();
+    visibleState_.reset();
+    hidingState_.reset();
+    showingState_.reset();
+    invisibleState_.reset();
+    flippingState_.reset();
+}
 
 QRect VirtualKeyboardView::geometry() const { return view_->geometry(); }
 
@@ -60,6 +71,14 @@ void VirtualKeyboardView::flip(
     updateGeometry();
 }
 
+void VirtualKeyboardView::updateExpansionFlippingStartGeometry() {
+    auto geometry = floatGeometryManager_->geometry();
+    view_->setGeometry(geometry.x(), view_->y(), geometry.width(),
+                       geometry.height());
+
+    emitContentGeometrySignals();
+}
+
 void VirtualKeyboardView::move(int x, int y) {
     view_->setX(x);
     view_->setY(y);
@@ -79,6 +98,18 @@ void VirtualKeyboardView::initView() {
                     Qt::BypassWindowManagerHint);
 
     view_->setGeometry(geometryManager_->geometry());
+}
+
+QRect VirtualKeyboardView::calculateInitialGeometry() {
+    int normalizedY =
+        std::min(getScreenHeight(), geometry().y() + geometry().height());
+
+    return QRect(geometry().x(), normalizedY, geometry().width(),
+                 geometry().height());
+}
+
+int VirtualKeyboardView::getScreenHeight() {
+    return ScreenManager::getPrimaryScreenSize().height();
 }
 
 void VirtualKeyboardView::connectSignals() {

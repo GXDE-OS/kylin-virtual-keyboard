@@ -32,6 +32,7 @@ SOURCES += \
     src/virtualkeyboard/virtualkeyboardmanager.cpp \
     src/virtualkeyboard/virtualkeyboardmodel.cpp \
     src/virtualkeyboard/virtualkeyboardview.cpp \
+    src/virtualkeyboard/virtualkeyboardviewstate.cpp \
     src/virtualkeyboardentry/floatbutton.cpp \
     src/virtualkeyboardentry/floatbuttonmanager.cpp \
     src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp \

@@ -24,7 +24,11 @@
 #include <QQuickView>
 #include <QString>
 
+#include "animation/animator.h"
+#include "geometrymanager/expansiongeometrymanager.h"
+#include "geometrymanager/floatgeometrymanager.h"
 #include "geometrymanager/geometrymanager.h"
+#include "virtualkeyboard/placementmodemanager.h"
 
 class VirtualKeyboardView : public QObject {
     Q_OBJECT
@@ -49,6 +53,11 @@ public:
     void hide();
     void flip(std::shared_ptr<GeometryManager> newGeometryManager);
 
+    bool isFloatMode() const { return placementModeManager_->isFloatMode(); }
+
+    void updateExpansionFlippingStartGeometry();
+    void setAnimator(std::shared_ptr<Animator> animator);
+
 signals:
     void contentHeightChanged();
     void contentWidthChanged();
@@ -58,22 +67,56 @@ signals:
                              int globalCursorIndex);
     void imDeactivated();
 
+    void raiseAppRequested();
+    void fallAppRequested();
+
 public slots:
     void move(int x, int y);
 
 private:
+    class State;
+    class VisibleState;
+    class HidingState;
+    class ShowingState;
+    class InvisibleState;
+    class FlippingState;
+
+private:
+    void initState();
+    QRect calculateInitialGeometry();
+    static int getScreenHeight();
     void initView();
     void connectSignals();
     void destroyView();
     int getContentHeight();
     int getContentWidth();
 
+    void updateCurrentState(std::shared_ptr<State> newState);
+    void enterVisibleState();
+    void enterHidingState();
+    void enterShowingState();
+    void enterInvisibleState();
+    void enterFlippingState();
+
 private:
     QObject &manager_;
     QObject &model_;
     std::unique_ptr<QQuickView> view_ = nullptr;
+    std::unique_ptr<PlacementModeManager> placementModeManager_ = nullptr;
 
+    std::shared_ptr<Animator> animator_ = nullptr;
+
+    std::shared_ptr<State> currentState_ = nullptr;
+    std::shared_ptr<VisibleState> visibleState_ = nullptr;
+    std::shared_ptr<HidingState> hidingState_ = nullptr;
+    std::shared_ptr<ShowingState> showingState_ = nullptr;
+    std::shared_ptr<InvisibleState> invisibleState_ = nullptr;
+    std::shared_ptr<FlippingState> flippingState_ = nullptr;
+
+    std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager_ =
+        nullptr;
     std::shared_ptr<GeometryManager> geometryManager_ = nullptr;
+    std::unique_ptr<FloatGeometryManager> floatGeometryManager_ = nullptr;
 };
 
 #endif // VIRTUALKEYBOARDVIEW_H
