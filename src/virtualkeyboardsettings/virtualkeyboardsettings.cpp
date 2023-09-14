@@ -73,6 +73,15 @@ bool VirtualKeyboardSettings::isFloatButtonEnabled() const {
     return gsettings_->get(floatButtonEnabledKey_).toBool();
 }
 
+bool VirtualKeyboardSettings::isAnimationEnabled() const {
+    if (gsettings_ == nullptr) {
+        qWarning() << "WARNING : Gsettings Objetc is NULL !";
+        return false;
+    }
+
+    return gsettings_->get(animationEnabledKey_).toBool();
+}
+
 float VirtualKeyboardSettings::calculateVirtualKeyboardScaleFactor() const {
     return static_cast<float>(
                gsettings_->get(virtualKeyboardScaleFactorKey_).toInt()) /
