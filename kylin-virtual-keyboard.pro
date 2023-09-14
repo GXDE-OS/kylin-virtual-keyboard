@@ -14,6 +14,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 SOURCES += \
     src/animation/animationfactory.cpp \
+    src/animation/enabledanimator.cpp \
     src/animation/expansionanimationfactory.cpp \
     src/animation/floatanimationfactory.cpp \
     src/appinputareamanager.cpp \
@@ -62,6 +63,7 @@ INCLUDEPATH  += src/
 HEADERS += \
     src/animation/animationfactory.h \
     src/animation/animator.h \
+    src/animation/enabledanimator.h \
     src/animation/expansionanimationfactory.h \
     src/animation/floatanimationfactory.h \
     src/appinputareamanager.h \
