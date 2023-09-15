@@ -20,6 +20,10 @@
 #include <QGuiApplication>
 #include <QScreen>
 
+#include "animation/disabledanimator.h"
+#include "animation/enabledanimator.h"
+#include "animation/expansionanimationfactory.h"
+#include "animation/floatanimationfactory.h"
 #include "virtualkeyboardsettings/virtualkeyboardsettings.h"
 #include "virtualkeyboardstrategy.h"
 
@@ -29,21 +33,15 @@ VirtualKeyboardManager::VirtualKeyboardManager(
     initVirtualKeyboardModel();
 
     initAppInputAreaManager();
-    initPlacementModeManager();
-    initGeometryManager();
 
     initVirtualKeyboardView();
 
     initScreenSignalConnections();
-    initPlacementModeManagerSignalConnections();
 }
 
 VirtualKeyboardManager::~VirtualKeyboardManager() {
     hideVirtualKeyboard();
 
-    placementModeManager_.reset();
-    floatGeometryManager_.reset();
-    expansionGeometryManager_.reset();
     appInputAreaManager_.reset();
 
     view_.reset();
@@ -56,8 +54,6 @@ void VirtualKeyboardManager::showVirtualKeyboard() {
     }
 
     view_->show();
-
-    raiseInputAreaIfNecessary();
 
     visibiltyChanged();
 }
@@ -82,15 +78,13 @@ void VirtualKeyboardManager::hide() {
     hideVirtualKeyboardCallback_();
 }
 
-void VirtualKeyboardManager::flipPlacementMode() {
-    placementModeManager_->flipPlacementMode();
-}
+void VirtualKeyboardManager::flipPlacementMode() { view_->flip(); }
 
 void VirtualKeyboardManager::moveBy(int offsetX, int offsetY) {
-    floatGeometryManager_->moveBy(offsetX, offsetY);
+    view_->moveBy(offsetX, offsetY);
 }
 
-void VirtualKeyboardManager::endDrag() { floatGeometryManager_->endDrag(); }
+void VirtualKeyboardManager::endDrag() { view_->endDrag(); }
 
 void VirtualKeyboardManager::visibiltyChanged() {
     emit virtualKeyboardVisibiltyChanged(isVirtualKeyboardVisible());
@@ -138,8 +132,10 @@ void VirtualKeyboardManager::initAppInputAreaManager() {
     appInputAreaManager_.reset(new AppInputAreaManager(this));
 }
 
-void VirtualKeyboardManager::initPlacementModeManager() {
-    placementModeManager_.reset(new PlacementModeManager(viewSettings_));
+std::unique_ptr<PlacementModeManager>
+VirtualKeyboardManager::createPlacementModeManager() {
+    return std::unique_ptr<PlacementModeManager>(
+        new PlacementModeManager(viewSettings_));
 }
 
 Scaler VirtualKeyboardManager::createFloatModeScaler() {
@@ -170,14 +166,18 @@ Scaler VirtualKeyboardManager::createExpansionModeScaler() {
                   });
 }
 
-void VirtualKeyboardManager::initGeometryManager() {
-    floatGeometryManager_.reset(new FloatGeometryManager(
+std::unique_ptr<ExpansionGeometryManager>
+VirtualKeyboardManager::createExpansionGeometryManager() {
+    return std::unique_ptr<ExpansionGeometryManager>(
+        new ExpansionGeometryManager(createExpansionModeScaler()));
+}
+
+std::unique_ptr<FloatGeometryManager>
+VirtualKeyboardManager::createFloatGeometryManger() {
+    return std::unique_ptr<FloatGeometryManager>(new FloatGeometryManager(
         std::unique_ptr<FloatGeometryManager::Strategy>(
             new VirtualKeyboardStrategy()),
         viewSettings_, createFloatModeScaler()));
-
-    expansionGeometryManager_.reset(
-        new ExpansionGeometryManager(createExpansionModeScaler()));
 }
 
 void VirtualKeyboardManager::initVirtualKeyboardModel() {
@@ -187,24 +187,17 @@ void VirtualKeyboardManager::initVirtualKeyboardModel() {
             SLOT(hideVirtualKeyboard()));
 }
 
-std::shared_ptr<GeometryManager>
-VirtualKeyboardManager::getCurrentGeometryManager() const {
-    if (placementModeManager_->isFloatMode()) {
-        return floatGeometryManager_;
-    }
-
-    return expansionGeometryManager_;
-}
-
 void VirtualKeyboardManager::initVirtualKeyboardView() {
-    view_.reset(
-        new VirtualKeyboardView(*this, *model_, getCurrentGeometryManager()));
+    view_.reset(new VirtualKeyboardView(
+        *this, *model_, createPlacementModeManager(),
+        createExpansionGeometryManager(), createFloatGeometryManger()));
+    view_->setAnimator(createAnimator());
 
     connectVirtualKeyboardModelSignals();
 
-    connectGeometryManagerSignals();
+    connectVirtualKeyboardViewSignals();
 
-    connectVirtualKeyboardSettingsSignal();
+    connectVirtualKeyboardSettingsSignals();
 }
 
 void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
@@ -216,18 +209,26 @@ void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
             SIGNAL(imDeactivated()));
 }
 
-void VirtualKeyboardManager::connectGeometryManagerSignals() {
-    connect(floatGeometryManager_.get(), SIGNAL(viewMoved(int, int)),
-            view_.get(), SLOT(move(int, int)));
+void VirtualKeyboardManager::connectVirtualKeyboardViewSignals() {
+    connect(
+        view_.get(), &VirtualKeyboardView::raiseAppRequested, this,
+        [this]() { appInputAreaManager_->raiseInputArea(view_->geometry()); });
+
+    connect(view_.get(), &VirtualKeyboardView::fallAppRequested, this,
+            [this]() { appInputAreaManager_->fallInputArea(); });
 }
 
-void VirtualKeyboardManager::connectVirtualKeyboardSettingsSignal() {
+void VirtualKeyboardManager::connectVirtualKeyboardSettingsSignals() {
     connect(&VirtualKeyboardSettings::getInstance(),
             &VirtualKeyboardSettings::scaleFactorChanged, view_.get(),
             [this]() {
                 view_->updateGeometry();
                 raiseInputAreaIfNecessary();
             });
+
+    connect(&VirtualKeyboardSettings::getInstance(),
+            &VirtualKeyboardSettings::animationAvailabilityChanged, this,
+            [this]() { view_->setAnimator(createAnimator()); });
 }
 
 void VirtualKeyboardManager::initScreenSignalConnections() {
@@ -236,40 +237,48 @@ void VirtualKeyboardManager::initScreenSignalConnections() {
             SLOT(processResolutionChangedEvent()));
 }
 
-void VirtualKeyboardManager::onExpansionModeEntered() {
-    view_->flip(expansionGeometryManager_);
-
-    raiseInputAreaIfNecessary();
-
-    emit isFloatModeChanged();
-}
-
-void VirtualKeyboardManager::onFloatModeEntered() {
-    view_->flip(floatGeometryManager_);
-
-    appInputAreaManager_->fallInputArea();
-
-    emit isFloatModeChanged();
-}
-
-void VirtualKeyboardManager::initPlacementModeManagerSignalConnections() {
-    connect(placementModeManager_.get(),
-            &PlacementModeManager::expansionModeEntered, this,
-            &VirtualKeyboardManager::onExpansionModeEntered);
-
-    connect(placementModeManager_.get(),
-            &PlacementModeManager::floatModeEntered, this,
-            &VirtualKeyboardManager::onFloatModeEntered);
-}
-
 void VirtualKeyboardManager::raiseInputAreaIfNecessary() {
     if (!view_->isVisible()) {
         return;
     }
 
-    if (isFloatMode()) {
+    if (view_->isFloatMode()) {
         return;
     }
 
     appInputAreaManager_->raiseInputArea(view_->geometry());
+}
+
+std::unique_ptr<AnimationFactory>
+VirtualKeyboardManager::createAnimationFactory() {
+    if (view_->isFloatMode()) {
+        return std::unique_ptr<AnimationFactory>(new FloatAnimationFactory());
+    } else {
+        return std::unique_ptr<AnimationFactory>(
+            new ExpansionAnimationFactory());
+    }
+}
+
+std::unique_ptr<Animator> VirtualKeyboardManager::createEnabledAnimator() {
+    auto animator = std::unique_ptr<EnabledAnimator>(new EnabledAnimator(
+        [this]() { return view_->isFloatMode(); }, createAnimationFactory()));
+
+    EnabledAnimator *enabledAnimator = animator.get();
+    connect(view_.get(), &VirtualKeyboardView::isFloatModeChanged,
+            enabledAnimator, [this, enabledAnimator]() {
+                enabledAnimator->setAnimationFactory(createAnimationFactory());
+            });
+
+    return animator;
+}
+std::unique_ptr<Animator> VirtualKeyboardManager::createDisabledAnimator() {
+    return std::unique_ptr<Animator>(new DisabledAnimator());
+}
+
+std::unique_ptr<Animator> VirtualKeyboardManager::createAnimator() {
+    if (VirtualKeyboardSettings::getInstance().isAnimationEnabled()) {
+        return createEnabledAnimator();
+    } else {
+        return createDisabledAnimator();
+    }
 }

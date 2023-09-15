@@ -40,19 +40,19 @@ void PlacementModeManager::flipPlacementMode() {
 }
 
 void PlacementModeManager::setPlacementMode(bool isFloatMode) {
+    if (isFloatMode_ == isFloatMode) {
+        return;
+    }
+
     isFloatMode_ = isFloatMode;
     savePlacementMode();
+
+    emit isFloatModeChanged();
 }
 
-void PlacementModeManager::enterExpansionMode() {
-    setPlacementMode(false);
-    emit expansionModeEntered();
-}
+void PlacementModeManager::enterExpansionMode() { setPlacementMode(false); }
 
-void PlacementModeManager::enterFloatMode() {
-    setPlacementMode(true);
-    emit floatModeEntered();
-}
+void PlacementModeManager::enterFloatMode() { setPlacementMode(true); }
 
 void PlacementModeManager::savePlacementMode() {
     viewSettings_.setValue(placementModeGroup, placementModeKey, isFloatMode_);

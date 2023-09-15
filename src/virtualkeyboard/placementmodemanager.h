@@ -32,8 +32,7 @@ public:
     bool isFloatMode() const { return isFloatMode_; }
 
 signals:
-    void expansionModeEntered();
-    void floatModeEntered();
+    void isFloatModeChanged();
 
 public:
     void flipPlacementMode();

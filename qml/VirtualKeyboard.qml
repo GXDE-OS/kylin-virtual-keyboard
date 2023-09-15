@@ -21,7 +21,7 @@ import QtQuick.Window 2.0
 
 Rectangle {
     id: virtualKeyboard
-    property bool isFloatMode : manager.isFloatMode
+    property bool isFloatMode : view.isFloatMode
     anchors.fill: parent
     color: virtualKeyboardColor
     radius: isFloatMode ? virtualKeyboardFloatPlacementRadius :  0

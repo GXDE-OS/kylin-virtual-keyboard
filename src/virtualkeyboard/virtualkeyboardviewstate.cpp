@@ -137,6 +137,16 @@ void VirtualKeyboardView::initState() {
     updateCurrentState(invisibleState_);
 }
 
+bool VirtualKeyboardView::isVisible() const {
+    return currentState_->isVirtualKeyboardVisible();
+}
+
+void VirtualKeyboardView::show() { currentState_->show(); }
+
+void VirtualKeyboardView::hide() { currentState_->hide(); }
+
+void VirtualKeyboardView::flip() { currentState_->flip(); }
+
 void VirtualKeyboardView::setAnimator(std::shared_ptr<Animator> animator) {
     animator_ = animator;
     connect(animator_.get(), &Animator::animationFinished, this,

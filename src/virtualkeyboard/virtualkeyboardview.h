@@ -34,14 +34,24 @@ class VirtualKeyboardView : public QObject {
     Q_OBJECT
 
 public:
-    VirtualKeyboardView(QObject &manager, QObject &model,
-                        std::shared_ptr<GeometryManager> geometryManager);
+    VirtualKeyboardView(
+        QObject &manager, QObject &model,
+        std::unique_ptr<PlacementModeManager> placementModeManager,
+        std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager,
+        std::unique_ptr<FloatGeometryManager> floatGeometryManager);
     ~VirtualKeyboardView() override;
+
+    void initView();
+
+    Q_PROPERTY(bool isFloatMode READ isFloatMode NOTIFY isFloatModeChanged);
 
     Q_PROPERTY(
         int contentHeight READ getContentHeight NOTIFY contentHeightChanged);
     Q_PROPERTY(
         int contentWidth READ getContentWidth NOTIFY contentWidthChanged);
+
+    void moveBy(int offsetX, int offsetY);
+    void endDrag();
 
     QRect geometry() const;
     void updateGeometry();
@@ -51,7 +61,9 @@ public:
     bool isVisible() const;
     void show();
     void hide();
-    void flip(std::shared_ptr<GeometryManager> newGeometryManager);
+    void flip();
+
+    QWindow *view() { return view_.get(); }
 
     bool isFloatMode() const { return placementModeManager_->isFloatMode(); }
 
@@ -59,6 +71,8 @@ public:
     void setAnimator(std::shared_ptr<Animator> animator);
 
 signals:
+    void isFloatModeChanged();
+
     void contentHeightChanged();
     void contentWidthChanged();
 
@@ -85,11 +99,11 @@ private:
     void initState();
     QRect calculateInitialGeometry();
     static int getScreenHeight();
-    void initView();
     void connectSignals();
     void destroyView();
     int getContentHeight();
     int getContentWidth();
+    void setViewOpacity();
 
     void updateCurrentState(std::shared_ptr<State> newState);
     void enterVisibleState();
@@ -97,6 +111,8 @@ private:
     void enterShowingState();
     void enterInvisibleState();
     void enterFlippingState();
+
+    GeometryManager &getCurrentGeometryManager() const;
 
 private:
     QObject &manager_;
@@ -115,7 +131,6 @@ private:
 
     std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager_ =
         nullptr;
-    std::shared_ptr<GeometryManager> geometryManager_ = nullptr;
     std::unique_ptr<FloatGeometryManager> floatGeometryManager_ = nullptr;
 };
 

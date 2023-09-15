@@ -15,7 +15,8 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "virtualkeyboardview.h"
+#include "virtualkeyboard/virtualkeyboardview.h"
+#include "virtualkeyboardsettings/virtualkeyboardsettings.h"
 
 #include <QQmlContext>
 #include <QQuickItem>
@@ -24,8 +25,22 @@
 
 VirtualKeyboardView::VirtualKeyboardView(
     QObject &manager, QObject &model,
-    std::shared_ptr<GeometryManager> geometryManager)
-    : manager_(manager), model_(model), geometryManager_(geometryManager) {}
+    std::unique_ptr<PlacementModeManager> placementModeManager,
+    std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager,
+    std::unique_ptr<FloatGeometryManager> floatGeometryManager)
+    : manager_(manager), model_(model),
+      placementModeManager_(std::move(placementModeManager)),
+      expansionGeometryManager_(std::move(expansionGeometryManager)),
+      floatGeometryManager_(std::move(floatGeometryManager)) {
+
+    connect(placementModeManager_.get(),
+            &PlacementModeManager::isFloatModeChanged, this,
+            &VirtualKeyboardView::isFloatModeChanged);
+    connect(floatGeometryManager_.get(), &FloatGeometryManager::viewMoved, this,
+            &VirtualKeyboardView::move);
+
+    initState();
+}
 
 VirtualKeyboardView::~VirtualKeyboardView() {
     destroyView();
@@ -38,37 +53,34 @@ VirtualKeyboardView::~VirtualKeyboardView() {
     flippingState_.reset();
 }
 
-QRect VirtualKeyboardView::geometry() const { return view_->geometry(); }
+void VirtualKeyboardView::moveBy(int offsetX, int offsetY) {
+    if (!isFloatMode()) {
+        return;
+    }
+
+    floatGeometryManager_->moveBy(offsetX, offsetY);
+}
+
+void VirtualKeyboardView::endDrag() {
+    if (!isFloatMode()) {
+        return;
+    }
+
+    floatGeometryManager_->endDrag();
+}
+
+QRect VirtualKeyboardView::geometry() const {
+    return getCurrentGeometryManager().geometry();
+}
 
 void VirtualKeyboardView::updateGeometry() {
     if (!isVisible()) {
         return;
     }
 
-    view_->setGeometry(geometryManager_->geometry());
+    view_->setGeometry(geometry());
 
     emitContentGeometrySignals();
-}
-
-bool VirtualKeyboardView::isVisible() const {
-    return view_ != nullptr && view_->isVisible();
-}
-
-void VirtualKeyboardView::show() {
-    initView();
-
-    connectSignals();
-
-    view_->show();
-}
-
-void VirtualKeyboardView::hide() { destroyView(); }
-
-void VirtualKeyboardView::flip(
-    std::shared_ptr<GeometryManager> newGeometryManager) {
-    geometryManager_ = newGeometryManager;
-
-    updateGeometry();
 }
 
 void VirtualKeyboardView::updateExpansionFlippingStartGeometry() {
@@ -97,7 +109,10 @@ void VirtualKeyboardView::initView() {
                     Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
                     Qt::BypassWindowManagerHint);
 
-    view_->setGeometry(geometryManager_->geometry());
+    view_->setGeometry(calculateInitialGeometry());
+    setViewOpacity();
+
+    connectSignals();
 }
 
 QRect VirtualKeyboardView::calculateInitialGeometry() {
@@ -132,7 +147,7 @@ void VirtualKeyboardView::destroyView() {
         view_->hide();
     }
 
-    view_.reset();
+    view_.release()->deleteLater();
 }
 
 void VirtualKeyboardView::emitContentGeometrySignals() {
@@ -141,9 +156,30 @@ void VirtualKeyboardView::emitContentGeometrySignals() {
 }
 
 int VirtualKeyboardView::getContentWidth() {
-    return geometryManager_->getViewContentWidth();
+    return getCurrentGeometryManager().getViewContentWidth();
 }
 
 int VirtualKeyboardView::getContentHeight() {
-    return geometryManager_->getViewContentHeight();
+    return getCurrentGeometryManager().getViewContentHeight();
+}
+
+void VirtualKeyboardView::setViewOpacity() {
+    if (VirtualKeyboardSettings::getInstance().isAnimationEnabled()) {
+        view_->setOpacity(isFloatMode() ? 0.0f : 1.0f);
+    }
+    connect(
+        &VirtualKeyboardSettings::getInstance(),
+        &VirtualKeyboardSettings::animationAvailabilityChanged, this, [this]() {
+            if (!VirtualKeyboardSettings::getInstance().isAnimationEnabled()) {
+                view_->setOpacity(1.0f);
+            }
+        });
+}
+
+GeometryManager &VirtualKeyboardView::getCurrentGeometryManager() const {
+    if (isFloatMode()) {
+        return *floatGeometryManager_;
+    } else {
+        return *expansionGeometryManager_;
+    }
 }

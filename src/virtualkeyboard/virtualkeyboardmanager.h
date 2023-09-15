@@ -23,6 +23,7 @@
 
 #include <QObject>
 
+#include "animation/animationfactory.h"
 #include "appinputareamanager.h"
 #include "geometrymanager/expansiongeometrymanager.h"
 #include "geometrymanager/floatgeometrymanager.h"
@@ -44,8 +45,6 @@ public:
 
     void showVirtualKeyboard();
 
-    Q_PROPERTY(bool isFloatMode READ isFloatMode NOTIFY isFloatModeChanged);
-
     Q_INVOKABLE void hide();
     Q_INVOKABLE void flipPlacementMode();
     Q_INVOKABLE void moveBy(int offsetX, int offsetY);
@@ -64,44 +63,39 @@ public:
 signals:
     void virtualKeyboardVisibiltyChanged(bool isShow);
 
-    void isFloatModeChanged();
-
 public slots:
     void processResolutionChangedEvent();
 
     void hideVirtualKeyboard();
 
-private slots:
-    void onExpansionModeEntered();
-    void onFloatModeEntered();
-
 private:
     void initAppInputAreaManager();
-    void initPlacementModeManager();
-    static Scaler createFloatModeScaler();
+    std::unique_ptr<PlacementModeManager> createPlacementModeManager();
     static Scaler createExpansionModeScaler();
-    void initGeometryManager();
+    static Scaler createFloatModeScaler();
+    static std::unique_ptr<ExpansionGeometryManager>
+    createExpansionGeometryManager();
+    std::unique_ptr<FloatGeometryManager> createFloatGeometryManger();
+
     void initVirtualKeyboardModel();
 
     void initScreenSignalConnections();
-    void initPlacementModeManagerSignalConnections();
 
-    std::shared_ptr<GeometryManager> getCurrentGeometryManager() const;
     void initVirtualKeyboardView();
     void connectVirtualKeyboardModelSignals();
-    void connectGeometryManagerSignals();
-    void connectVirtualKeyboardSettingsSignal();
+    void connectVirtualKeyboardViewSignals();
+    void connectVirtualKeyboardSettingsSignals();
 
-    bool isFloatMode() const { return placementModeManager_->isFloatMode(); }
     void raiseInputAreaIfNecessary();
+
+    std::unique_ptr<AnimationFactory> createAnimationFactory();
+    std::unique_ptr<Animator> createEnabledAnimator();
+    std::unique_ptr<Animator> createDisabledAnimator();
+    std::unique_ptr<Animator> createAnimator();
 
     std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;
     std::unique_ptr<VirtualKeyboardModel> model_ = nullptr;
     std::unique_ptr<VirtualKeyboardView> view_ = nullptr;
-    std::unique_ptr<PlacementModeManager> placementModeManager_ = nullptr;
-    std::shared_ptr<FloatGeometryManager> floatGeometryManager_ = nullptr;
-    std::shared_ptr<ExpansionGeometryManager> expansionGeometryManager_ =
-        nullptr;
 
     HideVirtualKeyboardCallback hideVirtualKeyboardCallback_;
 
