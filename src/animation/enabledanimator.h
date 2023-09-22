@@ -75,7 +75,7 @@ private:
     void connectAnimationFinishedSignal();
 
 private:
-    const int animationDuration_ = 200;
+    const int animationDuration_ = 100;
 
     IsFloatModeCallback isFloatModeCallback_;
 
