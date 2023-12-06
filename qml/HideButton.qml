@@ -25,6 +25,7 @@ Rectangle {
     anchors.right: parent.right
     anchors.rightMargin: virtualKeyboard.cardinalNumber * 3.5
     color: virtualKeyboard.virtualKeyboardColor
+
     Image {
         id: hideButtonImg
         anchors.centerIn: parent
@@ -32,8 +33,14 @@ Rectangle {
         source: "qrc:/img/close.svg"
     }
 
+    ToolTip {
+        id:hideButtonToolTip
+        text: qsTr("close")
+    }
+
     MouseArea {
         anchors.fill: parent
+        hoverEnabled: true
 
         onPressed: {
             hideButtonImg.source = "qrc:/img/close_pressed.svg"
@@ -42,7 +49,13 @@ Rectangle {
         onReleased: {
             virtualKeyboard.hideVirtualKeyboard()
         }
+
+        onEntered: {
+            hideButtonToolTip.visible = true
+        }
+
+        onExited: {
+            hideButtonToolTip.visible = false
+        }
     }
-
-
 }
