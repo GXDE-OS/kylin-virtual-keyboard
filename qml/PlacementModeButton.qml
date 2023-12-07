@@ -16,6 +16,7 @@
 */
 
 import QtQuick 2.0
+import QtQuick.Controls 2.0
 
 Rectangle {
     height: virtualKeyboard.toolbarSize
@@ -34,9 +35,23 @@ Rectangle {
         anchors.centerIn: parent
     }
 
+    ToolTip {
+        id: placementModelButtonToolTip
+        text: qsTr("Floating Mode")
+    }
+
     MouseArea {
         anchors.fill: parent
+        hoverEnabled: true
         onClicked: virtualKeyboard.flipPlacementMode()
+
+        onEntered: {
+            placementModelButtonToolTip.visible = true
+        }
+
+        onExited: {
+            placementModelButtonToolTip.visible = false
+        }
     }
 
     state: virtualKeyboard.placementMode
@@ -47,12 +62,20 @@ Rectangle {
                 target: placementModelButtonImg
                 source: "qrc:/img/upfloat.svg"
             }
+            PropertyChanges {
+                target: placementModelButtonToolTip
+                text: qsTr("Floating Mode")
+            }
         },
         State {
             name: "FLOAT"
             PropertyChanges {
                 target: placementModelButtonImg
                 source: "qrc:/img/downfloat.svg"
+            }
+            PropertyChanges {
+                target: placementModelButtonToolTip
+                text: qsTr("Docking Mode")
             }
         }
     ]
