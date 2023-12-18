@@ -103,6 +103,7 @@ void VirtualKeyboardView::initView() {
     view_->rootContext()->setContextProperty("model", &model_);
     view_->rootContext()->setContextProperty("view", this);
 
+    view_->setTitle("kylin-virtual-keyboard");
     view_->setColor(QColor(Qt::transparent));
     view_->setSource(QUrl("qrc:/qml/VirtualKeyboard.qml"));
     view_->setFlags(Qt::Window | Qt::WindowDoesNotAcceptFocus |

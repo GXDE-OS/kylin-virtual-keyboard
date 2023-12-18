@@ -130,6 +130,7 @@ void FloatButton::paintEvent(QPaintEvent *event) {
 }
 
 void FloatButton::initStyle() {
+    setWindowTitle("kylin-virtual-keyboard-float-button");
     setAttribute(Qt::WA_TranslucentBackground);
     setStyleSheet("QPushButton{border-image: "
                   "url(:/floatbutton/img/floatbuttondefault.svg);}"
