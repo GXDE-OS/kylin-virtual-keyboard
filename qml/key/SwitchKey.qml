@@ -26,7 +26,7 @@ BaseKey {
     property color openPressedColor: virtualKeyboard.switchKeyOpenPressedColor
     property color hoverNormalColor: virtualKeyboard.switchKeyHoverNormalColor
     property color hoverOpenColor: virtualKeyboard.switchKeyHoverOpenColor
-    property alias keyMouseArea: keyMouseArea_
+    property alias multiPointTouchArea: multiPointTouchArea_
     property string switchKeyState
 
     fontSize: virtualKeyboard.switchKeyFontSize
@@ -117,29 +117,33 @@ BaseKey {
     MouseArea {
         id: keyMouseArea_
         anchors.fill: parent
-        hoverEnabled: true
-
-        onPressed: {
-            if(switchKeyState == "NORMAL") {
-                keyBackground.state = "PRESSED"
-            } else {
-                keyBackground.state = "OPEN_PRESSED"
-            }
-        }
-
+        hoverEnabled: !virtualKeyboard.isShiftKeyLongPressed
         onEntered: {
-            if(switchKeyState == "NORMAL") {
+            if (switchKeyState == "NORMAL") {
                 keyBackground.state = "HOVER_NORMAL"
-            } else {
+            } else if (switchKeyState == "OPEN") {
                 keyBackground.state = "HOVER_OPEN"
             }
         }
 
         onExited: {
-            if(switchKeyState == "NORMAL") {
+            if (switchKeyState == "NORMAL") {
                 keyBackground.state = "NORMAL"
-            } else {
+            } else if (switchKeyState == "OPEN") {
                 keyBackground.state = "OPEN"
+            }
+        }
+    }
+
+    MultiPointTouchArea {
+        id: multiPointTouchArea_
+        anchors.fill: parent
+        maximumTouchPoints: 1
+        onPressed: {
+            if (switchKeyState == "NORMAL") {
+                keyBackground.state = "PRESSED"
+            } else {
+                keyBackground.state = "OPEN_PRESSED"
             }
         }
     }

@@ -23,7 +23,7 @@ SwitchKey {
     label: "Fn"
 
     switchKeyState: fn.state
-    keyMouseArea.onReleased: {
+    multiPointTouchArea.onReleased: {
         if(fn.state == "NORMAL") {
             fn.state = "OPEN"
         } else {

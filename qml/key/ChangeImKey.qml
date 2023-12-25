@@ -37,7 +37,7 @@ SwitchKey {
         }
     }
 
-    keyMouseArea.onReleased: {
+    multiPointTouchArea.onReleased: {
         if(virtualKeyboard.changeIMState == "NORMAL"){
             virtualKeyboard.changeIMState = "OPEN"
             imList.open()
@@ -46,7 +46,7 @@ SwitchKey {
         }
     }
     
-    keyMouseArea.onPressed: {
+    multiPointTouchArea.onPressed: {
         imList.currentIndex =
                 virtualKeyboard.currentIMList.indexOf(virtualKeyboard.currentIM)
     }

@@ -133,6 +133,8 @@ Rectangle {
     property bool isAllLayoutListVisible: false
     property string layout: "classic"
     property bool isCurrentIMListVisible: false
+    property bool isShiftKeyLongPressed: shiftState === "LONG_PRESSED" ||
+                                         shiftState === "OPEN_LONG_PRESSED"
 
     //内部使用
     signal showToolbar()
@@ -208,7 +210,7 @@ Rectangle {
     }
 
     function onCharKeyClicked() {
-        shiftState = "NORMAL"
+        updateShiftKeyNormalState()
         ctrlState = "NORMAL"
         altState = "NORMAL"
         winState = "NORMAL"
@@ -221,21 +223,27 @@ Rectangle {
     }
 
     function onCtrlClicked() {
-        shiftState = "NORMAL"
+        updateShiftKeyNormalState()
         altState = "NORMAL"
         winState = "NORMAL"
     }
 
     function onAltClicked() {
-        shiftState = "NORMAL"
+        updateShiftKeyNormalState()
         ctrlState = "NORMAL"
         winState = "NORMAL"
     }
 
     function onWinClicked() {
-        shiftState = "NORMAL"
+        updateShiftKeyNormalState()
         altState = "NORMAL"
         ctrlState = "NORMAL"
+    }
+
+    function updateShiftKeyNormalState() {
+        if (!isShiftKeyLongPressed) {
+            shiftState = "NORMAL"
+        }
     }
 
     onUniqueNameChanged: {

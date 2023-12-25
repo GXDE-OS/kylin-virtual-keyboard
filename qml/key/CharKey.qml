@@ -42,8 +42,20 @@ BaseKey {
     MouseArea {
         id: keyMouseArea
         anchors.fill: parent
-        hoverEnabled: true
+        hoverEnabled: !virtualKeyboard.isShiftKeyLongPressed
 
+        onEntered: {
+            keyBackground.state = "HOVER"
+        }
+
+        onExited: {
+            keyBackground.state = "NORMAL"
+        }
+    }
+
+    MultiPointTouchArea {
+        anchors.fill: parent
+        maximumTouchPoints: 1
         onReleased: {
             keyBackground.state = "NORMAL"
             timer.stop()
@@ -56,15 +68,6 @@ BaseKey {
             timer.start()
             sendKeyPressEvent()
         }
-
-        onEntered: {
-            keyBackground.state = "HOVER"
-        }
-
-        onExited: {
-            keyBackground.state = "NORMAL"
-        }
-
     }
 
     keyBackground.state: "NORMAL"

@@ -31,6 +31,7 @@ TemporarySwitchKey {
     Component.onCompleted: {
         temporarySwitchKeyReleased.connect(updateShiftState)
         temporarySwitchKeyClicked.connect(virtualKeyboard.shiftClicked)
+        temporarySwitchKeyLongPressed.connect(updateShiftState)
     }
 
     function updateShiftState(shiftState) {
@@ -61,6 +62,30 @@ TemporarySwitchKey {
             PropertyChanges {
                 target: keyBackground
                 state: "OPEN"
+            }
+        },
+        State {
+            name: "LONG_PRESSED"
+            PropertyChanges {
+                target: virtualKeyboard
+                letterState : virtualKeyboard.capslockState == "NORMAL" ? "SHIFT" : "NORMAL"
+                symbolState : "SHIFT"
+            }
+            PropertyChanges {
+                target: keyBackground
+                state: "PRESSED"
+            }
+        },
+        State {
+            name: "OPEN_LONG_PRESSED"
+            PropertyChanges {
+                target: virtualKeyboard
+                letterState : virtualKeyboard.capslockState == "NORMAL" ? "SHIFT" : "NORMAL"
+                symbolState : "SHIFT"
+            }
+            PropertyChanges {
+                target: keyBackground
+                state: "OPEN_PRESSED"
             }
         }
     ]

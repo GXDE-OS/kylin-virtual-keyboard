@@ -22,7 +22,7 @@ SwitchKey {
     label: "Caps"
 
     switchKeyState: virtualKeyboard.capslockState
-    keyMouseArea.onReleased: {
+    multiPointTouchArea.onReleased: {
         if(virtualKeyboard.capslockState == "NORMAL") {
             virtualKeyboard.capslockState = "OPEN"
         } else {

@@ -21,8 +21,10 @@ import "../js/utils.js" as Utils
 SwitchKey {
     signal temporarySwitchKeyReleased(string temporarySwitchKeyState)
     signal temporarySwitchKeyClicked()
+    signal temporarySwitchKeyLongPressed(string temporarySwitchKeyState)
 
-    keyMouseArea.onReleased: {
+    multiPointTouchArea.onReleased: {
+        longPressTimer_.stop()
         if(switchKeyState == "NORMAL") {
             switchKeyState = "OPEN"
         } else {
@@ -35,10 +37,24 @@ SwitchKey {
         temporarySwitchKeyReleased(switchKeyState)
     }
 
-    keyMouseArea.onPressed: {
+    multiPointTouchArea.onPressed: {
+        longPressTimer_.start()
+
         var keysym = Utils.getKeysymByKeycode(keycode);
         var modifierKeyState = Utils.getModifierKeyStates()
         virtualKeyboard.processKeyEvent(keysym, keycode, modifierKeyState - Utils.getKeySym(label), false, Date())
 
+    }
+
+    Timer {
+        id: longPressTimer_
+        interval: 600
+        onTriggered: {
+            if (switchKeyState == "NORMAL") {
+                temporarySwitchKeyLongPressed("LONG_PRESSED")
+            } else if (switchKeyState == "OPEN") {
+                temporarySwitchKeyLongPressed("OPEN_LONG_PRESSED")
+            }
+        }
     }
 }
