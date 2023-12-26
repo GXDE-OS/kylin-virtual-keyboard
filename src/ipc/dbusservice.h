@@ -58,7 +58,7 @@ private:
 
     // 在10ms之内的显示和隐藏虚拟键盘的请求将会被合并处理，
     // 避免虚拟键盘不必要的显示和隐藏及其相应的闪烁效果
-    const int VIRTUAL_KEYBOARD_VISIBILITY_PEROID = 10;
+    const int VIRTUAL_KEYBOARD_VISIBILITY_PEROID = 100;
     RequestMerger virtualKeyboardVisibilityRequestMerger_;
 };
 
