@@ -31,17 +31,6 @@ BaseKey {
 
     fontSize: virtualKeyboard.switchKeyFontSize
 
-    Component.onCompleted: {
-        charKeyClicked.connect(switchKeyNormal)
-    }
-    function switchKeyNormal() {
-        virtualKeyboard.shiftState = "NORMAL"
-        virtualKeyboard.ctrlState = "NORMAL"
-        virtualKeyboard.altState = "NORMAL"
-        virtualKeyboard.winState = "NORMAL"
-    }
-
-
     keyBackground.state: "NORMAL"
     keyBackground.states: [
         State {
