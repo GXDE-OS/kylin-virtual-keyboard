@@ -56,9 +56,9 @@ private:
     QString servicePath_ = "/org/fcitx/virtualkeyboard/impanel";
     QString serviceInterface_ = "org.fcitx.Fcitx5.VirtualKeyboard1";
 
-    // 在10ms之内的显示和隐藏虚拟键盘的请求将会被合并处理，
+    // 在300ms之内的显示和隐藏虚拟键盘的请求将会被合并处理，
     // 避免虚拟键盘不必要的显示和隐藏及其相应的闪烁效果
-    const int VIRTUAL_KEYBOARD_VISIBILITY_PEROID = 100;
+    const int VIRTUAL_KEYBOARD_VISIBILITY_PEROID = 300;
     RequestMerger virtualKeyboardVisibilityRequestMerger_;
 };
 
