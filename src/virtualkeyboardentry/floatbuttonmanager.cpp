@@ -65,6 +65,8 @@ void FloatButtonManager::initInternalSignalConnections() {
 }
 
 void FloatButtonManager::initFloatButton() {
+    fcitxVirtualKeyboardService_.hideVirtualKeyboard();
+
     createFloatButton();
 
     connectFloatButtonSignals();
