@@ -58,14 +58,15 @@ BaseKey {
         maximumTouchPoints: 1
         onReleased: {
             keyBackground.state = "NORMAL"
-            timer.stop()
+            longPressTimer.stop()
+            sendKeyTimer.stop()
             sendKeyReleaseEvent()
             charKeyClicked()
         }
 
         onPressed: {
             keyBackground.state = "PRESSED"
-            timer.start()
+            longPressTimer.start()
             sendKeyPressEvent()
         }
     }
@@ -105,8 +106,17 @@ BaseKey {
 
 
     Timer {
-        id:timer
+        id:longPressTimer
         interval: virtualKeyboard.longPressInterval
+        repeat: false
+        onTriggered: {
+            sendKeyTimer.start()
+        }
+    }
+
+    Timer {
+        id:sendKeyTimer
+        interval: 50
         repeat: true
         onTriggered: {
             sendKeyPressEvent()
