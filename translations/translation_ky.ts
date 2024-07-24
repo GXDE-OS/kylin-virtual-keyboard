@@ -6,7 +6,7 @@
     <message>
         <location filename="../qml/HideButton.qml" line="38"/>
         <source>close</source>
-        <translation type="unfinished"></translation>
+        <translation>جابۇۇ</translation>
     </message>
 </context>
 <context>
