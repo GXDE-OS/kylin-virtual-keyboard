@@ -76,7 +76,6 @@ signals:
     void contentHeightChanged();
     void contentWidthChanged();
 
-    void updatePreeditArea(const QString &preeditText);
     void updateCandidateArea(const QVariant &candidateTextList,
                              int globalCursorIndex);
     void imDeactivated();

@@ -36,11 +36,15 @@ public:
     Q_PROPERTY(QString uniqueName READ getUniqueName NOTIFY uniqueNameChanged);
     Q_PROPERTY(QVariant currentIMList READ getCurrentIMList NOTIFY
                    currentIMListChanged);
+    Q_PROPERTY(
+        QString preeditText READ getPreeditText NOTIFY preeditTextChanged);
 
 signals:
     void uniqueNameChanged();
 
     void currentIMListChanged();
+
+    void preeditTextChanged();
 
 public:
     void setUniqueName(const QString &uniqueName);
@@ -51,6 +55,8 @@ public:
                              bool hasNext, int pageIndex,
                              int globalCursorIndex);
 
+    void setPreeditText(const QString &preeditText);
+
 public:
     Q_INVOKABLE void selectCandidate(int index);
     Q_INVOKABLE void setCurrentIM(const QString &imName);
@@ -59,7 +65,6 @@ public:
 
 signals:
     void updatePreeditCaret(int index);
-    void updatePreeditArea(const QString &preeditText);
     // TODO(linyuxuan): 使用更准确的类型替换QVariant
     void updateCandidateArea(const QVariant &candidateTextList,
                              int globalCursorIndex);
@@ -82,6 +87,8 @@ private:
     QVariant getCurrentIMList() const;
     void setCurrentIMList(const QVariant &currentIMList);
 
+    QString getPreeditText() const;
+
 private:
     std::unique_ptr<QDBusServiceWatcher> serviceWatcher_ = nullptr;
     std::unique_ptr<QDBusInterface> virtualKeyboardBackendInterface_ = nullptr;
@@ -90,6 +97,8 @@ private:
     QString uniqueName_;
 
     QVariant currentIMList_;
+
+    QString preeditText_;
 
     QString virtualKeyboardBackendService =
         "org.fcitx.Fcitx5.VirtualKeyboardBackend";

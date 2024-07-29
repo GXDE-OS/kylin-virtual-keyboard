@@ -130,6 +130,14 @@ void VirtualKeyboardModel::setCurrentIMList(
     emit currentIMListChanged();
 }
 
+QString VirtualKeyboardModel::getPreeditText() const { return preeditText_; }
+
+void VirtualKeyboardModel::setPreeditText(const QString &preeditText) {
+    preeditText_ = preeditText;
+
+    emit preeditTextChanged();
+}
+
 void VirtualKeyboardModel::syncCurrentIMList() {
     auto reply = fcitx5Controller_->FullInputMethodGroupInfo("");
     reply.waitForFinished();

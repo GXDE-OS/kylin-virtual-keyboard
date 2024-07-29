@@ -19,15 +19,16 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 
 Rectangle {
+    property alias text: preeditText.text
     width: parent.width
     height: virtualKeyboard.preeditHeight
     color: virtualKeyboard.virtualKeyboardColor
     x: virtualKeyboard.preeditX
 
     Label {
+        id: preeditText
         font.pointSize: virtualKeyboard.preeditTextFontSize
         anchors.verticalCenter: parent.verticalCenter
-        text: virtualKeyboard.preeditText
         color: "black"
     }
 }

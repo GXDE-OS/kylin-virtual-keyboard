@@ -26,8 +26,6 @@ Rectangle {
     color: virtualKeyboardColor
     radius: isFloatMode ? virtualKeyboardFloatPlacementRadius :  0
 
-    //预编辑
-    property string preeditText
     //候选词
     property var candidateList
     //候选列表高亮候选的索引
@@ -146,7 +144,6 @@ Rectangle {
     signal winClicked()
 
     //后台发送给前台的信号
-    signal qmlUpdatePreedit(string preeditText)
     signal qmlUpdateCandidateList(var candidateList, int globalCursorIndex)
     signal qmlImDeactivated()
 
@@ -186,9 +183,6 @@ Rectangle {
         }
         onShowCandidateList: {
             isToolbarVisible = false
-        }
-        onQmlUpdatePreedit: (preeditText) => {
-            virtualKeyboard.preeditText = preeditText
         }
         onQmlUpdateCandidateList: (candidateList, globalCursorIndex) => {
             if(candidateList.length === 0) {
@@ -271,6 +265,7 @@ Rectangle {
         Preedit {
             id: preedit
             anchors.top: dragBar.visible ? dragBar.bottom : parent.top
+            text: model.preeditText
         }
 
         Separator {

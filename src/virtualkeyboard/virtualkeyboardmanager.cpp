@@ -99,7 +99,7 @@ void VirtualKeyboardManager::updatePreeditCaret(int index) {
 }
 
 void VirtualKeyboardManager::updatePreeditArea(const QString &preeditText) {
-    emit model_->updatePreeditArea(preeditText);
+    model_->setPreeditText(preeditText);
 }
 
 void VirtualKeyboardManager::updateCandidateArea(
@@ -201,8 +201,6 @@ void VirtualKeyboardManager::initVirtualKeyboardView() {
 }
 
 void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
-    connect(model_.get(), SIGNAL(updatePreeditArea(const QString &)),
-            view_.get(), SIGNAL(updatePreeditArea(const QString &)));
     connect(model_.get(), SIGNAL(updateCandidateArea(const QVariant &, int)),
             view_.get(), SIGNAL(updateCandidateArea(const QVariant &, int)));
     connect(model_.get(), SIGNAL(imDeactivated()), view_.get(),
