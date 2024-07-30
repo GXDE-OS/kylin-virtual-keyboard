@@ -95,7 +95,7 @@ bool VirtualKeyboardManager::isVirtualKeyboardVisible() const {
 }
 
 void VirtualKeyboardManager::updatePreeditCaret(int index) {
-    emit model_->updatePreeditCaret(index);
+    model_->setPreeditCaret(index);
 }
 
 void VirtualKeyboardManager::updatePreeditArea(const QString &preeditText) {

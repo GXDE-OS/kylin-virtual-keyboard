@@ -36,6 +36,7 @@ public:
     Q_PROPERTY(QString uniqueName READ getUniqueName NOTIFY uniqueNameChanged);
     Q_PROPERTY(QVariant currentIMList READ getCurrentIMList NOTIFY
                    currentIMListChanged);
+    Q_PROPERTY(int preeditCaret READ getPreeditCaret NOTIFY preeditCaretChanged)
     Q_PROPERTY(
         QString preeditText READ getPreeditText NOTIFY preeditTextChanged);
 
@@ -44,6 +45,7 @@ signals:
 
     void currentIMListChanged();
 
+    void preeditCaretChanged();
     void preeditTextChanged();
 
 public:
@@ -55,6 +57,7 @@ public:
                              bool hasNext, int pageIndex,
                              int globalCursorIndex);
 
+    void setPreeditCaret(int preeditCaret);
     void setPreeditText(const QString &preeditText);
 
 public:
@@ -64,7 +67,6 @@ public:
                                      bool isRelease, int time);
 
 signals:
-    void updatePreeditCaret(int index);
     // TODO(linyuxuan): 使用更准确的类型替换QVariant
     void updateCandidateArea(const QVariant &candidateTextList,
                              int globalCursorIndex);
@@ -87,6 +89,7 @@ private:
     QVariant getCurrentIMList() const;
     void setCurrentIMList(const QVariant &currentIMList);
 
+    int getPreeditCaret() const;
     QString getPreeditText() const;
 
 private:
@@ -98,6 +101,7 @@ private:
 
     QVariant currentIMList_;
 
+    int preeditCaret_ = 0;
     QString preeditText_;
 
     QString virtualKeyboardBackendService =

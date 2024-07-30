@@ -265,6 +265,7 @@ Rectangle {
         Preedit {
             id: preedit
             anchors.top: dragBar.visible ? dragBar.bottom : parent.top
+            cursorPosition: model.preeditCaret
             text: model.preeditText
         }
 

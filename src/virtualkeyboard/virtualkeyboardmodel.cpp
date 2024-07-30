@@ -130,6 +130,14 @@ void VirtualKeyboardModel::setCurrentIMList(
     emit currentIMListChanged();
 }
 
+int VirtualKeyboardModel::getPreeditCaret() const { return preeditCaret_; }
+
+void VirtualKeyboardModel::setPreeditCaret(int preeditCaret) {
+    preeditCaret_ = preeditCaret;
+
+    emit preeditCaretChanged();
+}
+
 QString VirtualKeyboardModel::getPreeditText() const { return preeditText_; }
 
 void VirtualKeyboardModel::setPreeditText(const QString &preeditText) {
