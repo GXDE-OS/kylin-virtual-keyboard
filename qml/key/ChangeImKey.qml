@@ -88,13 +88,10 @@ SwitchKey {
         Menu {
             id: imList
             
-            onHeightChanged: {
-                // 切换输入法列表默认显示四个条目
-                if (imList.count > 4) {
-                    height = imList.itemAt(0).height * 4
-                }
-            }
             width: virtualKeyboard.imListItemWidth
+            // 输入法列表的最大高度可以完整显示四个条目，
+            // 输入法列表条目数量超过4之后输入法列表显示滚动条
+            height: imList.count == 0 ? 0 : imList.itemAt(0).height * Math.min(imList.count, 4)
             modal: true
             Overlay.modal:Rectangle {
                 color: "transparent"
