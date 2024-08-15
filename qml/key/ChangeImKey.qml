@@ -87,7 +87,6 @@ SwitchKey {
         radius: 8
         Menu {
             id: imList
-            
             width: virtualKeyboard.imListItemWidth
             // 输入法列表的最大高度可以完整显示四个条目，
             // 输入法列表条目数量超过4之后输入法列表显示滚动条
