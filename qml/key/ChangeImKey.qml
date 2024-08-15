@@ -41,7 +41,7 @@ SwitchKey {
         if(virtualKeyboard.changeIMState == "NORMAL"){
             virtualKeyboard.changeIMState = "OPEN"
             imList.open()
-        }else{
+        }else {
             imList.close()
         }
     }
