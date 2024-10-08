@@ -60,6 +60,6 @@ void PlacementModeManager::savePlacementMode() {
 
 void PlacementModeManager::loadPlacementMode() {
     isFloatMode_ =
-        viewSettings_.getValue(placementModeGroup, placementModeKey, false)
+        viewSettings_.getValue(placementModeGroup, placementModeKey, true)
             .value<bool>();
 }

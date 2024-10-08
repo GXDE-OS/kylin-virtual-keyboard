@@ -45,7 +45,7 @@ private:
     void loadPlacementMode();
 
 private:
-    bool isFloatMode_ = false;
+    bool isFloatMode_ = true;
 
     LocalSettings &viewSettings_;
 
