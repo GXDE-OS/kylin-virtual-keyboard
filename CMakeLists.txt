@@ -123,4 +123,4 @@ target_link_libraries(${PROJECT_NAME}
 
 install(TARGETS ${PROJECT_NAME}  DESTINATION /usr/bin)
 install(FILES data/org.ukui.virtualkeyboard.gschema.xml DESTINATION /usr/share/glib-2.0/schemas/)
-install(FILES data/ukui-english-en-symbolic.svg DESTINATION /usr/share/icons/hicolor/scalable/actions)
+install(FILES data/ukui-virtual-keyboard-symbolic.svg DESTINATION /usr/share/icons/hicolor/scalable/actions)
