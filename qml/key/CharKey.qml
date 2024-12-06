@@ -58,15 +58,18 @@ BaseKey {
         maximumTouchPoints: 1
         onReleased: {
             keyBackground.state = "NORMAL"
-            longPressTimer.stop()
-            sendKeyTimer.stop()
+
+            resetGlobalTimersIfNecessary()
+
             sendKeyReleaseEvent()
             charKeyClicked()
         }
 
         onPressed: {
             keyBackground.state = "PRESSED"
-            longPressTimer.start()
+
+            startGlobalLongPressTimer()
+
             sendKeyPressEvent()
         }
     }
@@ -104,18 +107,54 @@ BaseKey {
         }
     ]
 
-
-    Timer {
-        id:longPressTimer
-        interval: virtualKeyboard.longPressInterval
-        repeat: false
-        onTriggered: {
-            sendKeyTimer.start()
+    function resetGlobalLongPressTimer() {
+        if (globalLongPressTimer) {
+            globalLongPressTimer.stop()
+            globalLongPressTimer = null
         }
     }
 
+    function resetGlobalKeyRepeaterTimer() {
+        if (globalKeyRepeaterTimer) {
+            globalKeyRepeaterTimer.stop()
+            globalKeyRepeaterTimer = null
+        }
+    }
+
+    function resetGlobalTimersIfNecessary() {
+        if (globalLongPressTimer === longPressTimer) {
+            resetGlobalLongPressTimer()
+        }
+
+        if (globalKeyRepeaterTimer === keyRepeaterTimer) {
+            resetGlobalKeyRepeaterTimer()
+        }
+    }
+
+    function startGlobalLongPressTimer() {
+        resetGlobalLongPressTimer()
+        resetGlobalKeyRepeaterTimer()
+
+        globalLongPressTimer = longPressTimer
+        globalLongPressTimer.start()
+    }
+
+    function startGlobalKeyRepeaterTimer() {
+        resetGlobalLongPressTimer()
+
+        globalKeyRepeaterTimer = keyRepeaterTimer
+        globalKeyRepeaterTimer.start()
+    }
+
     Timer {
-        id:sendKeyTimer
+        id: longPressTimer
+        interval: virtualKeyboard.longPressInterval
+        repeat: false
+        onTriggered: startGlobalKeyRepeaterTimer()
+    }
+
+    Timer {
+        id: keyRepeaterTimer
         interval: 50
         repeat: true
         onTriggered: {

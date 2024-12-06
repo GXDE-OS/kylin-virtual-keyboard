@@ -20,6 +20,8 @@ import "key/"
 import "../qml/js/keycode.js" as Keycode
 
 Column {
+    property var globalLongPressTimer
+    property var globalKeyRepeaterTimer
     width: parent.width
     spacing: virtualKeyboard.keySpacing
     visible: virtualKeyboard.layout == "classic" ? true : false
