@@ -121,6 +121,6 @@ target_link_libraries(${PROJECT_NAME}
                 ${GSettings_QT_LIBRARIES}
             )
 
-install(TARGETS ${PROJECT_NAME}  DESTINATION /usr/bin)
-install(FILES data/org.ukui.virtualkeyboard.gschema.xml DESTINATION /usr/share/glib-2.0/schemas/)
-install(FILES data/ukui-virtual-keyboard-symbolic.svg DESTINATION /usr/share/icons/hicolor/scalable/actions)
+install(TARGETS ${PROJECT_NAME}  DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+install(FILES data/org.ukui.virtualkeyboard.gschema.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/glib-2.0/schemas/)
+install(FILES data/ukui-virtual-keyboard-symbolic.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/actions)
