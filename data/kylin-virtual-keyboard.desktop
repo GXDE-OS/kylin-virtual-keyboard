@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=kylin-virtual-keyboard
+Name[zh_CN]=麒麟虚拟键盘
+Comment=kylin-virtual-keyboard
+Comment[zh_CN]=麒麟虚拟键盘
+Exec=/usr/bin/kylin-virtual-keyboard-xwayland
+Terminal=false
+Type=Application
+X-GNOME-AutoRestart=true
+X-GNOME-AutoRestart-Phase=Application
+X-UKUI-AutoRestart=true
+X-UKUI-AutoRestart-Phase=Application
+NoDisplay=true

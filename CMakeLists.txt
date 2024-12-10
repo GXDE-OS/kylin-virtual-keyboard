@@ -124,3 +124,5 @@ target_link_libraries(${PROJECT_NAME}
 install(TARGETS ${PROJECT_NAME}  DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 install(FILES data/org.ukui.virtualkeyboard.gschema.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/glib-2.0/schemas/)
 install(FILES data/ukui-virtual-keyboard-symbolic.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/actions)
+install(FILES data/kylin-virtual-keyboard.desktop DESTINATION /etc/xdg/autostart/)
+install(FILES data/kylin-virtual-keyboard-xwayland DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
