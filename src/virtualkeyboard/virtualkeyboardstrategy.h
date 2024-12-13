@@ -30,7 +30,7 @@ public:
     int getDefaultRightMargin() const override {
         const int screenWidth = ScreenManager::getPrimaryScreenSize().width();
 
-        return (screenWidth - getViewWidth()) / 2;
+        return screenWidth * defaultRightMarginRatio_;
     }
 
     int getDefaultBottomMargin() const override {
@@ -55,7 +55,8 @@ private:
     float getViewHeightRatio() const override { return 548.0 / 1620.0; }
 
 private:
-    static constexpr float defaultBottomMarginRatio_ = 0.05f;
+    static constexpr float defaultRightMarginRatio_ = 0.25f;
+    static constexpr float defaultBottomMarginRatio_ = 0.15f;
 };
 
 #endif // VIRTUALKEYBOARDSTRATEGY_H
