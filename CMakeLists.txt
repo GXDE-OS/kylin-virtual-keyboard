@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10.0)
 
 project(kylin-virtual-keyboard LANGUAGES CXX)
 
+OPTION(ENABLE_TEST "Build Test" OFF)
+
 # set something
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -120,6 +122,11 @@ target_link_libraries(${PROJECT_NAME}
                 Fcitx5Qt${QT_VERSION_MAJOR}::DBusAddons
                 ${GSettings_QT_LIBRARIES}
             )
+
+if (ENABLE_TEST)
+    enable_testing()
+    add_subdirectory(test)
+endif()
 
 install(TARGETS ${PROJECT_NAME}  DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 install(FILES data/org.ukui.virtualkeyboard.gschema.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/glib-2.0/schemas/)
