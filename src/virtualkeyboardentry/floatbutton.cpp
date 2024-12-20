@@ -138,6 +138,8 @@ void FloatButton::initStyle() {
                   "url(:/floatbutton/img/floatbuttonhovered.svg);}"
                   "QPushButton:pressed{border-image: "
                   "url(:/floatbutton/img/floatbuttonpressed.svg);}");
+    setAttribute(Qt::WA_AlwaysShowToolTips, true);
+    setToolTip(tr("Click to show virtual keyboard"));
 }
 
 void FloatButton::startClickTimer() {
