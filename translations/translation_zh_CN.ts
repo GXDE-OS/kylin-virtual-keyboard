@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
+    <name>FloatButton</name>
+    <message>
+        <location filename="../src/virtualkeyboardentry/floatbutton.cpp" line="142"/>
+        <source>Click to show virtual keyboard</source>
+        <translation>显示虚拟键盘</translation>
+    </message>
+</context>
+<context>
     <name>HideButton</name>
     <message>
         <location filename="../qml/HideButton.qml" line="38"/>
