@@ -32,6 +32,7 @@ public:
     bool isFloatButtonEnabled() const;
     bool isAnimationEnabled() const;
     float calculateVirtualKeyboardScaleFactor() const;
+    const QString trayIconShow() const;
 
 private:
     VirtualKeyboardSettings();
@@ -41,12 +42,16 @@ private:
 
     void init();
     void emitFloatButtonAvailabilityChanged();
+    void emitTrayIconShowChanged();
 
 signals:
     void requestFloatButtonEnabled();
     void requestFloatButtonDisabled();
     void scaleFactorChanged();
     void animationAvailabilityChanged();
+    void neverShowTrayIcon();
+    void alwaysShowTrayIcon();
+    void showTrayIconWhenKeyboardisConnected();
 
 private:
     std::unique_ptr<QGSettings> gsettings_;
@@ -54,5 +59,6 @@ private:
     const QString floatButtonEnabledKey_ = "floatButtonEnabled";
     const QString virtualKeyboardScaleFactorKey_ = "virtualKeyboardScaleFactor";
     const QString animationEnabledKey_ = "animationEnabled";
+    const QString trayIconShowKey_ = "trayIconShowPolicy";
 };
 #endif

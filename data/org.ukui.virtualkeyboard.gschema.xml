@@ -16,5 +16,15 @@
       <summary>Controls the availability of virtualkeyboard animation</summary>
       <description>Controls the availability of virtualkeyboard animation</description>
     </key>
+    <key name="tray-icon-show-policy" type="s">
+      <default>'AlwaysShow'</default>
+      <summary>Controls the availability and visibility of virtualkeyboard tray icon</summary>
+      <description>Controls the availability and visibility of virtualkeyboard tray icon</description>
+      <choices>
+        <choice value='NeverShow'/>
+        <choice value='AlwaysShow'/>
+        <choice value='ShowWhenKeyboardIsConnected'/>
+      </choices>
+    </key>
   </schema>
 </schemalist>

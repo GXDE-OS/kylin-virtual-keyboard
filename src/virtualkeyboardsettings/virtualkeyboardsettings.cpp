@@ -42,6 +42,8 @@ void VirtualKeyboardSettings::init() {
                     emitFloatButtonAvailabilityChanged();
                 } else if (key == virtualKeyboardScaleFactorKey_) {
                     emit scaleFactorChanged();
+                } else if (key == trayIconShowKey_) {
+                    emitTrayIconShowChanged();
                 }
             });
 }
@@ -86,6 +88,28 @@ float VirtualKeyboardSettings::calculateVirtualKeyboardScaleFactor() const {
     return static_cast<float>(
                gsettings_->get(virtualKeyboardScaleFactorKey_).toInt()) /
            100;
+}
+
+const QString VirtualKeyboardSettings::trayIconShow() const {
+    if (gsettings_ == nullptr) {
+        qWarning() << "WARNING : Gsettings Objetc is NULL !";
+        return "NeverShow";
+    }
+
+    return gsettings_->get(trayIconShowKey_).toString();
+}
+
+void VirtualKeyboardSettings::emitTrayIconShowChanged() {
+    const QString value = gsettings_->get(trayIconShowKey_).toString();
+    if (value == "NeverShow") {
+        emit neverShowTrayIcon();
+    } else if (value == "AlwaysShow") {
+        emit alwaysShowTrayIcon();
+    } else if (value == "ShowWhenKeyboardisConnected") {
+        emit showTrayIconWhenKeyboardisConnected();
+    } else {
+        qWarning() << "WARNING : Gsettings Set trayIconShow Error !";
+    }
 }
 
 VirtualKeyboardSettings &VirtualKeyboardSettings::getInstance() {
