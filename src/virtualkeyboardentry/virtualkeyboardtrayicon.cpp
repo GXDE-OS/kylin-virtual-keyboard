@@ -23,9 +23,7 @@ VirtualKeyboardTrayIcon::VirtualKeyboardTrayIcon(
     VirtualKeyboardManager &virtualKeyboardManager,
     const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService)
     : virtualKeyboardManager_(virtualKeyboardManager),
-      fcitxVirtualKeyboardService_(fcitxVirtualKeyboardService) {
-    initTrayIcon();
-}
+      fcitxVirtualKeyboardService_(fcitxVirtualKeyboardService) {}
 
 void VirtualKeyboardTrayIcon::setContextMenu(QMenu *contextMenu) {
     trayIcon_->setContextMenu(contextMenu);
@@ -33,15 +31,6 @@ void VirtualKeyboardTrayIcon::setContextMenu(QMenu *contextMenu) {
 
 void VirtualKeyboardTrayIcon::hideContextMenu() {
     trayIcon_->contextMenu()->hide();
-}
-
-void VirtualKeyboardTrayIcon::initTrayIcon() {
-    trayIcon_ = new QSystemTrayIcon(this);
-    trayIcon_->setIcon(QIcon::fromTheme("ukui-virtual-keyboard-symbolic"));
-    trayIcon_->setToolTip(tr("kylin-virtual-keyboard"));
-    connect(trayIcon_, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-            this, SLOT(onTrayIconActivated(QSystemTrayIcon::ActivationReason)));
-    trayIcon_->setVisible(true);
 }
 
 void VirtualKeyboardTrayIcon::toggleVirtualKeyboard() {
@@ -62,4 +51,30 @@ void VirtualKeyboardTrayIcon::onTrayIconActivated(
     default:
         break;
     }
+}
+
+void VirtualKeyboardTrayIcon::initTrayIcon() {
+    trayIcon_.reset(new QSystemTrayIcon(this));
+    trayIcon_->setIcon(QIcon::fromTheme("ukui-virtual-keyboard-symbolic"));
+    trayIcon_->setToolTip(tr("kylin-virtual-keyboard"));
+    connect(trayIcon_.get(),
+            SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this,
+            SLOT(onTrayIconActivated(QSystemTrayIcon::ActivationReason)));
+    trayIcon_->setVisible(true);
+}
+
+void VirtualKeyboardTrayIcon::destroyTrayIcon() {
+    if (trayIcon_ == nullptr) {
+        return;
+    }
+
+    trayIcon_.reset();
+}
+
+void VirtualKeyboardTrayIcon::changeTrayIconVisibility(bool enable) {
+    if (trayIcon_ == nullptr) {
+        return;
+    }
+
+    trayIcon_->setVisible(enable);
 }

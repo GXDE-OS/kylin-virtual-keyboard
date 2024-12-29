@@ -18,6 +18,8 @@
 #ifndef VIRTUALKEYBOARDTRAYICON_H
 #define VIRTUALKEYBOARDTRAYICON_H
 
+#include <memory>
+
 #include <QMenu>
 #include <QObject>
 #include <QSystemTrayIcon>
@@ -37,17 +39,18 @@ public:
 
     void setContextMenu(QMenu *contextMenu);
     void hideContextMenu();
+    void initTrayIcon();
+    void destroyTrayIcon();
+    void changeTrayIconVisibility(bool enable = false);
 
 private:
-    void initTrayIcon();
-
     void toggleVirtualKeyboard();
 
 private slots:
     void onTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
 
 private:
-    QSystemTrayIcon *trayIcon_ = nullptr;
+    std::unique_ptr<QSystemTrayIcon> trayIcon_ = nullptr;
 
     VirtualKeyboardManager &virtualKeyboardManager_;
     const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService_;
