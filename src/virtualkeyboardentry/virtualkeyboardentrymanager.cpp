@@ -33,10 +33,12 @@ VirtualKeyboardEntryManager::VirtualKeyboardEntryManager(
     : virtualKeyboardManager_(virtualKeyboardManager),
       floatButtonManager_(new FloatButtonManager(virtualKeyboardManager,
                                                  fcitxVirtualKeyboardService,
-                                                 floatButtonSettings_)) {
+                                                 floatButtonSettings_)),
+      trayIconEntry_(new VirtualKeyboardTrayIcon(virtualKeyboardManager_,
+                                                 fcitxVirtualKeyboardService)) {
     moveValueFromLocalSettings();
 
-    initTrayIcon(fcitxVirtualKeyboardService);
+    initTrayIcon();
 
     initFloatButtonContextMenuAndAction();
 
@@ -48,10 +50,12 @@ VirtualKeyboardEntryManager::VirtualKeyboardEntryManager(
 
 VirtualKeyboardEntryManager::~VirtualKeyboardEntryManager() = default;
 
-void VirtualKeyboardEntryManager::initTrayIcon(
-    const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService) {
-    trayIconEntry_.reset(new VirtualKeyboardTrayIcon(
-        virtualKeyboardManager_, fcitxVirtualKeyboardService));
+void VirtualKeyboardEntryManager::initTrayIcon() {
+    if (VirtualKeyboardSettings::getInstance().trayIconShow() == "NeverShow") {
+        return;
+    }
+
+    trayIconEntry_->initTrayIcon();
 }
 
 void VirtualKeyboardEntryManager::initFloatButtonContextMenuAndAction() {
@@ -113,6 +117,22 @@ void VirtualKeyboardEntryManager::connectSignals() {
     connect(&VirtualKeyboardSettings::getInstance(),
             &VirtualKeyboardSettings::requestFloatButtonDisabled, this,
             [this]() { floatButtonManager_->disableFloatButton(); });
+
+    connect(&VirtualKeyboardSettings::getInstance(),
+            &VirtualKeyboardSettings::neverShowTrayIcon, this,
+            [this]() { trayIconEntry_->destroyTrayIcon(); });
+
+    connect(&VirtualKeyboardSettings::getInstance(),
+            &VirtualKeyboardSettings::alwaysShowTrayIcon, this,
+            [this]() { trayIconEntry_->initTrayIcon(); });
+    connect(&VirtualKeyboardSettings::getInstance(),
+            &VirtualKeyboardSettings::showTrayIconWhenKeyboardisConnected, this,
+            [this]() {
+                // TODO
+                // showTrayIconWhenKeyboardisConnected
+                // need to get the current state of the keyboard, and then show
+                // and hide it
+            });
 }
 
 void VirtualKeyboardEntryManager::updateFloatButtonContextMenuAction(

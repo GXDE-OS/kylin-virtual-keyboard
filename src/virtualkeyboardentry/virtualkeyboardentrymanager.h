@@ -44,8 +44,7 @@ private:
 
 private:
     void connectSignals();
-    void initTrayIcon(
-        const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService);
+    void initTrayIcon();
 
     void moveValueFromLocalSettings();
 
