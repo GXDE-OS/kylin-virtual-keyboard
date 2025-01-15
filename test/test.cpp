@@ -3,13 +3,19 @@
 
 #include <cassert>
 
-#include "../src/screenmanager.h"
-#include "../src/virtualkeyboardsettings/virtualkeyboardsettings.h"
-#include "../src/animation/animationfactory.h"
-#include "../src/animation/disabledanimator.h"
-#include "../src/animation/enabledanimator.h"
-#include "../src/animation/expansionanimationfactory.h"
-#include "../src/animation/floatanimationfactory.h"
+#include "animation/animationfactory.h"
+#include "animation/disabledanimator.h"
+#include "animation/enabledanimator.h"
+#include "animation/expansionanimationfactory.h"
+#include "animation/floatanimationfactory.h"
+#include "appinputareamanager.h"
+#include "ipc/dbusservice.h"
+#include "ipc/fcitxvirtualkeyboardserviceproxy.h"
+#include "localsettings/viewlocalsettings.h"
+#include "screenmanager.h"
+#include "virtualkeyboard/virtualkeyboardmanager.h"
+#include "virtualkeyboardentry/virtualkeyboardtrayicon.h"
+#include "virtualkeyboardsettings/virtualkeyboardsettings.h"
 
 void testGetPrimaryScreenGeometry() {
     auto rect = ScreenManager::getPrimaryScreenGeometry();
@@ -22,30 +28,31 @@ void testGetPrimaryScreenSize() {
 }
 
 void testVirtualKeyboardSettings() {
-    auto& settings = VirtualKeyboardSettings::getInstance();
+    auto &settings = VirtualKeyboardSettings::getInstance();
     assert(settings.isAnimationEnabled());
 
     settings.updateFloatButtonAvailability(true);
     assert(settings.isFloatButtonEnabled());
+    settings.emitFloatButtonAvailabilityChanged();
+
     settings.updateFloatButtonAvailability(false);
     assert(!settings.isFloatButtonEnabled());
+    settings.emitFloatButtonAvailabilityChanged();
 
     auto scaleFactor = settings.calculateVirtualKeyboardScaleFactor();
     assert(scaleFactor > 0.1);
 }
 
 std::unique_ptr<AnimationFactory> createFloatModeAnimationFactory() {
-    return std::unique_ptr<AnimationFactory>(
-                new FloatAnimationFactory());
+    return std::unique_ptr<AnimationFactory>(new FloatAnimationFactory());
 }
 
 std::unique_ptr<AnimationFactory> createExpansionModeAnimationFactory() {
-    return std::unique_ptr<AnimationFactory>(
-        new ExpansionAnimationFactory());
+    return std::unique_ptr<AnimationFactory>(new ExpansionAnimationFactory());
 }
 
-void testAnimator(Animator* animator) {
-    auto* view = new QQuickView();
+void testAnimator(Animator *animator) {
+    auto *view = new QQuickView();
 
     animator->playShowAnimation(view, {0, 0, 100, 100});
     animator->playHideAnimation(view, {0, 0, 0, 0});
@@ -53,20 +60,54 @@ void testAnimator(Animator* animator) {
 }
 
 void testVirtualKeyobardAnimation() {
-    auto floatModeEnabledAnimator = std::unique_ptr<EnabledAnimator>(new EnabledAnimator(
-        []() { return true; }, createFloatModeAnimationFactory()));
+    auto floatModeEnabledAnimator =
+        std::unique_ptr<EnabledAnimator>(new EnabledAnimator(
+            []() { return true; }, createFloatModeAnimationFactory()));
     testAnimator(floatModeEnabledAnimator.get());
 
-    auto expansionModeEnabledAnimator = std::unique_ptr<EnabledAnimator>(new EnabledAnimator(
-        []() { return false; }, createExpansionModeAnimationFactory()));
+    auto expansionModeEnabledAnimator =
+        std::unique_ptr<EnabledAnimator>(new EnabledAnimator(
+            []() { return false; }, createExpansionModeAnimationFactory()));
     testAnimator(expansionModeEnabledAnimator.get());
 
-    auto disabledAnimator = std::unique_ptr<DisabledAnimator>(new DisabledAnimator());
+    auto disabledAnimator =
+        std::unique_ptr<DisabledAnimator>(new DisabledAnimator());
     testAnimator(disabledAnimator.get());
 }
 
-int main(int argc, char* argv[]) {
-     QApplication app(argc, argv);
+void testAppInputAreaManager() {
+    auto appInputAreaManager =
+        std::unique_ptr<AppInputAreaManager>(new AppInputAreaManager());
+
+    appInputAreaManager->raiseInputArea({100, 100, 100, 100});
+    appInputAreaManager->fallInputArea();
+}
+
+void testVirtualKeyboardProxy() {
+    auto proxy = std::unique_ptr<FcitxVirtualKeyboardServiceProxy>(
+        new FcitxVirtualKeyboardServiceProxy());
+
+    proxy->showVirtualKeyboard();
+    proxy->hideVirtualKeyboard();
+}
+
+void testViewLocalSettings() {
+    ViewLocalSettings localSetting("test", "test");
+    localSetting.setValue("test", "a", "1");
+    localSetting.saveSettingsAsync();
+    localSetting.getValue("test", "a", "1");
+    localSetting.getValue("test", "a");
+    localSetting.remove("a");
+
+    localSetting.setValue("test", "b", "2");
+    localSetting.saveSettingsAsync();
+    localSetting.getValue("test", "b", "2");
+    localSetting.getValue("test", "b");
+    localSetting.remove("b");
+}
+
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
 
     testGetPrimaryScreenGeometry();
 
@@ -75,6 +116,12 @@ int main(int argc, char* argv[]) {
     testVirtualKeyboardSettings();
 
     testVirtualKeyobardAnimation();
+
+    testAppInputAreaManager();
+
+    testVirtualKeyboardProxy();
+
+    testViewLocalSettings();
 
     return 0;
 }

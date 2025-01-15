@@ -17,6 +17,8 @@ find_package(Fcitx5Utils REQUIRED)
 # Setup some compiler option that is generally useful and compatible with Fcitx 5 (C++17)
 include("${FCITX_INSTALL_CMAKECONFIG_DIR}/Fcitx5Utils/Fcitx5CompilerSettings.cmake")
 
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage -fno-access-control")
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage -fno-access-control")
 
@@ -34,9 +36,10 @@ add_executable(runTests
     ../src/animation/floatanimationfactory.cpp
     ../src/animation/floatanimationfactory.h
     ../src/screenmanager.cpp
-    ../src/screenmanager.h
     ../src/virtualkeyboardsettings/virtualkeyboardsettings.cpp
-    ../src/virtualkeyboardsettings/virtualkeyboardsettings.h
+    ../src/appinputareamanager.cpp
+    ../src/ipc/fcitxvirtualkeyboardserviceproxy.cpp
+    ../src/localsettings/viewlocalsettings.cpp
 )
 
 target_link_libraries(runTests
