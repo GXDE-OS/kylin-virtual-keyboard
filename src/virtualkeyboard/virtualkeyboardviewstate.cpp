@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 KylinSoft Co., Ltd.
+ * Copyright (c) KylinSoft Co., Ltd. 2023.All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -116,7 +116,7 @@ public:
 
     void show() override {}
     void hide() override { virtualKeyboardView_.enterInvisibleState(); }
-    void flip() override{};
+    void flip() override {};
 
     void onAnimationFinished() override {
         if (!virtualKeyboardView_.isFloatMode()) {
