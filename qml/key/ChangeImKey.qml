@@ -23,6 +23,7 @@ import "../js/utils.js" as Utils
 SwitchKey {
     id: changeIm
     label: virtualKeyboard.currentIM.split("|")[2]
+    keyLabel.visible: false
     
     Binding {
         target: changeIm
@@ -134,5 +135,25 @@ SwitchKey {
             }
         }
     }
-    
+
+    Row {
+        anchors.centerIn: parent
+        Label {
+            text: label
+            color: "black"
+            font.pointSize: virtualKeyboard.switchKeyFontSize
+            font.weight: Font.Light
+            verticalAlignment: Text.AlignVCenter
+            anchors.verticalCenter: parent.verticalCenter
+        }
+        Image {
+            source: "qrc:/img/extend.svg"
+            anchors.verticalCenter: parent.verticalCenter
+            height: parent.height * 0.5
+            width: height
+            sourceSize.width: width
+            sourceSize.height: height
+        }
+    }
+
 }
