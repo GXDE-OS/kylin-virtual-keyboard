@@ -27,6 +27,13 @@
 #include <QSize>
 #include <QTimer>
 
+/**
+ * Used to manage the entrance section of the Kylin Virtual Keyboard float
+ * button.
+ *
+ * 1. show float button.
+ */
+
 class FloatButton : public QPushButton {
     Q_OBJECT
 

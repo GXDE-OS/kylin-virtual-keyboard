@@ -27,6 +27,12 @@
 #include "virtualkeyboard/virtualkeyboardmanager.h"
 #include "virtualkeyboardentry/fcitxvirtualkeyboardservice.h"
 
+/**
+ * Used to manage the entrance section of the Kylin Virtual Keyboard tray icon.
+ * 1. click to show/hide kylin virtual keyboard.
+ * 2. register tray icon.
+ */
+
 class VirtualKeyboardTrayIcon : public QObject {
     Q_OBJECT
 

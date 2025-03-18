@@ -29,6 +29,14 @@
 #include "virtualkeyboardentry/fcitxvirtualkeyboardservice.h"
 #include "virtualkeyboardentry/floatbutton.h"
 
+/**
+ * Used to manage the entrance section of the Kylin Virtual Keyboard float
+ * button.
+ *
+ * 1. click to show/hide kylin virtual keyboard.
+ * 2. show float button.
+ */
+
 class FloatButtonManager : public QObject {
     Q_OBJECT
 

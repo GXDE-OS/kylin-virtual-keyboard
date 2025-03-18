@@ -32,6 +32,12 @@
 #include "virtualkeyboardentry/floatbuttonmanager.h"
 #include "virtualkeyboardentry/virtualkeyboardtrayicon.h"
 
+/**
+ * Used to manage the entrance section of the Kylin Virtual Keyboard.
+ * 1. the entry of tray icon.
+ * 2. the entry of float button.
+ */
+
 class VirtualKeyboardEntryManager : public QObject {
     Q_OBJECT
 
