@@ -50,6 +50,7 @@ set(HEADERS
     src/ipc/dbusservice.h
     src/ipc/fcitxvirtualkeyboardserviceproxy.h
     src/ipc/requestmerger.h
+    src/ipc/keyboardserviceproxy.h
     src/localsettings/localsettings.h
     src/localsettings/viewlocalsettings.h
     src/screenmanager.h
@@ -64,6 +65,7 @@ set(HEADERS
     src/virtualkeyboardentry/floatbuttonstrategy.h
     src/virtualkeyboardentry/virtualkeyboardentrymanager.h
     src/virtualkeyboardentry/virtualkeyboardtrayicon.h
+    src/virtualkeyboardentry/trayiconstrategy.h
     src/virtualkeyboardsettings/virtualkeyboardsettings.h
 )
 
@@ -80,6 +82,7 @@ set(SOURCES
     src/ipc/dbusservice.cpp
     src/ipc/fcitxvirtualkeyboardserviceproxy.cpp
     src/ipc/requestmerger.cpp
+    src/ipc/keyboardserviceproxy.cpp
     src/localsettings/viewlocalsettings.cpp
     src/main.cpp
     src/screenmanager.cpp
