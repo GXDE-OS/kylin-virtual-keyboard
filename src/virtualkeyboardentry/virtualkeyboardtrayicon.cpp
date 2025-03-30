@@ -71,6 +71,8 @@ void VirtualKeyboardTrayIcon::destroyTrayIcon() {
     trayIcon_.reset();
 }
 
+bool VirtualKeyboardTrayIcon::isInit() const { return trayIcon_ != nullptr; }
+
 void VirtualKeyboardTrayIcon::changeTrayIconVisibility(bool enable) {
     if (trayIcon_ == nullptr) {
         return;

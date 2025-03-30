@@ -41,6 +41,7 @@ public:
     void hideContextMenu();
     void initTrayIcon();
     void destroyTrayIcon();
+    bool isInit() const;
     void changeTrayIconVisibility(bool enable = false);
 
 private:
