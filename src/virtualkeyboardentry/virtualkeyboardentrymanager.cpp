@@ -35,10 +35,11 @@ VirtualKeyboardEntryManager::VirtualKeyboardEntryManager(
                                                  fcitxVirtualKeyboardService,
                                                  floatButtonSettings_)),
       trayIconEntry_(new VirtualKeyboardTrayIcon(virtualKeyboardManager_,
-                                                 fcitxVirtualKeyboardService)) {
-    moveValueFromLocalSettings();
+                                                 fcitxVirtualKeyboardService)),
+      keyboardServiceProxy_(new KeyboardServiceProxy()) {
+    initTrayIconStrategy();
 
-    initTrayIcon();
+    moveValueFromLocalSettings();
 
     initFloatButtonContextMenuAndAction();
 
@@ -50,12 +51,22 @@ VirtualKeyboardEntryManager::VirtualKeyboardEntryManager(
 
 VirtualKeyboardEntryManager::~VirtualKeyboardEntryManager() = default;
 
-void VirtualKeyboardEntryManager::initTrayIcon() {
-    if (VirtualKeyboardSettings::getInstance().trayIconShow() == "NeverShow") {
-        return;
-    }
+void VirtualKeyboardEntryManager::initTrayIconStrategy() {
+    alwaysShowStrategy_ = std::make_shared<AlwaysShowStrategy>();
+    neverShowStrategy_ = std::make_shared<NeverShowStrategy>();
+    keyboardStatusStrategy_ = std::make_shared<KeyboardStatusStrategy>();
 
-    trayIconEntry_->initTrayIcon();
+    auto showPolicy = VirtualKeyboardSettings::getInstance().trayIconShow();
+    qInfo() << "VirtualKeyboardEntryManager"
+            << "func: " << __FUNCTION__ << " line: " << __LINE__
+            << ",trayIcon showPolicy:" << showPolicy;
+    if (showPolicy == "NeverShow") {
+        updateStrategy(neverShowStrategy_);
+    } else if (showPolicy == "AlwaysShow") {
+        updateStrategy(alwaysShowStrategy_);
+    } else if (showPolicy == "ShowWhenKeyboardIsConnected") {
+        updateStrategy(keyboardStatusStrategy_);
+    }
 }
 
 void VirtualKeyboardEntryManager::initFloatButtonContextMenuAndAction() {
@@ -120,19 +131,19 @@ void VirtualKeyboardEntryManager::connectSignals() {
 
     connect(&VirtualKeyboardSettings::getInstance(),
             &VirtualKeyboardSettings::neverShowTrayIcon, this,
-            [this]() { trayIconEntry_->destroyTrayIcon(); });
+            [this]() { updateStrategy(neverShowStrategy_); });
 
     connect(&VirtualKeyboardSettings::getInstance(),
             &VirtualKeyboardSettings::alwaysShowTrayIcon, this,
-            [this]() { trayIconEntry_->initTrayIcon(); });
+            [this]() { updateStrategy(alwaysShowStrategy_); });
+
     connect(&VirtualKeyboardSettings::getInstance(),
             &VirtualKeyboardSettings::showTrayIconWhenKeyboardisConnected, this,
-            [this]() {
-                // TODO
-                // showTrayIconWhenKeyboardisConnected
-                // need to get the current state of the keyboard, and then show
-                // and hide it
-            });
+            [this]() { updateStrategy(keyboardStatusStrategy_); });
+
+    connect(keyboardServiceProxy_.get(),
+            &KeyboardServiceProxy::kbdStatusChanged, this,
+            [this]() { updateTrayVisibility(); });
 }
 
 void VirtualKeyboardEntryManager::updateFloatButtonContextMenuAction(
@@ -156,4 +167,83 @@ void VirtualKeyboardEntryManager::moveValueFromLocalSettings() {
     floatButtonSettings_.remove(floatButtonEnabledKey);
 
     VirtualKeyboardSettings::getInstance().updateFloatButtonAvailability(value);
+}
+
+void VirtualKeyboardEntryManager::updateStrategy(
+    std::shared_ptr<TrayIconStrategy> newStrategy) {
+    // 更新当前策略
+    currenTrayIconStrategy_ = newStrategy;
+
+    // 更新托盘图标可用性
+    updateTrayExistence();
+
+    // 更新图标可见性
+    updateTrayVisibility();
+}
+
+void VirtualKeyboardEntryManager::updateTrayExistence() {
+    if (trayIconEntry_ == nullptr) {
+        qWarning() << "VirtualKeyboardEntryManager"
+                   << "func: " << __FUNCTION__ << " line: " << __LINE__
+                   << ",trayIconEntry_ is null";
+        return;
+    }
+
+    const bool shouldCreate = currenTrayIconStrategy_->shouldCreateTray();
+
+    if (shouldCreate && !trayIconEntry_->isInit()) {
+        trayIconEntry_->initTrayIcon();
+        if (floatButtonContextMenu_) {
+            trayIconEntry_->setContextMenu(floatButtonContextMenu_.get());
+        }
+    } else if (!shouldCreate && trayIconEntry_->isInit()) {
+        trayIconEntry_->destroyTrayIcon();
+    }
+}
+
+void VirtualKeyboardEntryManager::updateTrayVisibility() {
+    const auto needMonitor = currenTrayIconStrategy_->needsKeyboardMonitor();
+    int kbdCount = 0;
+    if (needMonitor) {
+        kbdCount = getKeyboardCount(true);
+    }
+    const auto shouldShow = currenTrayIconStrategy_->shouldShowTray(kbdCount);
+    qInfo() << "VirtualKeyboardEntryManager"
+            << "func: " << __FUNCTION__ << " line: " << __LINE__
+            << ", need monitor keyboard:" << needMonitor
+            << ", should show trayIcon:" << shouldShow;
+    trayIconEntry_->changeTrayIconVisibility(shouldShow);
+}
+
+int VirtualKeyboardEntryManager::getKeyboardCount(const bool &sync) {
+    if (!keyboardServiceProxy_) {
+        qDebug() << "KeyboardServiceProxy"
+                 << "func: " << __FUNCTION__ << " line: " << __LINE__
+                 << ",keyboardServiceProxy_ is null";
+        return 0;
+    }
+    int currentKbdCount = 0;
+    auto kbdNumcall = keyboardServiceProxy_->GetKbdCount();
+    auto kbdNumcallwatcher = new QDBusPendingCallWatcher(kbdNumcall, this);
+    QObject::connect(kbdNumcallwatcher, &QDBusPendingCallWatcher::finished,
+                     this, [&](QDBusPendingCallWatcher *watcher) {
+                         watcher->deleteLater();
+                         QDBusPendingReply<int> reply = *watcher;
+                         if (!reply.isError()) {
+                             if (currentKbdCount != reply) {
+                                 currentKbdCount = reply;
+                             }
+                         } else {
+                             qWarning() << "getKeyboardCount(),reply error:"
+                                        << reply.error();
+                         }
+                     });
+    if (sync) {
+        kbdNumcallwatcher->waitForFinished();
+    }
+
+    qDebug() << "KeyboardServiceProxy"
+             << "func: " << __FUNCTION__ << " line: " << __LINE__
+             << ",currentKbdCount:" << currentKbdCount;
+    return currentKbdCount;
 }

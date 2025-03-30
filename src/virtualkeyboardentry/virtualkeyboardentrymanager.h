@@ -25,7 +25,9 @@
 #include <QObject>
 
 #include "ipc/fcitxvirtualkeyboardserviceproxy.h"
+#include "ipc/keyboardserviceproxy.h"
 #include "localsettings/viewlocalsettings.h"
+#include "trayiconstrategy.h"
 #include "virtualkeyboard/virtualkeyboardmanager.h"
 #include "virtualkeyboardentry/floatbuttonmanager.h"
 #include "virtualkeyboardentry/virtualkeyboardtrayicon.h"
@@ -44,7 +46,6 @@ private:
 
 private:
     void connectSignals();
-    void initTrayIcon();
 
     void moveValueFromLocalSettings();
 
@@ -52,6 +53,13 @@ private:
     void updateFloatButtonContextMenuAction(const QString &icon,
                                             const QString &text,
                                             ActionTriggeredCallback callback);
+
+    void initTrayIconStrategy();
+    void toggleVirtualKeyboard();
+    void updateStrategy(std::shared_ptr<TrayIconStrategy> newStrategy);
+    void updateTrayExistence();
+    void updateTrayVisibility();
+    int getKeyboardCount(const bool &sync);
 
 private:
     VirtualKeyboardManager &virtualKeyboardManager_;
@@ -64,6 +72,15 @@ private:
     std::unique_ptr<QMenu> floatButtonContextMenu_ = nullptr;
     std::unique_ptr<QAction> floatButtonContextMenuAction_ = nullptr;
     ActionTriggeredCallback actionTriggeredCallback_;
+
+    // 三种策略实现托盘图标可用性和可见性
+    std::shared_ptr<AlwaysShowStrategy> alwaysShowStrategy_ = nullptr;
+    std::shared_ptr<NeverShowStrategy> neverShowStrategy_ = nullptr;
+    std::shared_ptr<KeyboardStatusStrategy> keyboardStatusStrategy_ = nullptr;
+    // 当前策略
+    std::shared_ptr<TrayIconStrategy> currenTrayIconStrategy_ = nullptr;
+    // 键盘服务代理
+    std::unique_ptr<KeyboardServiceProxy> keyboardServiceProxy_ = nullptr;
 };
 
 #endif // VIRTUALKEYBOARDENTRYMANAGER_H
