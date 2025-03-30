@@ -26,10 +26,24 @@ VirtualKeyboardTrayIcon::VirtualKeyboardTrayIcon(
       fcitxVirtualKeyboardService_(fcitxVirtualKeyboardService) {}
 
 void VirtualKeyboardTrayIcon::setContextMenu(QMenu *contextMenu) {
+    if (trayIcon_ == nullptr) {
+        qWarning() << "VirtualKeyboardTrayIcon"
+                   << "func: " << __FUNCTION__ << " line: " << __LINE__
+                   << ",trayIcon_ is null";
+        return;
+    }
+
     trayIcon_->setContextMenu(contextMenu);
 }
 
 void VirtualKeyboardTrayIcon::hideContextMenu() {
+    if (trayIcon_ == nullptr) {
+        qWarning() << "VirtualKeyboardTrayIcon"
+                   << "func: " << __FUNCTION__ << " line: " << __LINE__
+                   << ",trayIcon_ is null";
+        return;
+    }
+
     trayIcon_->contextMenu()->hide();
 }
 
