@@ -105,7 +105,7 @@ void VirtualKeyboardSettings::emitTrayIconShowChanged() {
         emit neverShowTrayIcon();
     } else if (value == "AlwaysShow") {
         emit alwaysShowTrayIcon();
-    } else if (value == "ShowWhenKeyboardisConnected") {
+    } else if (value == "ShowWhenKeyboardIsConnected") {
         emit showTrayIconWhenKeyboardisConnected();
     } else {
         qWarning() << "WARNING : Gsettings Set trayIconShow Error !";
