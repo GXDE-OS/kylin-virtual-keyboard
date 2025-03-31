@@ -15,8 +15,8 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef _UKUIFREAMEWORKSERVICEPROXY_H_
-#define _UKUIFREAMEWORKSERVICEPROXY_H_
+#ifndef _KEYBOARDSERVICEPROXY_H_
+#define _KEYBOARDSERVICEPROXY_H_
 
 #include <QDBusAbstractInterface>
 #include <QDBusInterface>
@@ -24,11 +24,11 @@
 #include <QDebug>
 #include <QObject>
 
-class UKUIFrameworkServiceProxy : public QDBusAbstractInterface {
+class KeyboardServiceProxy : public QDBusAbstractInterface {
     Q_OBJECT
 public:
-    explicit UKUIFrameworkServiceProxy(QObject *parent = nullptr);
-    ~UKUIFrameworkServiceProxy() override = default;
+    explicit KeyboardServiceProxy(QObject *parent = nullptr);
+    ~KeyboardServiceProxy() override = default;
 
 Q_SIGNALS:
     void kbdStatusChanged();

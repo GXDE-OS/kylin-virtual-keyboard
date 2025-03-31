@@ -15,7 +15,7 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "ukuiframeworkserviceproxy.h"
+#include "keyboardserviceproxy.h"
 
 const QString g_serviceName = "org.ukui.Framework";
 const QString g_servicePath = "/org/ukui/Framework/Devices/Keyboard";
@@ -24,7 +24,7 @@ const char *g_serviceInterface = "org.ukui.Framework.Devices.Keyboard";
 const QString g_kbdCountMethodName = "GetKbdCount";
 const QString g_kbdStatusSignalName = "KbdCountChanged";
 
-UKUIFrameworkServiceProxy::UKUIFrameworkServiceProxy(QObject *parent)
+KeyboardServiceProxy::KeyboardServiceProxy(QObject *parent)
     : QDBusAbstractInterface(g_serviceName, g_servicePath, g_serviceInterface,
                              QDBusConnection::sessionBus(), parent) {
     QDBusConnection::sessionBus().connect(
@@ -32,10 +32,10 @@ UKUIFrameworkServiceProxy::UKUIFrameworkServiceProxy(QObject *parent)
         this, SIGNAL(kbdStatusChanged()));
 }
 
-QDBusPendingReply<int> UKUIFrameworkServiceProxy::GetKbdCount() {
+QDBusPendingReply<int> KeyboardServiceProxy::GetKbdCount() {
     QList<QVariant> argumentList;
 
-    qDebug() << "DbusServiceProxy"
+    qDebug() << "KeyboardServiceProxy"
              << "func: " << __FUNCTION__ << " line: ";
     return asyncCallWithArgumentList(g_kbdCountMethodName, argumentList);
 }
