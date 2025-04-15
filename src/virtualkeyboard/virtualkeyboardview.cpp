@@ -38,7 +38,12 @@ VirtualKeyboardView::VirtualKeyboardView(
             &VirtualKeyboardView::isFloatModeChanged);
     connect(floatGeometryManager_.get(), &FloatGeometryManager::viewMoved, this,
             &VirtualKeyboardView::move);
-
+    connect(&VirtualKeyboardSettings::getInstance(),
+        &VirtualKeyboardSettings::animationAvailabilityChanged, this, [this]() {
+            if (!VirtualKeyboardSettings::getInstance().isAnimationEnabled() && view_) {
+                view_->setOpacity(1.0f);
+            }
+        });
     initState();
 }
 
@@ -145,7 +150,6 @@ void VirtualKeyboardView::destroyView() {
     if (view_->isVisible()) {
         view_->hide();
     }
-
     view_.release()->deleteLater();
 }
 
@@ -166,13 +170,6 @@ void VirtualKeyboardView::setViewOpacity() {
     if (VirtualKeyboardSettings::getInstance().isAnimationEnabled()) {
         view_->setOpacity(isFloatMode() ? 0.0f : 1.0f);
     }
-    connect(
-        &VirtualKeyboardSettings::getInstance(),
-        &VirtualKeyboardSettings::animationAvailabilityChanged, this, [this]() {
-            if (!VirtualKeyboardSettings::getInstance().isAnimationEnabled()) {
-                view_->setOpacity(1.0f);
-            }
-        });
 }
 
 GeometryManager &VirtualKeyboardView::getCurrentGeometryManager() const {
