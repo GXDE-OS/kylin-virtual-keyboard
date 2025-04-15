@@ -44,6 +44,8 @@ void VirtualKeyboardSettings::init() {
                     emit scaleFactorChanged();
                 } else if (key == trayIconShowKey_) {
                     emitTrayIconShowChanged();
+                } else if (key == animationEnabledKey_) {
+                    emit animationAvailabilityChanged();
                 }
             });
 }
