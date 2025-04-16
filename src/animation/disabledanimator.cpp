@@ -28,6 +28,8 @@ void DisabledAnimator::playShowAnimation(QWindow *view,
 
 void DisabledAnimator::playHideAnimation(QWindow *view,
                                          const QRect &endGeometry) {
+    Q_UNUSED(view);
+    Q_UNUSED(endGeometry);
     emit animationFinished();
 }
 
