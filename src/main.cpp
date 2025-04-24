@@ -15,18 +15,38 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
 #include <QLocale>
 #include <QTranslator>
+#include <QtSingleApplication>
 
 #include "ipc/dbusservice.h"
 #include "ipc/fcitxvirtualkeyboardserviceproxy.h"
 #include "virtualkeyboard/virtualkeyboardmanager.h"
 #include "virtualkeyboardentry/virtualkeyboardentrymanager.h"
 
+const QString APP_ID = "kylin-virtual-keyboard";
+
+
 int main(int argc, char *argv[]) {
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QApplication app(argc, argv);
+    QtSingleApplication app(APP_ID, argc, argv);
+    if (app.isRunning()) {
+        qWarning() << APP_ID << "is already running!";
+        QStringList args = QtSingleApplication::arguments();
+        args.removeFirst();
+        app.sendMessage(args.join(" "));
+        return 0;
+    }
+
+    // 初次运行
+    if (argc > 1) {
+        auto message = QtSingleApplication::arguments().join(" ");
+        qDebug() << APP_ID << ",Received Message:" << message;
+        // TODO: 解析参数，做对应处理
+    }
+    // TODO：绑定二次运行时，单例接收消息
+    //connect(&app, &QtSingleApplication::messageReceived, this, &handleMessage);
+
+    QtSingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QTranslator translator;
     if (translator.load(QLocale::system(), "translation", "_",
