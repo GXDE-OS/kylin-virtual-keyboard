@@ -36,6 +36,9 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${GSettings_QT_INCLUDE_DIRS})
 include("${FCITX_INSTALL_CMAKECONFIG_DIR}/Fcitx5Utils/Fcitx5CompilerSettings.cmake")
 
+add_subdirectory(${CMAKE_SOURCE_DIR}/src/3rd-parties/qtsingleapplication)
+include_directories(${CMAKE_SOURCE_DIR}/src/3rd-parties/qtsingleapplication/src)
+
 set(HEADERS
     src/animation/animationfactory.h
     src/animation/animator.h
@@ -124,6 +127,7 @@ target_link_libraries(${PROJECT_NAME}
                 Fcitx5::Core
                 Fcitx5Qt${QT_VERSION_MAJOR}::DBusAddons
                 ${GSettings_QT_LIBRARIES}
+                qtsingleapplication
             )
 
 if (ENABLE_TEST)
