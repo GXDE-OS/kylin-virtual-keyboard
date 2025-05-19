@@ -106,6 +106,8 @@ set(TRANSLATIONS
     translations/translation_bo_CN.ts
     translations/translation_en.ts
     translations/translation_zh_CN.ts
+    translations/translation_zh_HK.ts
+    translations/translation_mn.ts
 )
 
 set(RESOURCES
