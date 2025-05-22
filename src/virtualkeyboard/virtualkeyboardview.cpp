@@ -38,6 +38,8 @@ VirtualKeyboardView::VirtualKeyboardView(
             &VirtualKeyboardView::isFloatModeChanged);
     connect(floatGeometryManager_.get(), &FloatGeometryManager::viewMoved, this,
             &VirtualKeyboardView::move);
+    connect(floatGeometryManager_.get(), &FloatGeometryManager::viewResized, this,
+            &VirtualKeyboardView::resize);
     connect(&VirtualKeyboardSettings::getInstance(),
         &VirtualKeyboardSettings::animationAvailabilityChanged, this, [this]() {
             if (!VirtualKeyboardSettings::getInstance().isAnimationEnabled() && view_) {
@@ -78,6 +80,10 @@ QRect VirtualKeyboardView::geometry() const {
     return getCurrentGeometryManager().geometry();
 }
 
+QRect VirtualKeyboardView::screenGeometry() const {
+    return getCurrentGeometryManager().screenGeometry();
+}
+
 void VirtualKeyboardView::updateGeometry() {
     if (!isVisible()) {
         return;
@@ -97,8 +103,19 @@ void VirtualKeyboardView::updateExpansionFlippingStartGeometry() {
 }
 
 void VirtualKeyboardView::move(int x, int y) {
+    if(!view_){
+        qWarning() << "VirtualKeyboardView"
+                   << "func: " << __FUNCTION__ << " line: " << __LINE__
+                   << ",view_ is null!";
+        return;
+    }
     view_->setX(x);
     view_->setY(y);
+}
+
+void VirtualKeyboardView::resize()
+{
+    updateGeometry();
 }
 
 void VirtualKeyboardView::initView() {
@@ -122,15 +139,24 @@ void VirtualKeyboardView::initView() {
 }
 
 QRect VirtualKeyboardView::calculateInitialGeometry() {
-    int normalizedY =
-        std::min(getScreenHeight(), geometry().y() + geometry().height());
+    auto geo = geometry();
+    auto screenHeight = getScreenRelativeHeight();
 
-    return QRect(geometry().x(), normalizedY, geometry().width(),
-                 geometry().height());
+    int normalizedY =
+        std::min(screenHeight, geo.y() + geo.height());
+
+    return QRect(geo.x(), normalizedY, geo.width(),
+                 geo.height());
 }
 
 int VirtualKeyboardView::getScreenHeight() {
     return ScreenManager::getPrimaryScreenSize().height();
+}
+
+int VirtualKeyboardView::getScreenRelativeHeight()
+{
+    auto screenRect = screenGeometry();
+    return screenRect.y() + screenRect.height();
 }
 
 void VirtualKeyboardView::connectSignals() {

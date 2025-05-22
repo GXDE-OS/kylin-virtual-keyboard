@@ -54,6 +54,7 @@ public:
     void endDrag();
 
     QRect geometry() const;
+    QRect screenGeometry() const;
     void updateGeometry();
 
     void emitContentGeometrySignals();
@@ -85,6 +86,7 @@ signals:
 
 public slots:
     void move(int x, int y);
+    void resize();
 
 private:
     class State;
@@ -98,6 +100,7 @@ private:
     void initState();
     QRect calculateInitialGeometry();
     static int getScreenHeight();
+    int getScreenRelativeHeight();
     void connectSignals();
     void destroyView();
     int getContentHeight();
