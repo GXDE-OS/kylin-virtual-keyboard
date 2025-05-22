@@ -57,6 +57,7 @@ public:
     ~GeometryManager() override = default;
 
     QRect geometry() const;
+    QRect screenGeometry() const;
     int getViewContentWidth() const;
     int getViewContentHeight() const;
 
@@ -79,6 +80,7 @@ private:
     virtual int calculateViewHeight() const = 0;
 
     virtual QPoint calculateViewPosition() const = 0;
+    virtual QRect  getScreenGeometry() const = 0;
 
 private:
     Scaler scaler_;

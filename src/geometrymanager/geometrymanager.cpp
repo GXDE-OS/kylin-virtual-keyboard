@@ -57,6 +57,10 @@ QRect GeometryManager::geometry() const {
     return QRect(calculateViewPosition(), calculateViewSize());
 }
 
+QRect GeometryManager::screenGeometry() const {
+    return getScreenGeometry();
+}
+
 void GeometryManager::updateGeometry() {
     QPoint position = calculateViewPosition();
     emit viewMoved(position.x(), position.y());
