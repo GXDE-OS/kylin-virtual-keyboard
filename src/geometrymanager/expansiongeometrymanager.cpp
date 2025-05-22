@@ -16,7 +16,6 @@
  */
 
 #include "expansiongeometrymanager.h"
-
 #include "screenmanager.h"
 
 ExpansionGeometryManager::ExpansionGeometryManager(Scaler &&scaler)
@@ -34,7 +33,10 @@ int ExpansionGeometryManager::calculateViewHeight() const {
 }
 
 QPoint ExpansionGeometryManager::calculateViewPosition() const {
-    QSize viewPortSize = ScreenManager::getPrimaryScreenSize();
+    QRect viewPortRec = ScreenManager::getPrimaryScreenGeometry();
+    return QPoint(viewPortRec.left(), viewPortRec.y() + viewPortRec.height() - calculateScaledViewHeight());
+}
 
-    return QPoint(0, viewPortSize.height() - calculateScaledViewHeight());
+QRect ExpansionGeometryManager::getScreenGeometry() const {
+    return ScreenManager::getPrimaryScreenGeometry();
 }
