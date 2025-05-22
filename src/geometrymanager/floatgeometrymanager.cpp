@@ -21,6 +21,7 @@
 
 #include "localsettings/localsettings.h"
 #include "screenmanager.h"
+#include <QDebug>
 
 // static
 const QString FloatGeometryManager::floatGeometryGroup = "floatGeometry";
@@ -31,96 +32,122 @@ const QString FloatGeometryManager::leftMarginRatioKey = "leftMarginRatio";
 // static
 const QString FloatGeometryManager::topMarginRatioKey = "topMarginRatio";
 
+const QString FloatGeometryManager::lastPositionMapKey = "lastPositionMap";
+
+const QString FloatGeometryManager::lastPositionXKey = "lastPositionX";
+
+const QString FloatGeometryManager::lastPositionYKey = "lastPositionY";
+
+const int FloatGeometryManager::defaultCoordinate = -99999999;
+
 FloatGeometryManager::FloatGeometryManager(std::unique_ptr<Strategy> strategy,
                                            LocalSettings &viewSettings)
-    : FloatGeometryManager(std::move(strategy), viewSettings, Scaler()) {}
+    : FloatGeometryManager(std::move(strategy), viewSettings, Scaler()) {
+}
 
 FloatGeometryManager::FloatGeometryManager(std::unique_ptr<Strategy> strategy,
                                            LocalSettings &viewSettings,
                                            Scaler &&scaler)
     : GeometryManager(std::move(scaler)), strategy_(std::move(strategy)),
       viewSettings_(viewSettings) {
+    loadLastPostionMap();
     loadMarginRatioMap();
+
+    ScreenManager::screenRemoved([this]() {
+        qDebug() << "FloatGeometryManager"
+                 << "func: " << __FUNCTION__ << " line: " << __LINE__
+                 << " --- screenRemoved ---";
+        const auto* screenAt = QGuiApplication::screenAt(currentPosition_);
+        if(!screenAt){
+            qWarning() << "FloatGeometryManager"
+                       << "func: " << __FUNCTION__ << " line: " << __LINE__
+                       << ",screenRemoved:" << screenAt << "will reset view to primary screen!";
+            resetParameters();
+        }
+    });
 }
 
-FloatGeometryManager::~FloatGeometryManager() { saveMarginRatioMap(); }
+FloatGeometryManager::~FloatGeometryManager() {
+   saveMarginRatioMap();
+   saveLastPostionMap();
+}
 
 void FloatGeometryManager::moveBy(int offsetX, int offsetY) {
-    const QPoint offset(offsetX, offsetY);
-
-    moveView(QPoint(calculateCurrentPosition() + offset));
+   const QPoint offset(offsetX, offsetY);
+   const auto currentPosition = calculateCurrentPosition();
+   updateCurrentPostion(currentPosition);
+   moveView(QPoint(currentPosition + offset));
 }
 
 void FloatGeometryManager::endDrag() {
     const QPoint currentPosition = calculateCurrentPosition();
-    const QPoint normalizedPosition =
-        calculateNormalizedPosition(currentPosition);
-    if (normalizedPosition != currentPosition) {
-        moveView(normalizedPosition);
+    const auto viewRect = QRect(currentPosition, calculateViewSize());
+    const auto adjustedPosition = adjustToScreenEdges(viewRect).topLeft();
+    if(adjustedPosition != currentPosition){
+        updateCurrentPostion(adjustedPosition);
+        moveView(adjustedPosition);
     }
+    saveLastPostionMap();
+    updateGeometry();
 }
 
 int FloatGeometryManager::calculateViewWidth() const {
-    return strategy_->getViewWidth();
+    return strategy_->getViewWidth(getScreenGeometry());
 }
 
 int FloatGeometryManager::calculateViewHeight() const {
-    return strategy_->getViewHeight();
+    return strategy_->getViewHeight(getScreenGeometry());
 }
 
-int FloatGeometryManager::calculateNormalizedX(int positionX) const {
-    const auto geometry = ScreenManager::getPrimaryScreenGeometry();
-
-    if (positionX < geometry.left()) {
-        return geometry.left();
-    }
-
-    const auto viewWidth = calculateScaledViewWidth();
-    if (positionX + viewWidth > geometry.right()) {
-        return geometry.right() - viewWidth;
-    }
-
-    return positionX;
+QRect FloatGeometryManager::getScreenGeometry() const {
+    return calculateProbableScreenGeometry();
 }
 
-int FloatGeometryManager::calculateNormalizedY(int positionY) const {
-    const auto geometry = ScreenManager::getPrimaryScreenGeometry();
-
-    if (positionY < geometry.top()) {
-        return geometry.top();
+QRect FloatGeometryManager::calculateProbableScreenGeometry() const {
+    const auto* screenAt = QGuiApplication::screenAt(currentPosition_);
+    if(screenAt) {
+        qDebug() << "FloatGeometryManager"
+                 << "func: " << __FUNCTION__ << " line: " << __LINE__
+                 << ",using screenAt:" << screenAt;
+        return screenAt->geometry() ;
+    }else {
+        qDebug() << "FloatGeometryManager"
+                 << "func: " << __FUNCTION__ << " line: " << __LINE__
+                 << ",using primary screen";
+        return ScreenManager::getPrimaryScreenGeometry();
     }
-
-    const auto viewHeight = calculateScaledViewHeight();
-    if (positionY + viewHeight > geometry.bottom()) {
-        return geometry.bottom() - viewHeight;
-    }
-
-    return positionY;
 }
 
 QPoint FloatGeometryManager::calculateNormalizedPosition(
     const QPoint &position) const {
-    return QPoint(calculateNormalizedX(position.x()),
-                  calculateNormalizedY(position.y()));
+    qDebug() << "FloatGeometryManager"
+               << "func: " << __FUNCTION__ << " line: " << __LINE__
+               << ",position:" << position;
+    const auto viewRect = QRect(position, calculateViewSize());
+    const auto adjustedPosition = adjustToScreenEdges(viewRect).topLeft();
+    return adjustedPosition;
 }
 
 QPoint FloatGeometryManager::calculateCurrentPosition() const {
-    return calculatePositionFromRatio(leftMarginRatio_, topMarginRatio_);
+    const auto currentPosition = calculatePositionFromRatio(leftMarginRatio_, topMarginRatio_);
+    return currentPosition;
 }
 
 QPoint
 FloatGeometryManager::calculatePositionFromRatio(float leftMarginRatio,
                                                  float topMarginRatio) const {
     const QSize marginSize = calculateMarginSize();
-
+    qDebug() << "FloatGeometryManager"
+               << "func: " << __FUNCTION__ << " line: " << __LINE__
+               << ",marginSize:" << marginSize;
     return QPoint(marginSize.width() * leftMarginRatio,
-                  marginSize.height() * topMarginRatio);
+                  marginSize.height() * topMarginRatio);;
 }
 
 QPoint FloatGeometryManager::calculateNormalizedPositionFromRatio(
     float leftMarginRatio, float topMarginRatio) const {
     return calculateNormalizedPosition(
-        calculatePositionFromRatio(leftMarginRatio, topMarginRatio));
+                calculatePositionFromRatio(leftMarginRatio, topMarginRatio));
 }
 
 QPoint FloatGeometryManager::calculateViewPosition() const {
@@ -128,11 +155,11 @@ QPoint FloatGeometryManager::calculateViewPosition() const {
 }
 
 QSize FloatGeometryManager::calculateMarginSize() const {
-    const QSize viewPortSize = ScreenManager::getPrimaryScreenSize();
+    const auto viewPortRect = calculateProbableScreenGeometry();
     const auto viewSize = calculateViewSize();
 
-    const int horizontalMargin = viewPortSize.width() - viewSize.width();
-    const int verticalMargin = viewPortSize.height() - viewSize.height();
+    const int horizontalMargin = viewPortRect.left() + viewPortRect.width() - viewSize.width();
+    const int verticalMargin = viewPortRect.top() + viewPortRect.height() - viewSize.height();
 
     return QSize(horizontalMargin, verticalMargin);
 }
@@ -143,6 +170,14 @@ QMap<QString, QVariant> FloatGeometryManager::getMarginRatioMap() const {
         {topMarginRatioKey, topMarginRatio_}};
 
     return marginRatioMap;
+}
+
+QMap<QString, QVariant> FloatGeometryManager::getLastPositionMap() const {
+    QMap<QString, QVariant> lastPositionMap = {
+        {lastPositionXKey, currentPosition_.x()},
+        {lastPositionYKey, currentPosition_.y()}};
+
+    return lastPositionMap;
 }
 
 float FloatGeometryManager::calculateLeftMarginRatio(float leftMargin) const {
@@ -156,6 +191,13 @@ float FloatGeometryManager::calculateTopMarginRatio(float topMargin) const {
 void FloatGeometryManager::updateMarginRatio(const QPoint &targetPosition) {
     leftMarginRatio_ = calculateLeftMarginRatio(targetPosition.x());
     topMarginRatio_ = calculateTopMarginRatio(targetPosition.y());
+    qDebug() << "FloatGeometryManager"
+               << "func: " << __FUNCTION__ << " line: " << __LINE__
+               << ",leftMarginRatio_:" << leftMarginRatio_ << ",topMarginRatio_:" << topMarginRatio_;
+}
+
+void FloatGeometryManager::updateCurrentPostion(const QPoint &position) {
+    currentPosition_ = position;
 }
 
 void FloatGeometryManager::saveMarginRatioMap() {
@@ -163,15 +205,20 @@ void FloatGeometryManager::saveMarginRatioMap() {
                            getMarginRatioMap());
 }
 
+void FloatGeometryManager::saveLastPostionMap() {
+    viewSettings_.setValue(floatGeometryGroup, lastPositionMapKey,
+                           getLastPositionMap());
+}
+
 QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
-    const QSize viewPortSize = ScreenManager::getPrimaryScreenSize();
+    const QRect viewPortGeo = ScreenManager::getPrimaryScreenGeometry();
     const auto viewSize = calculateViewSize();
 
-    const int leftMargin =
-        viewPortSize.width() -
+    const int leftMargin = viewPortGeo.left() +
+        viewPortGeo.width() -
         (viewSize.width() + strategy_->getDefaultRightMargin());
-    const int topMargin =
-        viewPortSize.height() -
+    const int topMargin = viewPortGeo.top() +
+        viewPortGeo.height() -
         (viewSize.height() + strategy_->getDefaultBottomMargin());
 
     const float defaultLeftMarginRatio = calculateLeftMarginRatio(leftMargin);
@@ -184,6 +231,14 @@ QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
     return viewDefaultMarginRatioMap;
 }
 
+QMap<QString, QVariant> FloatGeometryManager::getDefaultLastPositionMap() const {
+    QMap<QString, QVariant> viewDefaultLastPositionMap = {
+        {lastPositionXKey, defaultCoordinate},
+        {lastPositionYKey, defaultCoordinate}};
+
+    return viewDefaultLastPositionMap;
+}
+
 void FloatGeometryManager::loadMarginRatioMap() {
     const auto marginRatioMap =
         viewSettings_
@@ -194,8 +249,58 @@ void FloatGeometryManager::loadMarginRatioMap() {
     const float leftMarginRatio = marginRatioMap[leftMarginRatioKey].toFloat();
     const float topMarginRatio = marginRatioMap[topMarginRatioKey].toFloat();
 
+    qDebug() << "FloatGeometryManager"
+               << "func: " << __FUNCTION__ << " line: " << __LINE__
+               << ",leftMarginRatio:" << leftMarginRatio << ",topMarginRatio:" << topMarginRatio;
+
     updateMarginRatio(
-        calculateNormalizedPositionFromRatio(leftMarginRatio, topMarginRatio));
+                calculateNormalizedPositionFromRatio(leftMarginRatio, topMarginRatio));
+}
+
+void FloatGeometryManager::loadLastPostionMap() {
+    qDebug() << "FloatGeometryManager"
+               << "func: " << __FUNCTION__ << " line: " << __LINE__ << ",floatGeometryGroup:" << floatGeometryGroup;
+    const auto lastPositionMap =
+        viewSettings_
+            .getValue(floatGeometryGroup, lastPositionMapKey,
+                      getDefaultLastPositionMap())
+            .toMap();
+
+    const auto lastPostionX = lastPositionMap[lastPositionXKey].toInt();
+    const auto lastPostionY = lastPositionMap[lastPositionYKey].toInt();
+
+    updateCurrentPostion(QPoint(lastPostionX,lastPostionY));
+    qDebug() << "FloatGeometryManager"
+               << "func: " << __FUNCTION__ << " line: " << __LINE__
+               << ",lastPostionX:" << lastPostionX << ",lastPostionY:" << lastPostionY;
+}
+
+void FloatGeometryManager::resetParameters() {
+    const auto lastPositionMap = getDefaultLastPositionMap();
+    const auto lastPostionX = lastPositionMap[lastPositionXKey].toInt();
+    const auto lastPostionY = lastPositionMap[lastPositionYKey].toInt();
+
+    qWarning() << "FloatGeometryManager"
+               << "func: " << __FUNCTION__ << " line: " << __LINE__
+               << ",lastPostionX:" << lastPostionX
+               << ",lastPostionY:" << lastPostionY;
+
+    auto defaultPosition = QPoint(lastPostionX,lastPostionY);
+    updateCurrentPostion(defaultPosition);
+    saveLastPostionMap();
+
+    const auto marginRatioMap = getDefaultMarginRatioMap();
+    const float leftMarginRatio = marginRatioMap[leftMarginRatioKey].toFloat();
+    const float topMarginRatio = marginRatioMap[topMarginRatioKey].toFloat();
+
+    leftMarginRatio_ = leftMarginRatio;
+    topMarginRatio_ = topMarginRatio;
+    saveMarginRatioMap();
+
+    qWarning() << "FloatGeometryManager"
+               << "func: " << __FUNCTION__ << " line: " << __LINE__
+               << ",leftMarginRatio:" << leftMarginRatio
+               << ",topMarginRatio:" << topMarginRatio;
 }
 
 void FloatGeometryManager::moveView(const QPoint &targetPoint) {
@@ -203,6 +308,51 @@ void FloatGeometryManager::moveView(const QPoint &targetPoint) {
 
     const QPoint currentPosition = calculateCurrentPosition();
     emit viewMoved(currentPosition.x(), currentPosition.y());
-
     saveMarginRatioMap();
 }
+
+QRect FloatGeometryManager::adjustToScreenEdges(const QRect &windowRect) const {
+    QScreen *targetScreen = QGuiApplication::screenAt(windowRect.center());
+
+    if (!targetScreen) {
+        for (QScreen *screen : QGuiApplication::screens()) {
+            if (screen->geometry().intersects(windowRect)) {
+                targetScreen = screen;
+                break;
+            }
+        }
+    }
+
+    if (!targetScreen) {
+        QPoint windowCenter = windowRect.center();
+        qreal minDistance = std::numeric_limits<qreal>::max();
+        for (QScreen *screen : QGuiApplication::screens()) {
+            QRect screenGeo = screen->geometry();
+            QPoint screenCenter = screenGeo.center();
+            qreal distance = QLineF(windowCenter, screenCenter).length();
+            if (distance < minDistance) {
+                minDistance = distance;
+                targetScreen = screen;
+            }
+        }
+    }
+
+    if (!targetScreen) {
+        targetScreen = QGuiApplication::primaryScreen();
+    }
+
+    QRect screenGeo = targetScreen->geometry();
+    QRect adjusted = windowRect;
+
+    if (adjusted.left() < screenGeo.left())
+        adjusted.moveLeft(screenGeo.left());
+    if (adjusted.right() > screenGeo.right())
+        adjusted.moveRight(screenGeo.right());
+    if (adjusted.top() < screenGeo.top())
+        adjusted.moveTop(screenGeo.top());
+    if (adjusted.bottom() > screenGeo.bottom())
+        adjusted.moveBottom(screenGeo.bottom());
+
+    return adjusted;
+}
+

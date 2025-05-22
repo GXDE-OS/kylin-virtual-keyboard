@@ -19,7 +19,7 @@
 #define FLOATGEOMETRYMANAGER_H
 
 #include <memory>
-
+#include <QRect>
 #include "geometrymanager.h"
 #include "localsettings/localsettings.h"
 
@@ -44,11 +44,13 @@ private:
     QPoint calculateViewPosition() const override;
     int calculateViewWidth() const override;
     int calculateViewHeight() const override;
+    QRect getScreenGeometry() const override;
 
     int calculateNormalizedX(int positionX) const;
     int calculateNormalizedY(int positionY) const;
-    QPoint calculateNormalizedPosition(const QPoint &position) const;
+    QRect calculateProbableScreenGeometry() const;
 
+    QPoint calculateNormalizedPosition(const QPoint &position) const;
     QPoint calculatePositionFromRatio(float leftMarginRatio,
                                       float topMarginRatio) const;
     QPoint calculateCurrentPosition() const;
@@ -57,14 +59,22 @@ private:
 
     QSize calculateMarginSize() const;
     QMap<QString, QVariant> getMarginRatioMap() const;
+    QMap<QString, QVariant> getLastPositionMap() const;
     QMap<QString, QVariant> getDefaultMarginRatioMap() const;
+    QMap<QString, QVariant> getDefaultLastPositionMap() const;
+
     float calculateLeftMarginRatio(float leftMargin) const;
     float calculateTopMarginRatio(float topMargin) const;
     void updateMarginRatio(const QPoint &targetPosition);
+    void updateCurrentPostion(const QPoint &position);
     void saveMarginRatioMap();
+    void saveLastPostionMap();
     void loadMarginRatioMap();
-
+    void loadLastPostionMap();
+    void resetParameters();
     void moveView(const QPoint &targetPoint);
+    QRect adjustToScreenEdges(const QRect &windowRect) const;
+
 
 private:
     float leftMarginRatio_ = 0.0f;
@@ -78,14 +88,24 @@ private:
     static const QString marginRatioMapKey;
     static const QString leftMarginRatioKey;
     static const QString topMarginRatioKey;
+
+    static const QString lastPositionMapKey;
+    static const QString lastPositionXKey;
+    static const QString lastPositionYKey;
+    static const int defaultCoordinate;
+
+    QPoint currentPosition_;
 };
 
 class FloatGeometryManager::Strategy {
 public:
     virtual ~Strategy() = default;
 
-    int getViewWidth() const { return getUnitWidth() * getViewWidthRatio(); }
-    int getViewHeight() const { return getUnitHeight() * getViewHeightRatio(); }
+    int getViewWidth(const QRect& screenGeo) const { return screenGeo.width() * getViewWidthRatio(); }
+    int getViewHeight(const QRect& screenGeo) const {
+        auto height = std::max(screenGeo.width(), screenGeo.height());
+        return height * getViewHeightRatio();
+    }
 
     virtual int getDefaultRightMargin() const = 0;
     virtual int getDefaultBottomMargin() const = 0;
