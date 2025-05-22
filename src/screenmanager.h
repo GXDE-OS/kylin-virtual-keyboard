@@ -20,6 +20,8 @@
 
 #include <QRect>
 #include <QSize>
+#include <QScreen>
+#include <QGuiApplication>
 
 class ScreenManager {
 public:
@@ -28,6 +30,16 @@ public:
 
     static QRect getPrimaryScreenGeometry();
     static QSize getPrimaryScreenSize();
+
+public:
+    template<typename Func>
+    static void screenRemoved(Func&& callback) {
+        QObject::connect(
+            qApp, &QGuiApplication::screenRemoved,
+            std::forward<Func>(callback)
+        );
+    }
+
 };
 
 #endif // SCREENMANAGER_H
