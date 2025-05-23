@@ -87,7 +87,7 @@ void FloatButtonManager::destroyFloatButton() {
 }
 
 void FloatButtonManager::onScreenResolutionChanged() {
-    if (!floatButtonEnabled_ || !floatButton_->isVisible()) {
+    if (!floatButtonEnabled_) {
         return;
     }
 
