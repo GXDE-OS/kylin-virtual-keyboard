@@ -38,6 +38,7 @@ Rectangle {
     ToolTip {
         id: placementModelButtonToolTip
         text: qsTr("Floating Mode")
+        property var backOpacity: 1
     }
 
     MouseArea {

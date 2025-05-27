@@ -36,6 +36,7 @@ Rectangle {
     ToolTip {
         id:hideButtonToolTip
         text: qsTr("close")
+        property var backOpacity: 1
     }
 
     MouseArea {
