@@ -13,15 +13,15 @@ qml-module-qtquick-controls2 libgsettings-qt-dev pkg-config qtquickcontrols2-5-d
 2. Build the project
 ``` 
 mkdir build && cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib/x86_64-linux-gnu
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr
 make 
 sudo make install
 ``` 
 The first install needs to be executed in order to update the scheme: sudo glib-compile-schemas /usr/share/glib-2.0/schemas/  
 
 ## How to use
-1. Click the tray icon to wake up the Kylin virtual keyboard
-2. Click the hover button to wake up the Kylin virtual keyboard
+1. Click the tray icon to wake up the Kylin Virtual Keyboard
+2. Click the hover button to wake up the Kylin Virtual Keyboard
 ![Screenshot of Kylin Virtual Keyboard](./assert/kylin-virtual-keyboard.png)
 
 ## Thanks
