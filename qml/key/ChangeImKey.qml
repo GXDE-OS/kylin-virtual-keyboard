@@ -85,38 +85,30 @@ SwitchKey {
         visible: virtualKeyboard.isCurrentIMListVisible
         width: imList.width
         height: imList.height
+        color: "transparent"
         radius: 8
         Menu {
             id: imList
-            width: virtualKeyboard.imListItemWidth
+
+            visible: virtualKeyboard.isCurrentIMListVisible
+            property var backOpacity: 1
+            width: virtualKeyboard.imListItemWidth + 16 //(16为左右边距)
             // 输入法列表的最大高度可以完整显示四个条目，
             // 输入法列表条目数量超过4之后输入法列表显示滚动条
-            height: imList.count == 0 ? 0 : imList.itemAt(0).height * Math.min(imList.count, 4)
+            height: imList.count == 0 ? 0 : imList.itemAt(0).height * Math.min(imList.count, 4) + 16 //(16为上下边距)
             modal: true
-            Overlay.modal:Rectangle {
-                color: "transparent"
-            }
-            background: Rectangle{
-                radius: imListRectangle.radius
-                width: parent.width
-                height: parent.height
-                color: "white"
-            }
-            
             Instantiator {
+                id: menuInstantiator
                 model: virtualKeyboard.currentIMList
                 delegate: MenuItem {
-                    background: Rectangle {
-                        radius: imListRectangle.radius
-                        color: highlighted? virtualKeyboard.currentIMColor: "white"
-                    }
+                    id: menuItem
+
+                    padding: 0
                     property string uniqueName: modelData.split("|")[0]
                     property string localName: modelData.split("|")[1]
                     property string label: modelData.split("|")[2]
-                    font.pointSize: virtualKeyboard.imListFontSize
                     text: label.padEnd(3, " ") + localName
-                    width: virtualKeyboard.imListItemWidth
-                    height: virtualKeyboard.imListItemHeight
+
                     MouseArea{
                         anchors.fill: parent
                         onReleased: {
