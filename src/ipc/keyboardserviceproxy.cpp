@@ -17,16 +17,16 @@
 
 #include "keyboardserviceproxy.h"
 
-const QString g_serviceName = "org.ukui.Framework";
-const QString g_servicePath = "/org/ukui/Framework/Devices/Keyboard";
-const char *g_serviceInterface = "org.ukui.Framework.Devices.Keyboard";
+const QString g_serviceName = "org.fcitx.Fcitx5.KeyboardStatus";
+const QString g_servicePath = "/";
+const char *g_serviceInterface = "org.fcitx.Fcitx5.KeyboardStatus";
 
-const QString g_kbdCountMethodName = "GetKbdCount";
-const QString g_kbdStatusSignalName = "KbdCountChanged";
+const QString g_kbdCountMethodName = "getKeyboardNum";
+const QString g_kbdStatusSignalName = "KeyboardStatusChanged";
 
 KeyboardServiceProxy::KeyboardServiceProxy(QObject *parent)
     : QDBusAbstractInterface(g_serviceName, g_servicePath, g_serviceInterface,
-                             QDBusConnection::sessionBus(), parent) {
+                             QDBusConnection::systemBus(), parent) {
     QDBusConnection::sessionBus().connect(
         g_serviceName, g_servicePath, g_serviceInterface, g_kbdStatusSignalName,
         this, SIGNAL(kbdStatusChanged()));
