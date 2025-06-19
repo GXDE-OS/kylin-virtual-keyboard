@@ -36,6 +36,6 @@ QDBusPendingReply<int> KeyboardServiceProxy::GetKbdCount() {
     QList<QVariant> argumentList;
 
     qDebug() << "KeyboardServiceProxy"
-             << "func: " << __FUNCTION__ << " line: ";
+             << "func: " << __FUNCTION__ << " line: " << __LINE__;
     return asyncCallWithArgumentList(g_kbdCountMethodName, argumentList);
 }
