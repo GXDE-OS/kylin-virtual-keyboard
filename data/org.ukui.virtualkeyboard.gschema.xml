@@ -26,5 +26,10 @@
         <choice value='ShowWhenKeyboardIsConnected'/>
       </choices>
     </key>
+    <key name="preload-view-enabled" type="b">
+      <default>false</default>
+      <summary>Controls the availability of preload virtualkeyboard view</summary>
+      <description>Controls the availability of preload virtualkeyboard view</description>
+    </key>
   </schema>
 </schemalist>
