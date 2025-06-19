@@ -47,10 +47,19 @@ VirtualKeyboardView::VirtualKeyboardView(
             }
         });
     initState();
+    if (VirtualKeyboardSettings::getInstance().isPreloadViewEnabled()) {
+        qInfo() << "VirtualKeyboardView"
+                << "func: " << __FUNCTION__ << " line: " << __LINE__
+                << ",will preload quickview";
+        initView();
+    }
 }
 
 VirtualKeyboardView::~VirtualKeyboardView() {
     destroyView();
+    if (view_ != nullptr) {
+        view_.release()->deleteLater();
+    }
 
     currentState_.reset();
     visibleState_.reset();
@@ -119,6 +128,14 @@ void VirtualKeyboardView::resize()
 }
 
 void VirtualKeyboardView::initView() {
+    const auto preloadViewEnabled = VirtualKeyboardSettings::getInstance().isPreloadViewEnabled();
+    if (view_ != nullptr && preloadViewEnabled) {
+        return;
+    }
+    qInfo() << "VirtualKeyboardView"
+            << "func: " << __FUNCTION__ << " line: " << __LINE__
+            << "preloadViewEnabled:" << preloadViewEnabled;
+
     view_.reset(new QQuickView());
 
     view_->rootContext()->setContextProperty("manager", &manager_);
@@ -153,8 +170,7 @@ int VirtualKeyboardView::getScreenHeight() {
     return ScreenManager::getPrimaryScreenSize().height();
 }
 
-int VirtualKeyboardView::getScreenRelativeHeight()
-{
+int VirtualKeyboardView::getScreenRelativeHeight() {
     auto screenRect = screenGeometry();
     return screenRect.y() + screenRect.height();
 }
@@ -176,7 +192,10 @@ void VirtualKeyboardView::destroyView() {
     if (view_->isVisible()) {
         view_->hide();
     }
-    view_.release()->deleteLater();
+
+    if (!VirtualKeyboardSettings::getInstance().isPreloadViewEnabled()) {
+        view_.release()->deleteLater();
+    }
 }
 
 void VirtualKeyboardView::emitContentGeometrySignals() {
