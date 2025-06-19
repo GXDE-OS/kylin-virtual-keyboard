@@ -80,9 +80,8 @@ void VirtualKeyboardModel::backendServiceRegistered(
     }
     initVirtualKeyboardBackendInterface();
 
-    syncUniqueName();
-
     syncCurrentIMList();
+    syncUniqueName();
 }
 
 void VirtualKeyboardModel::backendServiceUnregistered(
