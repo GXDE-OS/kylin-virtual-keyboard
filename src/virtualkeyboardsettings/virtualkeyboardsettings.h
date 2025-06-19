@@ -31,6 +31,7 @@ public:
     void updateFloatButtonAvailability(bool value);
     bool isFloatButtonEnabled() const;
     bool isAnimationEnabled() const;
+    bool isPreloadViewEnabled() const;
     float calculateVirtualKeyboardScaleFactor() const;
     const QString trayIconShow() const;
 
@@ -60,5 +61,6 @@ private:
     const QString virtualKeyboardScaleFactorKey_ = "virtualKeyboardScaleFactor";
     const QString animationEnabledKey_ = "animationEnabled";
     const QString trayIconShowKey_ = "trayIconShowPolicy";
+    const QString preloadViewEnabledKey_ = "preloadViewEnabled";
 };
 #endif

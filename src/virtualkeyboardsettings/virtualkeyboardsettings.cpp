@@ -86,6 +86,16 @@ bool VirtualKeyboardSettings::isAnimationEnabled() const {
     return gsettings_->get(animationEnabledKey_).toBool();
 }
 
+bool VirtualKeyboardSettings::isPreloadViewEnabled() const {
+    if (gsettings_ == nullptr) {
+        qWarning() << "VirtualKeyboardSettings"
+                << "func: " << __FUNCTION__ << " line: " << __LINE__ << "WARNING : Gsettings Objetc is NULL !";
+        return false;
+    }
+
+    return gsettings_->get(preloadViewEnabledKey_).toBool();
+}
+
 float VirtualKeyboardSettings::calculateVirtualKeyboardScaleFactor() const {
     return static_cast<float>(
                gsettings_->get(virtualKeyboardScaleFactorKey_).toInt()) /
