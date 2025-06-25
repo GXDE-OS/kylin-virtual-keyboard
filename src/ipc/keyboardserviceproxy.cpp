@@ -22,12 +22,12 @@ const QString g_servicePath = "/";
 const char *g_serviceInterface = "org.fcitx.Fcitx5.KeyboardStatus";
 
 const QString g_kbdCountMethodName = "getKeyboardNum";
-const QString g_kbdStatusSignalName = "KeyboardStatusChanged";
+const QString g_kbdStatusSignalName = "keyboardStatusChanged";
 
 KeyboardServiceProxy::KeyboardServiceProxy(QObject *parent)
     : QDBusAbstractInterface(g_serviceName, g_servicePath, g_serviceInterface,
                              QDBusConnection::systemBus(), parent) {
-    QDBusConnection::sessionBus().connect(
+    QDBusConnection::systemBus().connect(
         g_serviceName, g_servicePath, g_serviceInterface, g_kbdStatusSignalName,
         this, SIGNAL(kbdStatusChanged()));
 }
