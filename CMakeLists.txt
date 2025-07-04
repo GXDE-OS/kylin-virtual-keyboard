@@ -12,6 +12,12 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # find packages
+find_package(spdlog REQUIRED)
+if (NOT spdlog_FOUND)
+    message(FATAL_ERROR "Spdlog not found!")
+endif()
+
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Widgets Concurrent DBus Quick QuickControls2 REQUIRED)
 if (NOT Qt${QT_VERSION_MAJOR}_FOUND)
@@ -70,6 +76,8 @@ set(HEADERS
     src/virtualkeyboardentry/virtualkeyboardtrayicon.h
     src/virtualkeyboardentry/trayiconstrategy.h
     src/virtualkeyboardsettings/virtualkeyboardsettings.h
+    src/log.h
+    src/messagehandler.h
 )
 
 set(SOURCES
@@ -99,6 +107,8 @@ set(SOURCES
     src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp
     src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp
     src/virtualkeyboardsettings/virtualkeyboardsettings.cpp
+    src/log.cpp
+    src/messagehandler.cpp
 )
 
 set(TRANSLATIONS
@@ -130,6 +140,7 @@ target_link_libraries(${PROJECT_NAME}
                 Fcitx5Qt${QT_VERSION_MAJOR}::DBusAddons
                 ${GSettings_QT_LIBRARIES}
                 qtsingleapplication
+                spdlog::spdlog
             )
 
 if (ENABLE_TEST)
