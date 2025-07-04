@@ -149,7 +149,7 @@ void VirtualKeyboardModel::syncCurrentIMList() {
     auto reply = fcitx5Controller_->FullInputMethodGroupInfo("");
     reply.waitForFinished();
     if (!reply.isValid()) {
-        qWarning() << reply.error();
+        KVKBD_WARN("reply error:{}", reply.error().message().toStdString());
         return;
     }
 

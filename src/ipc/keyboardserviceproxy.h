@@ -21,8 +21,9 @@
 #include <QDBusAbstractInterface>
 #include <QDBusInterface>
 #include <QDBusPendingReply>
-#include <QDebug>
 #include <QObject>
+
+#include "log.h"
 
 class KeyboardServiceProxy : public QDBusAbstractInterface {
     Q_OBJECT

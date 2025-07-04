@@ -16,17 +16,15 @@
  */
 
 #include "virtualkeyboardsettings.h"
-
 #include <QByteArray>
-#include <QDebug>
 #include <QVariant>
 
 VirtualKeyboardSettings::VirtualKeyboardSettings() { init(); }
 
 void VirtualKeyboardSettings::init() {
     if (!QGSettings::isSchemaInstalled(gsettingsId_.toUtf8())) {
-        qWarning() << "WARNING : INCORRECT GSETTINGS ID :" << gsettingsId_
-                   << "IS NOT INSTALLED!";
+        KVKBD_WARN("WARNING : INCORRECT GSETTINGS ID :{}, IS NOT INSTALLED!",
+                   gsettingsId_.toStdString());
         return;
     }
 
@@ -61,7 +59,7 @@ void VirtualKeyboardSettings::emitFloatButtonAvailabilityChanged() {
 
 void VirtualKeyboardSettings::updateFloatButtonAvailability(const bool value) {
     if (gsettings_ == nullptr) {
-        qWarning() << "WARNING : Gsettings Objetc is NULL !";
+        KVKBD_WARN("WARNING : Gsettings Objetc is NULL !");
         return;
     }
 
@@ -70,7 +68,7 @@ void VirtualKeyboardSettings::updateFloatButtonAvailability(const bool value) {
 
 bool VirtualKeyboardSettings::isFloatButtonEnabled() const {
     if (gsettings_ == nullptr) {
-        qWarning() << "WARNING : Gsettings Objetc is NULL !";
+        KVKBD_WARN("WARNING : Gsettings Objetc is NULL !");
         return false;
     }
 
@@ -79,7 +77,7 @@ bool VirtualKeyboardSettings::isFloatButtonEnabled() const {
 
 bool VirtualKeyboardSettings::isAnimationEnabled() const {
     if (gsettings_ == nullptr) {
-        qWarning() << "WARNING : Gsettings Objetc is NULL !";
+        KVKBD_WARN("WARNING : Gsettings Objetc is NULL !");
         return false;
     }
 
@@ -88,8 +86,7 @@ bool VirtualKeyboardSettings::isAnimationEnabled() const {
 
 bool VirtualKeyboardSettings::isPreloadViewEnabled() const {
     if (gsettings_ == nullptr) {
-        qWarning() << "VirtualKeyboardSettings"
-                << "func: " << __FUNCTION__ << " line: " << __LINE__ << "WARNING : Gsettings Objetc is NULL !";
+        KVKBD_WARN("WARNING : Gsettings Objetc is NULL !");
         return false;
     }
 
@@ -104,7 +101,7 @@ float VirtualKeyboardSettings::calculateVirtualKeyboardScaleFactor() const {
 
 const QString VirtualKeyboardSettings::trayIconShow() const {
     if (gsettings_ == nullptr) {
-        qWarning() << "WARNING : Gsettings Objetc is NULL !";
+        KVKBD_WARN("WARNING : Gsettings Objetc is NULL !");
         return "NeverShow";
     }
 
@@ -120,7 +117,7 @@ void VirtualKeyboardSettings::emitTrayIconShowChanged() {
     } else if (value == "ShowWhenKeyboardIsConnected") {
         emit showTrayIconWhenKeyboardisConnected();
     } else {
-        qWarning() << "WARNING : Gsettings Set trayIconShow Error !";
+        KVKBD_WARN("WARNING : Gsettings Set trayIconShow Error !");
     }
 }
 

@@ -16,12 +16,10 @@
  */
 
 #include "virtualkeyboard/virtualkeyboardview.h"
-#include "virtualkeyboardsettings/virtualkeyboardsettings.h"
-
 #include <QQmlContext>
 #include <QQuickItem>
-
 #include "screenmanager.h"
+#include "virtualkeyboardsettings/virtualkeyboardsettings.h"
 
 VirtualKeyboardView::VirtualKeyboardView(
     QObject &manager, QObject &model,
@@ -38,19 +36,19 @@ VirtualKeyboardView::VirtualKeyboardView(
             &VirtualKeyboardView::isFloatModeChanged);
     connect(floatGeometryManager_.get(), &FloatGeometryManager::viewMoved, this,
             &VirtualKeyboardView::move);
-    connect(floatGeometryManager_.get(), &FloatGeometryManager::viewResized, this,
-            &VirtualKeyboardView::resize);
-    connect(&VirtualKeyboardSettings::getInstance(),
+    connect(floatGeometryManager_.get(), &FloatGeometryManager::viewResized,
+            this, &VirtualKeyboardView::resize);
+    connect(
+        &VirtualKeyboardSettings::getInstance(),
         &VirtualKeyboardSettings::animationAvailabilityChanged, this, [this]() {
-            if (!VirtualKeyboardSettings::getInstance().isAnimationEnabled() && view_) {
+            if (!VirtualKeyboardSettings::getInstance().isAnimationEnabled() &&
+                view_) {
                 view_->setOpacity(1.0f);
             }
         });
     initState();
     if (VirtualKeyboardSettings::getInstance().isPreloadViewEnabled()) {
-        qInfo() << "VirtualKeyboardView"
-                << "func: " << __FUNCTION__ << " line: " << __LINE__
-                << ",will preload quickview";
+        KVKBD_INFO("will preload quickview");
         initView();
     }
 }
@@ -112,29 +110,23 @@ void VirtualKeyboardView::updateExpansionFlippingStartGeometry() {
 }
 
 void VirtualKeyboardView::move(int x, int y) {
-    if(!view_){
-        qWarning() << "VirtualKeyboardView"
-                   << "func: " << __FUNCTION__ << " line: " << __LINE__
-                   << ",view_ is null!";
+    if (!view_) {
+        KVKBD_WARN("view_ is null!");
         return;
     }
     view_->setX(x);
     view_->setY(y);
 }
 
-void VirtualKeyboardView::resize()
-{
-    updateGeometry();
-}
+void VirtualKeyboardView::resize() { updateGeometry(); }
 
 void VirtualKeyboardView::initView() {
-    const auto preloadViewEnabled = VirtualKeyboardSettings::getInstance().isPreloadViewEnabled();
+    const auto preloadViewEnabled =
+        VirtualKeyboardSettings::getInstance().isPreloadViewEnabled();
     if (view_ != nullptr && preloadViewEnabled) {
         return;
     }
-    qInfo() << "VirtualKeyboardView"
-            << "func: " << __FUNCTION__ << " line: " << __LINE__
-            << "preloadViewEnabled:" << preloadViewEnabled;
+    KVKBD_INFO("preloadViewEnabled:{}", preloadViewEnabled);
 
     view_.reset(new QQuickView());
 
@@ -159,11 +151,9 @@ QRect VirtualKeyboardView::calculateInitialGeometry() {
     auto geo = geometry();
     auto screenHeight = getScreenRelativeHeight();
 
-    int normalizedY =
-        std::min(screenHeight, geo.y() + geo.height());
+    int normalizedY = std::min(screenHeight, geo.y() + geo.height());
 
-    return QRect(geo.x(), normalizedY, geo.width(),
-                 geo.height());
+    return QRect(geo.x(), normalizedY, geo.width(), geo.height());
 }
 
 int VirtualKeyboardView::getScreenHeight() {

@@ -19,9 +19,9 @@
 #define _VIRTUALKEYBOARDSETTINGS_H_
 
 #include <memory>
-
 #include <QGSettings>
 #include <QObject>
+#include "log.h"
 
 class VirtualKeyboardSettings : public QObject {
     Q_OBJECT

@@ -57,9 +57,8 @@ ViewLocalSettings::ViewLocalSettings(const QString &organization,
 
                          saveSettingsAsync();
                      });
-    qDebug() << "ViewLocalSettings"
-             << "func: " << __FUNCTION__ << " line: " << __LINE__
-             << "organization_:" << organization_ << ",application_:" << application_;
+    KVKBD_DEBUG("organization_:{},application_:{}", organization_.toStdString(),
+                application_.toStdString());
 }
 
 ViewLocalSettings::~ViewLocalSettings() = default;

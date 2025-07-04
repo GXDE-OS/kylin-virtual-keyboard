@@ -19,10 +19,11 @@
 #define GEOMETRYMANAGER_H
 
 #include <functional>
-
 #include <QObject>
 #include <QPoint>
 #include <QSize>
+
+#include "log.h"
 
 class Scaler {
 public:
@@ -80,7 +81,7 @@ private:
     virtual int calculateViewHeight() const = 0;
 
     virtual QPoint calculateViewPosition() const = 0;
-    virtual QRect  getScreenGeometry() const = 0;
+    virtual QRect getScreenGeometry() const = 0;
 
 private:
     Scaler scaler_;

@@ -34,8 +34,7 @@ KeyboardServiceProxy::KeyboardServiceProxy(QObject *parent)
 
 QDBusPendingReply<int> KeyboardServiceProxy::GetKbdCount() {
     QList<QVariant> argumentList;
-
-    qDebug() << "KeyboardServiceProxy"
-             << "func: " << __FUNCTION__ << " line: " << __LINE__;
+    KVKBD_INFO("start get Keyboard count via dbus interface:{}, method:{}",
+               g_serviceInterface, g_kbdCountMethodName.toStdString());
     return asyncCallWithArgumentList(g_kbdCountMethodName, argumentList);
 }

@@ -22,6 +22,7 @@
 #include <QMap>
 
 #include "localsettings.h"
+#include "log.h"
 
 class ViewLocalSettings : public LocalSettings {
 public:

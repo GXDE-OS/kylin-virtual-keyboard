@@ -19,10 +19,11 @@
 #define VIRTUALKEYBOARDMODEL_H
 
 #include <memory>
-
 #include <QDBusInterface>
 #include <QDBusServiceWatcher>
 #include <QObject>
+
+#include "log.h"
 
 #include <Fcitx5Qt5/Fcitx5Qt5DBusAddons/fcitxqtcontrollerproxy.h>
 

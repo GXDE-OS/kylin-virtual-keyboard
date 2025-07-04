@@ -75,7 +75,6 @@ private:
     void moveView(const QPoint &targetPoint);
     QRect adjustToScreenEdges(const QRect &windowRect) const;
 
-
 private:
     float leftMarginRatio_ = 0.0f;
     float topMarginRatio_ = 0.0f;
@@ -101,8 +100,10 @@ class FloatGeometryManager::Strategy {
 public:
     virtual ~Strategy() = default;
 
-    int getViewWidth(const QRect& screenGeo) const { return screenGeo.width() * getViewWidthRatio(); }
-    int getViewHeight(const QRect& screenGeo) const {
+    int getViewWidth(const QRect &screenGeo) const {
+        return screenGeo.width() * getViewWidthRatio();
+    }
+    int getViewHeight(const QRect &screenGeo) const {
         auto height = std::max(screenGeo.width(), screenGeo.height());
         return height * getViewHeightRatio();
     }

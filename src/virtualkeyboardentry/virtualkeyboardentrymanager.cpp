@@ -57,9 +57,8 @@ void VirtualKeyboardEntryManager::initTrayIconStrategy() {
     keyboardStatusStrategy_ = std::make_shared<KeyboardStatusStrategy>();
 
     auto showPolicy = VirtualKeyboardSettings::getInstance().trayIconShow();
-    qInfo() << "VirtualKeyboardEntryManager"
-            << "func: " << __FUNCTION__ << " line: " << __LINE__
-            << ",trayIcon showPolicy:" << showPolicy;
+    KVKBD_INFO("trayIcon showPolicy:{}", showPolicy.toStdString());
+
     if (showPolicy == "NeverShow") {
         updateStrategy(neverShowStrategy_);
     } else if (showPolicy == "AlwaysShow") {
@@ -183,9 +182,7 @@ void VirtualKeyboardEntryManager::updateStrategy(
 
 void VirtualKeyboardEntryManager::updateTrayExistence() {
     if (trayIconEntry_ == nullptr) {
-        qWarning() << "VirtualKeyboardEntryManager"
-                   << "func: " << __FUNCTION__ << " line: " << __LINE__
-                   << ",trayIconEntry_ is null";
+        KVKBD_WARN("trayIconEntry_ is null!");
         return;
     }
 
@@ -208,18 +205,14 @@ void VirtualKeyboardEntryManager::updateTrayVisibility() {
         kbdCount = getKeyboardCount(true);
     }
     const auto shouldShow = currenTrayIconStrategy_->shouldShowTray(kbdCount);
-    qInfo() << "VirtualKeyboardEntryManager"
-            << "func: " << __FUNCTION__ << " line: " << __LINE__
-            << ", need monitor keyboard:" << needMonitor
-            << ", should show trayIcon:" << shouldShow;
+    KVKBD_INFO("need monitor keyboard:{}, should show trayIcon:{}", needMonitor,
+               shouldShow);
     trayIconEntry_->changeTrayIconVisibility(shouldShow);
 }
 
 int VirtualKeyboardEntryManager::getKeyboardCount(const bool &sync) {
     if (!keyboardServiceProxy_) {
-        qDebug() << "KeyboardServiceProxy"
-                 << "func: " << __FUNCTION__ << " line: " << __LINE__
-                 << ",keyboardServiceProxy_ is null";
+        KVKBD_WARN("keyboardServiceProxy_ is null!");
         return 0;
     }
     int currentKbdCount = 0;
@@ -234,16 +227,13 @@ int VirtualKeyboardEntryManager::getKeyboardCount(const bool &sync) {
                                  currentKbdCount = reply;
                              }
                          } else {
-                             qWarning() << "getKeyboardCount(),reply error:"
-                                        << reply.error();
+                             KVKBD_WARN("getKeyboardCount(),reply error:{}",
+                                        reply.error().message().toStdString());
                          }
                      });
     if (sync) {
         kbdNumcallwatcher->waitForFinished();
     }
-
-    qDebug() << "KeyboardServiceProxy"
-             << "func: " << __FUNCTION__ << " line: " << __LINE__
-             << ",currentKbdCount:" << currentKbdCount;
+    KVKBD_INFO("currentKbdCount:{}", currentKbdCount);
     return currentKbdCount;
 }

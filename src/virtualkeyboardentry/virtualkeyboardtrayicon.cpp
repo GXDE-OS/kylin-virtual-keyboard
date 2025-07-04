@@ -27,9 +27,7 @@ VirtualKeyboardTrayIcon::VirtualKeyboardTrayIcon(
 
 void VirtualKeyboardTrayIcon::setContextMenu(QMenu *contextMenu) {
     if (trayIcon_ == nullptr) {
-        qWarning() << "VirtualKeyboardTrayIcon"
-                   << "func: " << __FUNCTION__ << " line: " << __LINE__
-                   << ",trayIcon_ is null";
+        KVKBD_WARN("trayIcon_ is null!");
         return;
     }
 
@@ -38,9 +36,7 @@ void VirtualKeyboardTrayIcon::setContextMenu(QMenu *contextMenu) {
 
 void VirtualKeyboardTrayIcon::hideContextMenu() {
     if (trayIcon_ == nullptr) {
-        qWarning() << "VirtualKeyboardTrayIcon"
-                   << "func: " << __FUNCTION__ << " line: " << __LINE__
-                   << ",trayIcon_ is null";
+        KVKBD_WARN("trayIcon_ is null!");
         return;
     }
 

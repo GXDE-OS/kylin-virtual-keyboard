@@ -16,7 +16,6 @@
  */
 
 #include "geometrymanager.h"
-
 #include "screenmanager.h"
 
 Scaler::Scaler(ScaleFactorCallback widthScaleFactorCallback,
@@ -57,9 +56,7 @@ QRect GeometryManager::geometry() const {
     return QRect(calculateViewPosition(), calculateViewSize());
 }
 
-QRect GeometryManager::screenGeometry() const {
-    return getScreenGeometry();
-}
+QRect GeometryManager::screenGeometry() const { return getScreenGeometry(); }
 
 void GeometryManager::updateGeometry() {
     QPoint position = calculateViewPosition();
