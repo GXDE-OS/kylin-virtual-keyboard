@@ -44,6 +44,7 @@ ToolButton {
         color: virtualKeyboard.charKeyDropShadowColor
         source: keyBackground
         samples: 100
+        z: -1 /*阴影保持在最下层*/
     }
 
 
