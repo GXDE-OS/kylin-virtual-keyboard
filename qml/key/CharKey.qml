@@ -57,6 +57,7 @@ BaseKey {
         anchors.fill: parent
         maximumTouchPoints: 1
         onReleased: {
+            console.debug('MultiPointTouchArea,onReleased')
             keyBackground.state = "NORMAL"
 
             resetGlobalTimersIfNecessary()
@@ -66,6 +67,7 @@ BaseKey {
         }
 
         onPressed: {
+            console.debug('MultiPointTouchArea,onPressed')
             keyBackground.state = "PRESSED"
 
             startGlobalLongPressTimer()
