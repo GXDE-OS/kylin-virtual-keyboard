@@ -31,5 +31,16 @@
       <summary>Controls the availability of preload virtualkeyboard view</summary>
       <description>Controls the availability of preload virtualkeyboard view</description>
     </key>
+    <key name="log-level" type="s">
+      <default>'info'</default>
+      <summary>Controls the log level</summary>
+      <description>Controls the log level</description>
+      <choices>
+        <choice value='debug'/>
+        <choice value='info'/>
+        <choice value='warn'/>
+        <choice value='error'/>
+      </choices>
+    </key>
   </schema>
 </schemalist>
