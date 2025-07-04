@@ -36,7 +36,7 @@ Rectangle {
     property string uniqueName : model.uniqueName
     //当前输入法，组成为"uniqueName|localName|label"
     //TOOD 目前以“|”分割数据
-    property string currentIM: "||"
+    property string currentIM: "|||"
 
     //大小相关
     /*设置默认值，防止报错，fontSize为0时会报错，加载qml文件时height为0，会导致fontSize为0*/
