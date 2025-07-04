@@ -149,6 +149,9 @@ Rectangle {
 
     function processKeyEvent(key, keycode, modifierKeyStates,
                     isRelease, time) {
+        console.debug('key:', key, ',keycode:', keycode, ',modifierKeyStates:',
+                      modifierKeyStates, ',isRelease:', isRelease, ',time:', time)
+
         model.processKeyEvent(key, keycode, modifierKeyStates, isRelease, time)
     }
 
@@ -241,6 +244,7 @@ Rectangle {
     }
 
     onUniqueNameChanged: {
+        console.info('onUniqueNameChanged')
         for(var i = 0; i<currentIMList.length; i++){
             if(currentIMList[i].includes(uniqueName)){
                 currentIM = currentIMList[i]
