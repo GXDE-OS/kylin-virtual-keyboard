@@ -106,8 +106,7 @@ Column {
         spacing: virtualKeyboard.keySpacing
         CtrlKey{ keycode: Keycode.KEY_LEFTCTRL }
         FnKey{}
-        //暂时删除win键
-//        WinKey{}
+        WinKey{ label: "win"; keycode: Keycode.KEY_LEFTSUPER }
         AltKey{ keycode: Keycode.KEY_LEFTALT }
         ChangeImKey{}
         SpaceKey{ keycode: Keycode.KEY_SPACE }
