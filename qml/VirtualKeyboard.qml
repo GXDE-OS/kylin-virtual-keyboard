@@ -47,8 +47,7 @@ Rectangle {
     property int keyboardLayoutHeight: cardinalNumber * 49
     property int keySpacing: cardinalNumber
     property int keyWidth: (virtualKeyboardContent.width - 5*cardinalNumber) * 2/31 - cardinalNumber
-    /*暂时删除win键，将空格键长度从keyWidth * 5.5 + keySpacing * 5修改为keyWidth * 6.5 + keySpacing * 6*/
-    property int spaceKeyWidth: keyWidth * 6.5 + keySpacing * 6
+    property int spaceKeyWidth: keyWidth * 5.5 + keySpacing * 5
     property int keyHeight: cardinalNumber * 9
     property int firstRowKeyHeight: keyHeight * 7/9
     property int keyLableAlignment: keyWidth / 3
