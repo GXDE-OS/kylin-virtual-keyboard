@@ -43,5 +43,7 @@
         <file>img/down.svg</file>
         <file>img/extend.svg</file>
         <file>qml/js/keycode.js</file>
+        <file>img/super_logo.svg</file>
+        <file>img/super_logo_clicked.svg</file>
     </qresource>
 </RCC>

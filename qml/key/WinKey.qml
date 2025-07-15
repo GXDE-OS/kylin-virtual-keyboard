@@ -15,13 +15,54 @@
 * this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.0
 import "../js/utils.js" as Utils
+import QtQuick 2.0
 
 TemporarySwitchKey {
     id: win
-    //暂时以Win显示，后续更换麒麟icon
-    label: "Win"
+
+    property string winKeyImgPath
+
+    function updateWinState(winState) {
+        virtualKeyboard.winState = winState;
+    }
+
+    keyLabel.visible: winKeyImgPath == ""
+    Component.onCompleted: {
+        temporarySwitchKeyReleased.connect(updateWinState);
+        temporarySwitchKeyClicked.connect(virtualKeyboard.winClicked);
+    }
+    state: virtualKeyboard.winState
+    states: [
+        State {
+            name: "NORMAL"
+
+            PropertyChanges {
+                target: keyBackground
+                state: "NORMAL"
+            }
+
+            PropertyChanges {
+                target: win
+                winKeyImgPath: "qrc:/img/super_logo.svg"
+            }
+
+        },
+        State {
+            name: "OPEN"
+
+            PropertyChanges {
+                target: keyBackground
+                state: "OPEN"
+            }
+
+            PropertyChanges {
+                target: win
+                winKeyImgPath: "qrc:/img/super_logo_clicked.svg"
+            }
+
+        }
+    ]
 
     Binding {
         target: win
@@ -29,31 +70,29 @@ TemporarySwitchKey {
         value: virtualKeyboard.winState
     }
 
-    Component.onCompleted: {
-        temporarySwitchKeyReleased.connect(updateWinState)
-        temporarySwitchKeyClicked.connect(virtualKeyboard.winClicked)
-    }
+    Loader {
+        width: virtualKeyboard.toolbarSize * 1.2
+        height: virtualKeyboard.toolbarSize * 1.2
+        anchors.verticalCenter: parent.verticalCenter
+        sourceComponent: winKeyImgPath == "" ? undefined : winKeyComponent
 
-    function updateWinState(winState) {
-        virtualKeyboard.winState = winState
-    }
-
-    state: virtualKeyboard.winState
-    states: [
-        State {
-            name: "NORMAL"
-            PropertyChanges {
-                target: keyBackground
-                state: "NORMAL"
-            }
-        },
-        State {
-            name: "OPEN"
-            PropertyChanges {
-                target: keyBackground
-                state: "OPEN"
-            }
+        anchors {
+            horizontalCenter: alignment == Text.AlignHCenter ? parent.horizontalCenter : undefined
+            right: alignment == Text.AlignRight ? parent.right : undefined
+            rightMargin: alignment == Text.AlignRight ? virtualKeyboard.keyIconAlignment : undefined
+            left: alignment == Text.AlignLeft ? parent.left : undefined
+            leftMargin: alignment == Text.AlignLeft ? virtualKeyboard.keyIconAlignment : undefined
         }
-    ]
+
+    }
+
+    Component {
+        id: winKeyComponent
+
+        Image {
+            source: winKeyImgPath
+        }
+
+    }
 
 }
