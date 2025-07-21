@@ -156,9 +156,9 @@ void VirtualKeyboardModel::syncCurrentIMList() {
     QStringList stringList;
     auto inputMethodEntryList = reply.argumentAt<4>();
     for (const auto &inputMethodEntry : inputMethodEntryList) {
-        stringList.append(inputMethodEntry.uniqueName() + "|" +
-                          inputMethodEntry.name() + "|" +
-                          inputMethodEntry.label() + "|" + inputMethodEntry.icon());
+        stringList.append(
+            inputMethodEntry.uniqueName() + "|" + inputMethodEntry.name() +
+            "|" + inputMethodEntry.label() + "|" + inputMethodEntry.icon());
     }
 
     setCurrentIMList(QVariant(stringList));

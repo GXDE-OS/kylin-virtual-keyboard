@@ -15,7 +15,7 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-function getKeySym(keyName){
+function getKeySym(keyName) {
     var keySymList = {
         "shift": 1,
         "caps": 2,
@@ -26,13 +26,13 @@ function getKeySym(keyName){
     return keySymList[keyName.toLowerCase()]
 }
 
-function getModifierKeyStates(){
+function getModifierKeyStates() {
     var result = 0
-    result += shiftState=="NORMAL" ? 0 : getKeySym("shift")
-    result += capslockState=="NORMAL" ? 0 : getKeySym("caps")
-    result += ctrlState=="NORMAL" ? 0 : getKeySym("ctrl")
-    result += altState=="NORMAL"? 0 : getKeySym("alt")
-    result += winState=="NORMAL"? 0 : getKeySym("win")
+    result += shiftState == "NORMAL" ? 0 : getKeySym("shift")
+    result += capslockState == "NORMAL" ? 0 : getKeySym("caps")
+    result += ctrlState == "NORMAL" ? 0 : getKeySym("ctrl")
+    result += altState == "NORMAL" ? 0 : getKeySym("alt")
+    result += winState == "NORMAL" ? 0 : getKeySym("win")
     return result
 }
 
