@@ -49,8 +49,8 @@ public:
 
     class LogOption {
     public:
-        long long fileSize = 1024 * 1024 * 5;
-        int fileCounts = 3;
+        long long fileSize = 1024 * 1024 * 10;
+        int fileCounts = 1;
         bool rotateEnable = false;
     };
 
