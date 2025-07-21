@@ -60,6 +60,7 @@ set(HEADERS
     src/ipc/fcitxvirtualkeyboardserviceproxy.h
     src/ipc/requestmerger.h
     src/ipc/keyboardserviceproxy.h
+    src/ipc/ukuimenuserviceproxy.h
     src/localsettings/localsettings.h
     src/localsettings/viewlocalsettings.h
     src/screenmanager.h
@@ -94,6 +95,7 @@ set(SOURCES
     src/ipc/fcitxvirtualkeyboardserviceproxy.cpp
     src/ipc/requestmerger.cpp
     src/ipc/keyboardserviceproxy.cpp
+    src/ipc/ukuimenuserviceproxy.cpp
     src/localsettings/viewlocalsettings.cpp
     src/main.cpp
     src/screenmanager.cpp
