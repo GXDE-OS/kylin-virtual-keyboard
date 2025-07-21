@@ -21,8 +21,11 @@
 #include <QDBusMetaType>
 #include <QDBusPendingReply>
 
+#include "log.h"
+
 VirtualKeyboardModel::VirtualKeyboardModel(QObject *parent) : QObject(parent) {
     initFcitx5Controller();
+    initUkuiMenuServiceProxy();
     initDBusServiceWatcher();
 }
 
@@ -42,6 +45,13 @@ void VirtualKeyboardModel::setCurrentIM(const QString &imName) {
 
 void VirtualKeyboardModel::processKeyEvent(int keysym, int keycode, int state,
                                            bool isRelease, int time) {
+    // TODO：未来支持全局快捷键之后需要把这里的逻辑全部去掉  hantengc
+    if (keycode == 133 && isRelease && state == 64) {
+        KVKBD_INFO("will change ukui menu visiblity.");
+        changeUkuiMenuVisiblity();
+        return;
+    }
+
     virtualKeyboardBackendInterface_->asyncCall("ProcessKeyEvent", (uint)keysym,
                                                 (uint)keycode, (uint)state,
                                                 isRelease, (uint)time);
@@ -52,6 +62,10 @@ void VirtualKeyboardModel::initFcitx5Controller() {
 
     fcitx5Controller_.reset(new fcitx::FcitxQtControllerProxy(
         "org.fcitx.Fcitx5", "/controller", QDBusConnection::sessionBus()));
+}
+
+void VirtualKeyboardModel::initUkuiMenuServiceProxy() {
+    ukuiMenuServiceProxy_.reset(new UkuiMenuServiceProxy(this));
 }
 
 void VirtualKeyboardModel::initDBusServiceWatcher() {
@@ -162,4 +176,14 @@ void VirtualKeyboardModel::syncCurrentIMList() {
     }
 
     setCurrentIMList(QVariant(stringList));
+}
+
+void VirtualKeyboardModel::changeUkuiMenuVisiblity() {
+    if (ukuiMenuServiceProxy_ == nullptr) {
+        KVKBD_INFO("ukui menu service proxy is nullptr,will return and not to "
+                   "show ukui menu.");
+        return;
+    }
+
+    ukuiMenuServiceProxy_->toggle();
 }
