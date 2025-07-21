@@ -78,7 +78,9 @@ function getKeysymByKeycode(keycode) {
         "37": 0xffe3,   // Ctrl_L
         "105": 0xffe4,  // Ctrl_R
         "64": 0xffe9,   // Alt_L
-        "108": 0xffea   // Alt_R
+        "108": 0xffea,   // Alt_R
+        "133": 0xffeb,  // Super_L
+        "134": 0xffec,  // Super_R
     }
 
     if (keysymMap.hasOwnProperty(keycode)) {

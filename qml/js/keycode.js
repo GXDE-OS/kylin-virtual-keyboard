@@ -91,3 +91,5 @@ const KEY_LEFT = 113;
 const KEY_RIGHT = 114;
 const KEY_DOWN = 116;
 const KEY_DELETE = 119;
+const KEY_LEFTSUPER = 133;
+const KEY_RIGHTSUPER = 134;
