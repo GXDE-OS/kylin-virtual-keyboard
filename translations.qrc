@@ -6,5 +6,8 @@
         <file>translations/translation_zh_CN.qm</file>
         <file>translations/translation_zh_HK.qm</file>
         <file>translations/translation_mn.qm</file>
+        <file>translations/translation_kk.qm</file>
+        <file>translations/translation_ug.qm</file>
+        <file>translations/translation_ky.qm</file>
     </qresource>
 </RCC>

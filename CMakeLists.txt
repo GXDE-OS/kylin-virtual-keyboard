@@ -120,6 +120,9 @@ set(TRANSLATIONS
     translations/translation_zh_CN.ts
     translations/translation_zh_HK.ts
     translations/translation_mn.ts
+    translations/translation_kk.ts
+    translations/translation_ug.ts
+    translations/translation_ky.ts
 )
 
 set(RESOURCES
