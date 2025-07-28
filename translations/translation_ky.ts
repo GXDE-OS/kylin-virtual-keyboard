@@ -2,11 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ky">
 <context>
+    <name>FloatButton</name>
+    <message>
+        <location filename="../src/virtualkeyboardentry/floatbutton.cpp" line="142"/>
+        <source>Click to show virtual keyboard</source>
+        <translation>جورۇما كۇنۇپكا   تاقتاسىن كۅرسۅتۉۉ  ۉچۉن  چەگىڭ</translation>
+    </message>
+</context>
+<context>
     <name>HideButton</name>
     <message>
         <location filename="../qml/HideButton.qml" line="38"/>
         <source>close</source>
-        <translation>جابۇۇ</translation>
+        <translation>بەكىتىش</translation>
     </message>
 </context>
 <context>
@@ -15,12 +23,12 @@
         <location filename="../qml/PlacementModeButton.qml" line="40"/>
         <location filename="../qml/PlacementModeButton.qml" line="67"/>
         <source>Floating Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>قالقىما   ابالى</translation>
     </message>
     <message>
         <location filename="../qml/PlacementModeButton.qml" line="78"/>
         <source>Docking Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>تۇتاشتىرۇۇ  ابالى</translation>
     </message>
 </context>
 <context>
@@ -28,12 +36,12 @@
     <message>
         <location filename="../src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp" line="83"/>
         <source>Disable the float button</source>
-        <translation type="unfinished"></translation>
+        <translation>قالقىما  كۇنۇپكاسىن ەسەپ ەمەس جاسوو ،اتقارۇۇ</translation>
     </message>
     <message>
         <location filename="../src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp" line="93"/>
         <source>Enable the float button</source>
-        <translation type="unfinished"></translation>
+        <translation>قالقىما  كۇنۇپكاسىن قوزعوتۇۇ</translation>
     </message>
 </context>
 <context>
@@ -41,7 +49,7 @@
     <message>
         <location filename="../src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp" line="41"/>
         <source>kylin-virtual-keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>kylin- جورۇما- كۇنۇپكا  تاقتاسى</translation>
     </message>
 </context>
 </TS>

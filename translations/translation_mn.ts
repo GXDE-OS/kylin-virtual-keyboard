@@ -4,9 +4,9 @@
 <context>
     <name>FloatButton</name>
     <message>
-        <location filename="../src/virtualkeyboardentry/floatbutton.cpp" line="148"/>
+        <location filename="../src/virtualkeyboardentry/floatbutton.cpp" line="142"/>
         <source>Click to show virtual keyboard</source>
-        <translation>ᠵᠢᠱᠢᠮᠡᠭ ᠳᠠᠷᠤᠭᠤᠯ ᠢ᠋ ᠢᠯᠡᠷᠡᠬᠦᠯᠥᠬᠦ</translation>
+        <translation>ᠬᠡᠢᠰᠪᠦᠷᠢ ᠳᠠᠷᠤᠭᠤᠯ ᠢ᠋ ᠢᠯᠡᠷᠡᠬᠦᠯᠬᠦ</translation>
     </message>
 </context>
 <context>
@@ -28,28 +28,28 @@
     <message>
         <location filename="../qml/PlacementModeButton.qml" line="78"/>
         <source>Docking Mode</source>
-        <translation>ᠨᠠᠭᠠᠮᠠᠯ ᠪᠠᠢᠳᠠᠯ</translation>
+        <translation>ᠬᠠᠵᠠᠭᠤ ᠳ᠋ᠤ᠌ ᠨᠢ ᠨᠠᠭᠠᠬᠤ ᠪᠠᠢᠳᠠᠯ</translation>
     </message>
 </context>
 <context>
     <name>VirtualKeyboardEntryManager</name>
     <message>
-        <location filename="../src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp" line="98"/>
+        <location filename="../src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp" line="83"/>
         <source>Disable the float button</source>
-        <translation>ᠳᠠᠷᠤᠭᠤᠯ ᠤ᠋ᠨ ᠬᠥᠪᠥᠮᠡᠯ ᠪᠠᠢᠳᠠᠯ ᠢ᠋ ᠴᠠᠭᠠᠵᠠᠯᠠᠬᠤ</translation>
+        <translation>ᠳᠠᠷᠤᠭᠤᠯ ᠤ᠋ᠨ ᠬᠥᠪᠥᠮᠡᠯ ᠪᠥᠮᠪᠥᠭᠡᠯᠢᠭ ᠢ᠋ ᠴᠠᠭᠠᠵᠠᠯᠠᠬᠤ</translation>
     </message>
     <message>
-        <location filename="../src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp" line="108"/>
+        <location filename="../src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp" line="93"/>
         <source>Enable the float button</source>
-        <translation>ᠳᠠᠷᠤᠭᠤᠯ ᠤ᠋ᠨ ᠬᠥᠪᠥᠮᠡᠯ ᠪᠠᠢᠳᠠᠯ ᠢ᠋ ᠡᠬᠢᠯᠡᠬᠦᠯᠬᠦ</translation>
+        <translation>ᠳᠠᠷᠤᠭᠤᠯ ᠤ᠋ᠨ ᠬᠥᠪᠥᠮᠡᠯ ᠪᠦᠮᠪᠦᠬᠡᠯᠢᠭ ᠢ᠋ ᠡᠬᠢᠯᠡᠬᠦᠯᠬᠦ</translation>
     </message>
 </context>
 <context>
     <name>VirtualKeyboardTrayIcon</name>
     <message>
-        <location filename="../src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp" line="73"/>
+        <location filename="../src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp" line="41"/>
         <source>kylin-virtual-keyboard</source>
-        <translation>ᠴᠢ ᠯᠢᠨ ᠵᠢᠱᠢᠮᠡᠭ ᠳᠠᠷᠤᠭᠤᠯ</translation>
+        <translation>ᠴᠢ ᠯᠢᠨ ᠬᠡᠢᠰᠪᠦᠷᠢ ᠳᠠᠷᠤᠭᠤᠯ</translation>
     </message>
 </context>
 </TS>

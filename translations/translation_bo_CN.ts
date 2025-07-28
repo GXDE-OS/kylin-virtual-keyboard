@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/virtualkeyboardentry/floatbutton.cpp" line="142"/>
         <source>Click to show virtual keyboard</source>
-        <translation>མངོན་རྫུན་བཟོ་ཕབ་གཞོང།</translation>
+        <translation>རྟོག་བཟོའི་མཐེབ་གཞོང་མངོན་པ།</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../qml/HideButton.qml" line="38"/>
         <source>close</source>
-        <translation>སྒོ་རྒྱག།</translation>
+        <translation>ཁ་རྒྱག</translation>
     </message>
 </context>
 <context>
@@ -23,12 +23,12 @@
         <location filename="../qml/PlacementModeButton.qml" line="40"/>
         <location filename="../qml/PlacementModeButton.qml" line="67"/>
         <source>Floating Mode</source>
-        <translation>གཡེང་བ་རྣམ་པར།</translation>
+        <translation>དཔྱང་འཕྱོའི་རྣམ་པ</translation>
     </message>
     <message>
         <location filename="../qml/PlacementModeButton.qml" line="78"/>
         <source>Docking Mode</source>
-        <translation>མཐའ་འགྲིལ་རྣམ་པ།</translation>
+        <translation>མཐའ་སྦྱར་རྣམ་པ</translation>
     </message>
 </context>
 <context>
@@ -36,12 +36,12 @@
     <message>
         <location filename="../src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp" line="83"/>
         <source>Disable the float button</source>
-        <translation>ཐིག་ཁྲམ་འཕུར་འཕུར་གྱི་རྐང་རྩེད་ཁ་དོག</translation>
+        <translation>མཐེབ་གཞོང་དཔྱང་འཕྱོའི་ལྒང་བུ་སྤྱོད་འགོག</translation>
     </message>
     <message>
         <location filename="../src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp" line="93"/>
         <source>Enable the float button</source>
-        <translation>ཐིག་ཁྲམ་སྟེང་གི་འཕུར་སྣང་ལ་འཇུག་པ།</translation>
+        <translation>མཐེབ་གཞོང་དཔྱང་འཕྱོའི་ལྒང་བུ་སྤྱོད་པ</translation>
     </message>
 </context>
 <context>
@@ -49,7 +49,7 @@
     <message>
         <location filename="../src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp" line="41"/>
         <source>kylin-virtual-keyboard</source>
-        <translation>རྟོག་བཟོས་མཐེབ་གཞུང་།</translation>
+        <translation>ཆི་ལིན་རྟོག་བཟོའི་མཐེབ་གཞོང</translation>
     </message>
 </context>
 </TS>
