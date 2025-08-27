@@ -23,9 +23,12 @@ import "../js/utils.js" as Utils
 SwitchKey {
     id: changeIm
 
+    property int iconSize: 16
     keyLabel.visible: false
     icon.name: virtualKeyboard.currentIM.split("|")[3]
 
+    icon.width: iconSize
+    icon.height: iconSize
     Binding {
         target: changeIm
         property: "switchKeyState"
@@ -36,6 +39,12 @@ SwitchKey {
         target: virtualKeyboard
         onQmlImDeactivated: {
             imList.close()
+        }
+    }
+    Connections {
+        target: virtualKeyboard
+        onToolbarSizeChanged: {
+            iconSize = virtualKeyboard.toolbarSize * 1.2
         }
     }
 
@@ -110,6 +119,8 @@ SwitchKey {
                     property string label: modelData.split("|")[2]
                     property string iconString: modelData.split("|")[3]
                     icon.name: iconString
+                    icon.width: iconSize
+                    icon.height: iconSize
                     text: localName
 
                     MouseArea{
