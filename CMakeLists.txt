@@ -38,123 +38,31 @@ endif()
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GSettings_QT REQUIRED IMPORTED_TARGET gsettings-qt)
 
-include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${GSettings_QT_INCLUDE_DIRS})
 include("${FCITX_INSTALL_CMAKECONFIG_DIR}/Fcitx5Utils/Fcitx5CompilerSettings.cmake")
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/src/3rd-parties/qtsingleapplication)
-include_directories(${CMAKE_SOURCE_DIR}/src/3rd-parties/qtsingleapplication/src)
-
-set(HEADERS
-    src/animation/animationfactory.h
-    src/animation/animator.h
-    src/animation/disabledanimator.h
-    src/animation/enabledanimator.h
-    src/animation/expansionanimationfactory.h
-    src/animation/floatanimationfactory.h
-    src/appinputareamanager.h
-    src/geometrymanager/expansiongeometrymanager.h
-    src/geometrymanager/floatgeometrymanager.h
-    src/geometrymanager/geometrymanager.h
-    src/ipc/dbusservice.h
-    src/ipc/fcitxvirtualkeyboardserviceproxy.h
-    src/ipc/requestmerger.h
-    src/ipc/keyboardserviceproxy.h
-    src/ipc/ukuimenuserviceproxy.h
-    src/localsettings/localsettings.h
-    src/localsettings/viewlocalsettings.h
-    src/screenmanager.h
-    src/virtualkeyboard/placementmodemanager.h
-    src/virtualkeyboard/virtualkeyboardmanager.h
-    src/virtualkeyboard/virtualkeyboardmodel.h
-    src/virtualkeyboard/virtualkeyboardstrategy.h
-    src/virtualkeyboard/virtualkeyboardview.h
-    src/virtualkeyboardentry/fcitxvirtualkeyboardservice.h
-    src/virtualkeyboardentry/floatbutton.h
-    src/virtualkeyboardentry/floatbuttonmanager.h
-    src/virtualkeyboardentry/floatbuttonstrategy.h
-    src/virtualkeyboardentry/virtualkeyboardentrymanager.h
-    src/virtualkeyboardentry/virtualkeyboardtrayicon.h
-    src/virtualkeyboardentry/trayiconstrategy.h
-    src/virtualkeyboardsettings/virtualkeyboardsettings.h
-    src/log.h
-    src/messagehandler.h
-)
-
-set(SOURCES
-    src/animation/animationfactory.cpp
-    src/animation/disabledanimator.cpp
-    src/animation/enabledanimator.cpp
-    src/animation/expansionanimationfactory.cpp
-    src/animation/floatanimationfactory.cpp
-    src/appinputareamanager.cpp
-    src/geometrymanager/expansiongeometrymanager.cpp
-    src/geometrymanager/floatgeometrymanager.cpp
-    src/geometrymanager/geometrymanager.cpp
-    src/ipc/dbusservice.cpp
-    src/ipc/fcitxvirtualkeyboardserviceproxy.cpp
-    src/ipc/requestmerger.cpp
-    src/ipc/keyboardserviceproxy.cpp
-    src/ipc/ukuimenuserviceproxy.cpp
-    src/localsettings/viewlocalsettings.cpp
-    src/main.cpp
-    src/screenmanager.cpp
-    src/virtualkeyboard/placementmodemanager.cpp
-    src/virtualkeyboard/virtualkeyboardmanager.cpp
-    src/virtualkeyboard/virtualkeyboardmodel.cpp
-    src/virtualkeyboard/virtualkeyboardview.cpp
-    src/virtualkeyboard/virtualkeyboardviewstate.cpp
-    src/virtualkeyboardentry/floatbutton.cpp
-    src/virtualkeyboardentry/floatbuttonmanager.cpp
-    src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp
-    src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp
-    src/virtualkeyboardsettings/virtualkeyboardsettings.cpp
-    src/log.cpp
-    src/messagehandler.cpp
-)
-
 set(TRANSLATIONS
-    translations/translation.ts
-    translations/translation_bo_CN.ts
-    translations/translation_en.ts
-    translations/translation_zh_CN.ts
-    translations/translation_zh_HK.ts
-    translations/translation_mn.ts
-    translations/translation_kk.ts
-    translations/translation_ug.ts
-    translations/translation_ky.ts
+    ${CMAKE_SOURCE_DIR}/translations/translation.ts
+    ${CMAKE_SOURCE_DIR}/translations/translation_bo_CN.ts
+    ${CMAKE_SOURCE_DIR}/translations/translation_en.ts
+    ${CMAKE_SOURCE_DIR}/translations/translation_zh_CN.ts
+    ${CMAKE_SOURCE_DIR}/translations/translation_zh_HK.ts
+    ${CMAKE_SOURCE_DIR}/translations/translation_mn.ts
+    ${CMAKE_SOURCE_DIR}/translations/translation_kk.ts
+    ${CMAKE_SOURCE_DIR}/translations/translation_ug.ts
+    ${CMAKE_SOURCE_DIR}/translations/translation_ky.ts
 )
 
 set(RESOURCES
-    floatbutton.qrc
-    qml.qrc
-    translations.qrc
+    ${CMAKE_SOURCE_DIR}/floatbutton.qrc
+    ${CMAKE_SOURCE_DIR}/qml.qrc
+    ${CMAKE_SOURCE_DIR}/translations.qrc
 )
 
-add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES} ${RESOURCES} ${TRANSLATIONS})
-target_link_libraries(${PROJECT_NAME}
-                Qt${QT_VERSION_MAJOR}::Core
-                Qt${QT_VERSION_MAJOR}::Gui
-                Qt${QT_VERSION_MAJOR}::Widgets
-                Qt${QT_VERSION_MAJOR}::Concurrent
-                Qt${QT_VERSION_MAJOR}::DBus
-                Qt${QT_VERSION_MAJOR}::Quick
-                Qt${QT_VERSION_MAJOR}::QuickControls2
-                KF${QT_VERSION_MAJOR}::WindowSystem
-                Fcitx5::Core
-                Fcitx5Qt${QT_VERSION_MAJOR}::DBusAddons
-                ${GSettings_QT_LIBRARIES}
-                qtsingleapplication
-                spdlog::spdlog
-            )
-
+add_subdirectory(third-party)
+add_subdirectory(data)
+add_subdirectory(src)
 if (ENABLE_TEST)
     enable_testing()
     add_subdirectory(test)
 endif()
-
-install(TARGETS ${PROJECT_NAME}  DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-install(FILES data/org.ukui.virtualkeyboard.gschema.xml DESTINATION ${CMAKE_INSTALL_PREFIX}/share/glib-2.0/schemas/)
-install(FILES data/ukui-virtual-keyboard-symbolic.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/actions)
-install(FILES data/kylin-virtual-keyboard.desktop DESTINATION /etc/xdg/autostart/)
-install(PROGRAMS data/kylin-virtual-keyboard-xwayland DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)

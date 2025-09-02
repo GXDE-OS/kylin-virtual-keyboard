@@ -19,12 +19,12 @@
 #include <iostream>
 #include <QLocale>
 #include <QTranslator>
-#include <QtSingleApplication>
 
 #include "ipc/dbusservice.h"
 #include "ipc/fcitxvirtualkeyboardserviceproxy.h"
 #include "log.h"
 #include "messagehandler.h"
+#include "qtsingleapplication/src/QtSingleApplication"
 #include "virtualkeyboard/virtualkeyboardmanager.h"
 #include "virtualkeyboardentry/virtualkeyboardentrymanager.h"
 
