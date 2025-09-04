@@ -101,9 +101,11 @@ void ViewLocalSettings::setValue(const QString &group, const QString &key,
 
 void ViewLocalSettings::saveSettingsAsync() {
     auto oneshotGroupSettingMap(std::move(groupSettingMap_));
+    auto organization = organization_;
+    auto application = application_;
     futureWatcher_.setFuture(
-        QtConcurrent::run([this, oneshotGroupSettingMap]() {
-            saveSettings(organization_, application_, oneshotGroupSettingMap);
+        QtConcurrent::run([oneshotGroupSettingMap, organization, application]() {
+            saveSettings(organization, application, oneshotGroupSettingMap);
         }));
 }
 

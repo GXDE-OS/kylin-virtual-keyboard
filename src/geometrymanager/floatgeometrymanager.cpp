@@ -60,8 +60,6 @@ FloatGeometryManager::FloatGeometryManager(std::unique_ptr<Strategy> strategy,
 }
 
 FloatGeometryManager::~FloatGeometryManager() {
-    saveMarginRatioMap();
-    saveLastPostionMap();
 }
 
 void FloatGeometryManager::moveBy(int offsetX, int offsetY) {
@@ -79,6 +77,7 @@ void FloatGeometryManager::endDrag() {
         updateCurrentPostion(adjustedPosition);
         moveView(adjustedPosition);
     }
+    saveMarginRatioMap();
     saveLastPostionMap();
     updateGeometry();
 }
@@ -280,7 +279,6 @@ void FloatGeometryManager::moveView(const QPoint &targetPoint) {
 
     const QPoint currentPosition = calculateCurrentPosition();
     emit viewMoved(currentPosition.x(), currentPosition.y());
-    saveMarginRatioMap();
 }
 
 QRect FloatGeometryManager::adjustToScreenEdges(const QRect &windowRect) const {
