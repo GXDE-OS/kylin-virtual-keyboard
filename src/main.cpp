@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 
     // 命令行处理器
     CommandLineHandler commandHandler;
-    commandHandler.parseArguments(app);
+    commandHandler.process(app);
 
     // 检查是否应该继续执行(单实例和命令行参数检查)
     if (!commandHandler.shouldContinueExecution(app)) {

@@ -27,7 +27,7 @@
 #include "log.h"
 
 class MessageHandler : public QObject {
-    Q_OBJECT
+
 public:
     using ResultCallback = std::function<void(const QString &)>;
 
@@ -40,8 +40,10 @@ public:
                         ResultCallback callback = nullptr);
 
 private:
+    QString handleLogLevel(const QStringList &args) const;
+
+private:
     QMap<QString, std::function<QString(const QStringList &)>> commandHandlers;
-    QString handleLogLevel(const QStringList &args);
 };
 
 #endif // MESSAGEHANDLER_H

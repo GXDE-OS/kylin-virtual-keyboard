@@ -68,7 +68,7 @@ void MessageHandler::processMessage(const QString &rawMessage,
     }
 }
 
-QString MessageHandler::handleLogLevel(const QStringList &args) {
+QString MessageHandler::handleLogLevel(const QStringList &args) const {
     if (args.isEmpty()) {
         return "log-level command requires a level argument";
     }

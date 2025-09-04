@@ -17,6 +17,7 @@
 
 #include "commandlinehandler.h"
 #include <iostream>
+
 #include "log.h"
 #include "messagehandler.h"
 
@@ -26,31 +27,26 @@ CommandLineHandler::CommandLineHandler()
                        "(available: debug, info, warn, error).\n"
                        "e.g. --loglevel=debug",
                        "loglevel") {
-    m_parser.addHelpOption();
-    m_parser.addVersionOption();
-    m_parser.addOption(m_loglevelOption);
+    addHelpOption();
+    addVersionOption();
+    addOption(m_loglevelOption);
 }
 
-void CommandLineHandler::parseArguments(QtSingleApplication &app) {
-    m_parser.process(app);
-}
-
-bool CommandLineHandler::shouldContinueExecution(QtSingleApplication &app) {
+bool CommandLineHandler::shouldContinueExecution(
+    QtSingleApplication &app) const {
     // 单实例判断
-    if (app.isRunning()) {
-        if (m_parser.isSet(m_loglevelOption)) {
-            QString level = m_parser.value(m_loglevelOption);
-            QString command = QString("loglevel %1").arg(level);
-            app.sendMessage(command);
-            std::cout << "Log level change request sent to main instance."
-                      << std::endl;
-            return false;
-        }
-        std::cout << "kylin-virtual-keyboard is already running!" << std::endl;
-        return false;
+    if (!app.isRunning()) {
+        return true;
     }
 
-    return true;
+    if (isSet(m_loglevelOption)) {
+        QString level = value(m_loglevelOption);
+        QString command = QString("loglevel %1").arg(level);
+        app.sendMessage(command);
+    }
+
+    std::cout << "kylin-virtual-keyboard is already running!" << std::endl;
+    return false;
 }
 
 void CommandLineHandler::bindMessageHandler(QtSingleApplication &app,

@@ -25,22 +25,18 @@
 
 class MessageHandler;
 
-class CommandLineHandler {
+class CommandLineHandler : public QCommandLineParser {
 public:
     CommandLineHandler();
 
-    // 解析命令行参数
-    void parseArguments(QtSingleApplication &app);
-
     // 检查是否应该继续执行主程序（处理单例检查和启动命令）
-    bool shouldContinueExecution(QtSingleApplication &app);
+    bool shouldContinueExecution(QtSingleApplication &app) const;
 
     // 绑定消息接收处理
     void bindMessageHandler(QtSingleApplication &app,
                             MessageHandler &messageHandler);
 
 private:
-    QCommandLineParser m_parser;
     QCommandLineOption m_loglevelOption;
 };
 
