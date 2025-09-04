@@ -20,6 +20,8 @@
 #include <QLocale>
 #include <QTranslator>
 
+#include "commandlinehandler.h"
+#include "errorhandler.h"
 #include "ipc/dbusservice.h"
 #include "ipc/fcitxvirtualkeyboardserviceproxy.h"
 #include "log.h"
@@ -29,114 +31,33 @@
 #include "virtualkeyboardentry/virtualkeyboardentrymanager.h"
 
 const QString APP_ID = "kylin-virtual-keyboard";
-
-void signalHandler(int sig) {
-    const char *name = "UNKNOWN";
-    switch (sig) {
-    case SIGSEGV:
-        name = "SIGSEGV";
-        break;
-    case SIGFPE:
-        name = "SIGFPE";
-        break;
-    case SIGILL:
-        name = "SIGILL";
-        break;
-    case SIGABRT:
-        name = "SIGABRT";
-        break;
-    case SIGINT:
-        name = "SIGINT";
-        break;
-    case SIGTERM:
-        name = "SIGTERM";
-        break;
-    default:
-        break;
-    }
-
-    KVKBD_ERROR("SIGNAL: {} ({})", name, sig);
-    spdlog::shutdown();
-    std::signal(sig, SIG_DFL);
-    std::raise(sig);
-}
-
-void installCrashHandler() {
-    std::signal(SIGSEGV, signalHandler);
-    std::signal(SIGFPE, signalHandler);
-    std::signal(SIGILL, signalHandler);
-    std::signal(SIGABRT, signalHandler);
-    std::signal(SIGINT, signalHandler);
-    std::signal(SIGTERM, signalHandler);
-}
+const QString APP_VERSION = "4.20.1.0";
 
 int main(int argc, char *argv[]) {
     QtSingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QtSingleApplication app(APP_ID, argc, argv);
     QtSingleApplication::setApplicationName(APP_ID);
+    QtSingleApplication::setApplicationVersion(APP_VERSION);
 
-    // 命令行解析器
-    QCommandLineParser parser;
-    QCommandLineOption loglevelOption(QStringList() << "loglevel",
-                                      "Set the log level \n"
-                                      "(available: debug, info, warn, error).\n"
-                                      "e.g. --loglevel=debug",
-                                      "loglevel");
-    parser.addHelpOption();
-    parser.addVersionOption();
-    parser.addOption(loglevelOption);
-    parser.process(app);
+    // 命令行处理器
+    CommandLineHandler commandHandler;
+    commandHandler.parseArguments(app);
 
-    // 单例判断
-    if (app.isRunning()) {
-        if (parser.isSet(loglevelOption)) {
-            QString level = parser.value(loglevelOption);
-            QString command = QString("loglevel %1").arg(level);
-            app.sendMessage(command);
-            std::cout << "Log level change request sent to main instance."
-                      << std::endl;
-            return 0;
-        }
-        std::cout << APP_ID.toStdString() << " is already running!"
-                  << std::endl;
+    // 检查是否应该继续执行(单实例和命令行参数检查)
+    if (!commandHandler.shouldContinueExecution(app)) {
         return 0;
     }
 
-    // 初始化日志模块
-    SpdlogProxy::LogOption logOption;
-    SpdlogProxy::init(logOption);
+    // 异常处理器，堆栈信息记录到:~/.log/kylin-virtual-keyboard-error.log
+    ErrorHandler::init();
+
+    LogGuard::instance().initialize();
     KVKBD_INFO("{},---START---", APP_ID.toStdString());
 
-    // 注册异常信号处理器
-    installCrashHandler();
-    // 单例消息处理器
+    // 消息处理器，绑定接收二次运行时程序发送的消息
     MessageHandler messageHandler;
-
-    // 初次运行
-    if (argc > 1) {
-        if (parser.isSet(loglevelOption)) {
-            QString level = parser.value(loglevelOption);
-            QString command = QString("loglevel %1").arg(level);
-            messageHandler.processMessage(command, [&](const QString &result) {
-                KVKBD_INFO("Command result: {}", result.toStdString());
-            });
-        }
-    }
-
-    // 绑定接收二次运行时发送的消息
-    QObject::connect(
-        &app, &QtSingleApplication::messageReceived,
-        [&](const QString &message) {
-            messageHandler.processMessage(message, [&](const QString &result) {
-                KVKBD_INFO("Command result: {}", result.toStdString());
-            });
-        });
-
-    QObject::connect(&app, &QtSingleApplication::aboutToQuit, []() {
-        KVKBD_INFO("Application exited normally");
-        spdlog::shutdown();
-    });
+    commandHandler.bindMessageHandler(app, messageHandler);
 
     QTranslator translator;
     if (translator.load(QLocale::system(), "translation", "_",

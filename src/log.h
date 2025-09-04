@@ -27,23 +27,52 @@
 #include <QSize>
 #include <QString>
 
+#include <iostream>
+
 #include <spdlog/spdlog.h>
 
 #define KVKBD_TRACE(...)                                                       \
-    SPDLOG_LOGGER_TRACE(spdlog::default_logger_raw(), __VA_ARGS__)
-#define KVKBD_DEBUG(...)                                                       \
-    SPDLOG_LOGGER_DEBUG(spdlog::default_logger_raw(), __VA_ARGS__)
-#define KVKBD_INFO(...)                                                        \
-    SPDLOG_LOGGER_INFO(spdlog::default_logger_raw(), __VA_ARGS__)
-#define KVKBD_WARN(...)                                                        \
-    SPDLOG_LOGGER_WARN(spdlog::default_logger_raw(), __VA_ARGS__)
-#define KVKBD_ERROR(...)                                                       \
-    SPDLOG_LOGGER_ERROR(spdlog::default_logger_raw(), __VA_ARGS__)
+    do {                                                                       \
+        if (!SpdlogProxy::isCleaned() &&                                       \
+            spdlog::default_logger_raw() != nullptr) {                         \
+            SPDLOG_LOGGER_TRACE(spdlog::default_logger_raw(), __VA_ARGS__);    \
+        }                                                                      \
+    } while (0)
 
-class SpdlogProxy : public QObject {
-    Q_OBJECT
+#define KVKBD_DEBUG(...)                                                       \
+    do {                                                                       \
+        if (!SpdlogProxy::isCleaned() &&                                       \
+            spdlog::default_logger_raw() != nullptr) {                         \
+            SPDLOG_LOGGER_DEBUG(spdlog::default_logger_raw(), __VA_ARGS__);    \
+        }                                                                      \
+    } while (0)
+
+#define KVKBD_INFO(...)                                                        \
+    do {                                                                       \
+        if (!SpdlogProxy::isCleaned() &&                                       \
+            spdlog::default_logger_raw() != nullptr) {                         \
+            SPDLOG_LOGGER_INFO(spdlog::default_logger_raw(), __VA_ARGS__);     \
+        }                                                                      \
+    } while (0)
+
+#define KVKBD_WARN(...)                                                        \
+    do {                                                                       \
+        if (!SpdlogProxy::isCleaned() &&                                       \
+            spdlog::default_logger_raw() != nullptr) {                         \
+            SPDLOG_LOGGER_WARN(spdlog::default_logger_raw(), __VA_ARGS__);     \
+        }                                                                      \
+    } while (0)
+
+#define KVKBD_ERROR(...)                                                       \
+    do {                                                                       \
+        if (!SpdlogProxy::isCleaned() &&                                       \
+            spdlog::default_logger_raw() != nullptr) {                         \
+            SPDLOG_LOGGER_ERROR(spdlog::default_logger_raw(), __VA_ARGS__);    \
+        }                                                                      \
+    } while (0)
+
+class SpdlogProxy {
 public:
-    ~SpdlogProxy() override;
     SpdlogProxy(const SpdlogProxy &) = delete;
     SpdlogProxy &operator=(const SpdlogProxy &) = delete;
 
@@ -54,8 +83,7 @@ public:
         bool rotateEnable = false;
     };
 
-    static void init(const LogOption &option);
-    static void cleanUp();
+    static bool isCleaned();
     static void messageHandler(QtMsgType type,
                                const QMessageLogContext &context,
                                const QString &msg);
@@ -65,13 +93,46 @@ public:
     Q_INVOKABLE static void warn(const QString &msg);
     Q_INVOKABLE static void error(const QString &msg);
 
+    friend class LogGuard;
+
 private:
+    static void init(const LogOption &option);
+    static void cleanUp();
     static QString getGsettingsLogLevel();
     static spdlog::level::level_enum transToSpdLogLevel(const QString &level);
     static QString getWritableLogFilePath();
 
 private:
     static std::shared_ptr<spdlog::logger> m_logger;
+    static std::atomic<bool> m_cleaned;
+};
+
+class LogGuard {
+public:
+    static LogGuard &instance() {
+        static LogGuard instance;
+        return instance;
+    }
+    void initialize() {
+        if (!m_initialized) {
+            SpdlogProxy::init(SpdlogProxy::LogOption());
+            m_initialized = true;
+        }
+    }
+    bool isInitialized() const { return m_initialized; }
+    LogGuard(const LogGuard &) = delete;
+    LogGuard &operator=(const LogGuard &) = delete;
+
+private:
+    LogGuard() {}
+
+    ~LogGuard() {
+        if (m_initialized) {
+            SpdlogProxy::cleanUp();
+        }
+    }
+
+    bool m_initialized = false;
 };
 
 #endif // SPDLOGPROXY_H

@@ -35,6 +35,8 @@ set(HEADERS
     virtualkeyboardsettings/virtualkeyboardsettings.h
     log.h
     messagehandler.h
+    commandlinehandler.h
+    errorhandler.h
 )
 
 set(SOURCES
@@ -67,6 +69,8 @@ set(SOURCES
     virtualkeyboardsettings/virtualkeyboardsettings.cpp
     log.cpp
     messagehandler.cpp
+    commandlinehandler.cpp
+    errorhandler.cpp
 )
 
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES} ${RESOURCES} ${TRANSLATIONS})

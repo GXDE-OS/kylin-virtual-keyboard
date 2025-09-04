@@ -37,8 +37,7 @@ const QString GSETTINGS_ID = "org.ukui.virtualkeyboard";
 const QString LOG_LEVEL_KEY = "logLevel";
 
 std::shared_ptr<spdlog::logger> SpdlogProxy::m_logger = nullptr;
-
-SpdlogProxy::~SpdlogProxy() { cleanUp(); }
+std::atomic<bool> SpdlogProxy::m_cleaned{false};
 
 void SpdlogProxy::init(const LogOption &option) {
     QString logFileName = getWritableLogFilePath();
@@ -81,22 +80,38 @@ void SpdlogProxy::init(const LogOption &option) {
 }
 
 void SpdlogProxy::cleanUp() {
-    qInstallMessageHandler(nullptr);
-    spdlog::set_default_logger(nullptr);
-    if (m_logger) {
-        m_logger->flush();
-        if (spdlog::get(LOGGER_NAME.toStdString())) {
-            spdlog::drop(LOGGER_NAME.toStdString());
+    static std::once_flag cleanup_flag;
+    std::call_once(cleanup_flag, []() {
+        m_cleaned.store(true);
+        qInstallMessageHandler(nullptr);
+        try {
+            if (m_logger) {
+                m_logger->flush();
+            }
+
+            if (spdlog::get(LOGGER_NAME.toStdString())) {
+                spdlog::drop(LOGGER_NAME.toStdString());
+            }
+
+            if (m_logger) {
+                m_logger.reset();
+            }
+        } catch (const std::exception &e) {
+            std::cerr << "Error during log cleanup: " << e.what() << std::endl;
+        } catch (...) {
+            std::cerr << "Unknown error during log cleanup" << std::endl;
         }
-        m_logger.reset();
-    }
+    });
 }
+
+bool SpdlogProxy::isCleaned() { return m_cleaned.load(); }
 
 void SpdlogProxy::messageHandler(QtMsgType type,
                                  const QMessageLogContext &context,
                                  const QString &msg) {
-    if (!m_logger)
+    if (m_cleaned.load() || m_logger == nullptr)
         return;
+
     spdlog::level::level_enum level;
 
     const char *file = context.file ? context.file : "";
@@ -129,23 +144,27 @@ void SpdlogProxy::messageHandler(QtMsgType type,
 }
 
 void SpdlogProxy::debug(const QString &msg) {
-    if (m_logger)
-        m_logger->debug("[log-proxy] {}", msg.toStdString());
+    if (m_cleaned.load() || m_logger == nullptr)
+        return;
+    m_logger->debug("[log-proxy] {}", msg.toStdString());
 }
 
 void SpdlogProxy::info(const QString &msg) {
-    if (m_logger)
-        m_logger->info("[log-proxy] {}", msg.toStdString());
+    if (m_cleaned.load() || m_logger == nullptr)
+        return;
+    m_logger->info("[log-proxy] {}", msg.toStdString());
 }
 
 void SpdlogProxy::warn(const QString &msg) {
-    if (m_logger)
-        m_logger->info("[log-proxy] {}", msg.toStdString());
+    if (m_cleaned.load() || m_logger == nullptr)
+        return;
+    m_logger->warn("[log-proxy] {}", msg.toStdString());
 }
 
 void SpdlogProxy::error(const QString &msg) {
-    if (m_logger)
-        m_logger->info("[log-proxy] {}", msg.toStdString());
+    if (m_cleaned.load() || m_logger == nullptr)
+        return;
+    m_logger->error("[log-proxy] {}", msg.toStdString());
 }
 
 QString SpdlogProxy::getGsettingsLogLevel() {
