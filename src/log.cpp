@@ -210,31 +210,17 @@ QString SpdlogProxy::getWritableLogFilePath() {
     logPaths << primaryLogPath << fallbackLogPath;
 
     QString logFileName;
-    bool logDirWritable = false;
-
     for (const QString &logPath : logPaths) {
         QDir logDir(logPath);
-
-        if (logDir.exists()) {
-            QFileInfo dirInfo(logPath);
-            if (dirInfo.isWritable()) {
-                logFileName = logPath + APP_LOG_NAME;
-                logDirWritable = true;
-                break;
-            }
-        } else {
-            if (logDir.mkpath(".")) {
-                logFileName = logPath + APP_LOG_NAME;
-                logDirWritable = true;
-                break;
-            }
+        if (!logDir.exists()) {
+            logDir.mkpath(".");
         }
-    }
+        if (!QFileInfo(logPath).isWritable()) {
+            continue;
+        }
 
-    if (!logDirWritable) {
-        QString tempPath =
-            QStandardPaths::writableLocation(QStandardPaths::TempLocation);
-        logFileName = tempPath + "/" + APP_LOG_NAME;
+        logFileName = logPath + APP_LOG_NAME;
+        break;
     }
 
     return logFileName;

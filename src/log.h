@@ -73,6 +73,11 @@
 
 class SpdlogProxy {
 public:
+    static SpdlogProxy &getInstance() {
+        static SpdlogProxy instance;
+        return instance;
+    }
+
     SpdlogProxy(const SpdlogProxy &) = delete;
     SpdlogProxy &operator=(const SpdlogProxy &) = delete;
 
@@ -93,9 +98,9 @@ public:
     Q_INVOKABLE static void warn(const QString &msg);
     Q_INVOKABLE static void error(const QString &msg);
 
-    friend class LogGuard;
-
 private:
+    SpdlogProxy() { init(SpdlogProxy::LogOption()); }
+    ~SpdlogProxy() { cleanUp(); }
     static void init(const LogOption &option);
     static void cleanUp();
     static QString getGsettingsLogLevel();
@@ -105,34 +110,6 @@ private:
 private:
     static std::shared_ptr<spdlog::logger> m_logger;
     static std::atomic<bool> m_cleaned;
-};
-
-class LogGuard {
-public:
-    static LogGuard &instance() {
-        static LogGuard instance;
-        return instance;
-    }
-    void initialize() {
-        if (!m_initialized) {
-            SpdlogProxy::init(SpdlogProxy::LogOption());
-            m_initialized = true;
-        }
-    }
-    bool isInitialized() const { return m_initialized; }
-    LogGuard(const LogGuard &) = delete;
-    LogGuard &operator=(const LogGuard &) = delete;
-
-private:
-    LogGuard() {}
-
-    ~LogGuard() {
-        if (m_initialized) {
-            SpdlogProxy::cleanUp();
-        }
-    }
-
-    bool m_initialized = false;
 };
 
 #endif // SPDLOGPROXY_H

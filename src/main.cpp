@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     // 异常处理器，堆栈信息记录到:~/.log/kylin-virtual-keyboard-error.log
     ErrorHandler::init();
 
-    LogGuard::instance().initialize();
+    SpdlogProxy::getInstance();
     KVKBD_INFO("{},---START---", APP_ID.toStdString());
 
     // 消息处理器，绑定接收二次运行时程序发送的消息
