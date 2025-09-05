@@ -36,15 +36,22 @@
 #define MINIMAL_BUFFER_SIZE 256
 #define BACKTRACE_SIZE 32
 
-QString ErrorHandler::s_crashLogPath;
-bool ErrorHandler::s_initialized = false;
+QString ErrorHandler::m_crashLogPath;
+bool ErrorHandler::m_logDirWritable = false;
 const QString fileName = "kylin-virtual-keyboard-error.log";
 
 void ErrorHandler::init() {
-    if (s_initialized) {
-        return;
-    }
+    createLogFile();
 
+    registerSignalHandler();
+
+    void *array[BACKTRACE_SIZE] = {
+        nullptr,
+    };
+    (void)backtrace(array, BACKTRACE_SIZE);
+}
+
+void ErrorHandler::createLogFile() {
     QString homeDir =
         QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     QStringList logPaths;
@@ -54,76 +61,43 @@ void ErrorHandler::init() {
         "/kylin-virtual-keyboard/";
     logPaths << primaryLogPath << fallbackLogPath;
 
-    QString crashLogPath;
-    bool logDirWritable = false;
-
     for (const QString &logPath : logPaths) {
         QDir logDir(logPath);
-
-        if (logDir.exists()) {
-            if (QFileInfo(logPath).isWritable()) {
-                crashLogPath = logPath + fileName;
-                logDirWritable = true;
-                break;
-            }
-        } else {
-            if (logDir.mkpath(".")) {
-                crashLogPath = logPath + fileName;
-                logDirWritable = true;
-                break;
-            }
+        if (!logDir.exists()) {
+            logDir.mkpath(".");
         }
-    }
-
-    if (!logDirWritable) {
-        QString tempPath =
-            QStandardPaths::writableLocation(QStandardPaths::TempLocation);
-        crashLogPath = tempPath + "/" + fileName;
-    }
-
-    setCrashLogPath(crashLogPath);
-
-    // 注册信号处理器
-    int signo;
-    for (signo = SIGHUP; signo < SIGUNUSED; signo++) {
-        switch (signo) {
-        case SIGTSTP:
-        case SIGCONT:
+        if (!QFileInfo(logPath).isWritable()) {
             continue;
-        case SIGALRM:
-        case SIGPIPE:
-        case SIGUSR2:
-        case SIGWINCH:
-        case SIGURG:
-            signal(signo, SIG_IGN);
-            break;
-        default:
-            signal(signo, signalHandler);
         }
+
+        m_crashLogPath = logPath + fileName;
+        m_logDirWritable = true;
+        break;
     }
-
-    void *array[BACKTRACE_SIZE] = {
-        nullptr,
-    };
-    (void)backtrace(array, BACKTRACE_SIZE);
-
-    s_initialized = true;
 }
 
-void ErrorHandler::setCrashLogPath(const QString &path) {
-    s_crashLogPath = path;
+void ErrorHandler::registerSignalHandler() {
+    // 注册信号处理器
+    // 只关心以下信号
+    signal(SIGSEGV, signalHandler);
+    signal(SIGABRT, signalHandler);
+    signal(SIGFPE, signalHandler);
+    signal(SIGILL, signalHandler);
 }
-
-QString ErrorHandler::getCrashLogPath() { return s_crashLogPath; }
 
 void ErrorHandler::signalHandler(int sig) {
-    int fd = -1;
+    if (m_crashLogPath.isEmpty()) {
+        return;
+    }
 
-    if (sig == SIGSEGV || sig == SIGABRT || sig == SIGFPE || sig == SIGILL) {
-        if (!s_crashLogPath.isEmpty()) {
-            fd = open(s_crashLogPath.toLocal8Bit().constData(),
-                      O_WRONLY | O_CREAT | O_TRUNC, 0600);
-        }
+    if (m_logDirWritable == false) {
+        return;
+    }
+
+    int fd = open(m_crashLogPath.toLocal8Bit().constData(),
+                  O_WRONLY | O_CREAT | O_TRUNC, 0600);
+    if (fd < 0) {
+        return;
     }
 
     writeString(fd, "=========================\n");
@@ -144,32 +118,12 @@ void ErrorHandler::signalHandler(int sig) {
     writeUInt64(fd, getpid());
     writeString(fd, "\n");
 
-    writeString(fd, "\nTo get detailed line information, use:\n");
-    writeString(
-        fd, "addr2line -e /usr/bin/kylin-virtual-keyboard -f -C <address>\n");
-
     generateBacktrace(fd);
 
-    if (fd >= 0) {
-        close(fd);
-    }
+    close(fd);
 
     signal(sig, SIG_DFL);
     raise(sig);
-}
-
-void ErrorHandler::writeString(int fd, const char *str) {
-    if (fd >= 0) {
-        writeAll(fd, str, strlen(str));
-    }
-    //    writeAll(STDERR_FILENO, str, strlen(str));
-}
-
-void ErrorHandler::writeBuffer(int fd, const char *buffer, int len) {
-    if (fd >= 0) {
-        writeAll(fd, buffer, len);
-    }
-    //    writeAll(STDERR_FILENO, buffer, len);
 }
 
 void ErrorHandler::writeUInt64(int fd, unsigned long long number) {
@@ -205,16 +159,8 @@ const char *ErrorHandler::getSignalName(int sig) {
         return "SIGILL";
     case SIGABRT:
         return "SIGABRT";
-    case SIGINT:
-        return "SIGINT";
-    case SIGTERM:
-        return "SIGTERM";
-    case SIGBUS:
-        return "SIGBUS";
-    case SIGPIPE:
-        return "SIGPIPE";
     default:
-        return "UNKNOWN";
+        return "OTHER";
     }
 }
 
@@ -230,8 +176,13 @@ void ErrorHandler::generateBacktrace(int fd) {
     writeString(fd, "\n");
     writeString(fd, "\nBacktrace addresses:\n");
 
-    //    backtrace_symbols_fd(array, size, STDERR_FILENO);
-    if (fd >= 0) {
-        backtrace_symbols_fd(array, size, fd);
-    }
+    backtrace_symbols_fd(array, size, fd);
+}
+
+void ErrorHandler::writeString(int fd, const char *str) {
+    writeAll(fd, str, strlen(str));
+}
+
+void ErrorHandler::writeBuffer(int fd, const char *buffer, int len) {
+    writeAll(fd, buffer, len);
 }

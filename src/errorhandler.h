@@ -19,6 +19,7 @@
 #define ERRORHANDLER_H
 
 #include <QString>
+
 #ifndef SIGUNUSED
 #define SIGUNUSED 29
 #endif
@@ -34,9 +35,10 @@ public:
 
     static void setCrashLogPath(const QString &path);
 
-    static QString getCrashLogPath();
-
 private:
+    static void createLogFile();
+    static void registerSignalHandler();
+
     static void signalHandler(int sig);
 
     static void writeString(int fd, const char *str);
@@ -52,8 +54,8 @@ private:
     static void generateBacktrace(int fd);
 
 private:
-    static QString s_crashLogPath;
-    static bool s_initialized;
+    static QString m_crashLogPath;
+    static bool m_logDirWritable;
 };
 
 #endif // ERRORHANDLER_H
