@@ -125,6 +125,7 @@ void VirtualKeyboardManager::notifyIMListChanged() {
 void VirtualKeyboardManager::processResolutionChangedEvent() {
     if (isVirtualKeyboardVisible()) {
         view_->updateGeometry();
+        raiseInputAreaIfNecessary();
     }
 }
 

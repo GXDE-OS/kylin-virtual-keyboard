@@ -20,6 +20,8 @@
 
 AppInputAreaManager::AppInputAreaManager(QObject *parent)
     : QObject(parent), dummyWidget_(nullptr), oneshotTimer_(nullptr) {
+    dummyWidget_.setWindowFlags(Qt::FramelessWindowHint);
+    dummyWidget_.setAttribute(Qt::WA_TranslucentBackground);
     KWindowSystem::setType(dummyWidget_.winId(), NET::Dock);
     oneshotTimer_.setSingleShot(true);
     connectSignal();
