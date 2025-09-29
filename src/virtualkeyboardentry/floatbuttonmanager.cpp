@@ -91,7 +91,7 @@ void FloatButtonManager::onScreenResolutionChanged() {
         return;
     }
 
-    geometryManager_->updateGeometry();
+    QTimer::singleShot(500, [this]() { geometryManager_->updateGeometry(); });
 }
 
 void FloatButtonManager::showFloatButton() {
