@@ -42,7 +42,7 @@ SwitchKey {
 
         var keysym = Utils.getKeysymByKeycode(keycode);
         var modifierKeyState = Utils.getModifierKeyStates()
-        virtualKeyboard.processKeyEvent(keysym, keycode, modifierKeyState - Utils.getKeySym(label), false, Date())
+        virtualKeyboard.processKeyEvent(keysym, keycode, modifierKeyState, false, Date())
 
     }
 
