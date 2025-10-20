@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 
     QTranslator translator;
     if (translator.load(QLocale::system(), "translation", "_",
-                        ":/translations")) {
+                        ":/translations/translations")) {
         app.installTranslator(&translator);
     }
 

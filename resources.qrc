@@ -29,9 +29,12 @@
         <file>qml/key/BackspaceKey.qml</file>
         <file>qml/key/EnterKey.qml</file>
         <file>qml/PlacementModeButton.qml</file>
+        <file>qml/DragBar.qml</file>
+
+        <file>qml/js/keycode.js</file>
+
         <file>img/upfloat.svg</file>
         <file>img/downfloat.svg</file>
-        <file>qml/DragBar.qml</file>
         <file>img/space.svg</file>
         <file>img/backspace.svg</file>
         <file>img/close.svg</file>
@@ -41,9 +44,28 @@
         <file>img/up.svg</file>
         <file>img/down.svg</file>
         <file>img/extend.svg</file>
-        <file>qml/js/keycode.js</file>
         <file>img/super_logo.svg</file>
         <file>img/super_logo_clicked.svg</file>
         <file>img/close_hovered.svg</file>
+    </qresource>
+
+    <qresource prefix="/floatbutton">
+        <file>img/enablefloatbutton.svg</file>
+        <file>img/disablefloatbutton.svg</file>
+        <file>img/floatbuttondefault.svg</file>
+        <file>img/floatbuttonpressed.svg</file>
+        <file>img/floatbuttonhovered.svg</file>
+    </qresource>
+
+    <qresource prefix="/translations">
+        <file>translations/translation.qm</file>
+        <file>translations/translation_bo_CN.qm</file>
+        <file>translations/translation_en.qm</file>
+        <file>translations/translation_zh_CN.qm</file>
+        <file>translations/translation_zh_HK.qm</file>
+        <file>translations/translation_mn.qm</file>
+        <file>translations/translation_kk.qm</file>
+        <file>translations/translation_ug.qm</file>
+        <file>translations/translation_ky.qm</file>
     </qresource>
 </RCC>
