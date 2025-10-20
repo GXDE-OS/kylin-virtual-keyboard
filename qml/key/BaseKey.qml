@@ -36,7 +36,7 @@ ToolButton {
         radius: virtualKeyboard.keyRadius
     }
 
-    DropShadow {
+    ShadowWrapper {
         id: dropShadow_
         anchors.fill: parent
         verticalOffset: virtualKeyboard.dropShadowVerticalOffset
@@ -44,7 +44,7 @@ ToolButton {
         color: virtualKeyboard.charKeyDropShadowColor
         source: keyBackground
         samples: 100
-        z: -1 /*阴影保持在最下层*/
+        z: -1 //阴影保持在最下层
     }
 
 

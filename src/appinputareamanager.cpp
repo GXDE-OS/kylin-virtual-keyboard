@@ -16,10 +16,22 @@
  */
 
 #include "appinputareamanager.h"
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <KWindowEffects>
+#include <KX11Extras>
+#include <NETWM>
+#else
 #include <KWindowSystem>
+#endif
 
 AppInputAreaManager::AppInputAreaManager(QObject *parent)
     : QObject(parent), dummyWidget_(nullptr), oneshotTimer_(nullptr) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    KX11Extras::setType(dummyWidget_.winId(), NET::Dock);
+#else
+    KWindowSystem::setType(dummyWidget_.winId(), NET::Dock);
+#endif
     dummyWidget_.setWindowFlags(Qt::FramelessWindowHint);
     dummyWidget_.setAttribute(Qt::WA_TranslucentBackground);
     oneshotTimer_.setSingleShot(true);
@@ -34,10 +46,17 @@ void AppInputAreaManager::connectSignal() {
         // 使用KWin接口调整工作区域，仅在X11下有效
         // 该接口对全屏应用无效
         // 该接口需在winId对象显示前后调用，否则可能不生效
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        KX11Extras::setExtendedStrut(dummyWidget_.winId(), 0, 0, 0, 0, 0, 0, 0,
+                                     0, 0, virtualKeyboardRect_.height(),
+                                     virtualKeyboardRect_.x(),
+                                     virtualKeyboardRect_.width() - 1);
+#else
         KWindowSystem::setExtendedStrut(dummyWidget_.winId(), 0, 0, 0, 0, 0, 0,
                                         0, 0, 0, virtualKeyboardRect_.height(),
                                         virtualKeyboardRect_.x(),
                                         virtualKeyboardRect_.width() - 1);
+#endif
     });
 }
 
@@ -48,8 +67,14 @@ void AppInputAreaManager::raiseInputArea(const QRect &virtualKeyboardRect) {
 }
 
 void AppInputAreaManager::fallInputArea() {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    KX11Extras::setExtendedStrut(dummyWidget_.winId(), 0, 0, 0, 0, 0, 0, 0, 0,
+                                 0, 0, 0, 0);
+#else
     KWindowSystem::setExtendedStrut(dummyWidget_.winId(), 0, 0, 0, 0, 0, 0, 0,
                                     0, 0, 0, 0, 0);
+#endif
+
     dummyWidget_.hide();
     oneshotTimer_.stop();
 }

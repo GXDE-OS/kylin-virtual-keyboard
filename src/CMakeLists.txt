@@ -89,5 +89,8 @@ target_link_libraries(${PROJECT_NAME}
                 qtsingleapplication
                 spdlog::spdlog
             )
+if (QT_VERSION_MAJOR EQUAL 6)
+        target_link_libraries(${PROJECT_NAME} Qt${QT_VERSION_MAJOR}::Core5Compat)
+endif()
 
 install(TARGETS ${PROJECT_NAME}  DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)

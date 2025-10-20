@@ -25,6 +25,9 @@
         <file>qml/key/SymbolKey.qml</file>
         <file>qml/key/TemporarySwitchKey.qml</file>
         <file>qml/key/WinKey.qml</file>
+        <file>qml/key/GraphicalEffectsQt5.qml</file>
+        <file>qml/key/GraphicalEffectsQt6.qml</file>
+        <file>qml/key/ShadowWrapper.qml</file>
         <file>qml/js/utils.js</file>
         <file>qml/key/BackspaceKey.qml</file>
         <file>qml/key/EnterKey.qml</file>

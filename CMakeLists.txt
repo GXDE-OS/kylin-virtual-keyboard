@@ -18,14 +18,20 @@ if (NOT spdlog_FOUND)
 endif()
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Widgets Concurrent DBus Quick QuickControls2 REQUIRED)
+if (QT_VERSION_MAJOR EQUAL 6)
+    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Widgets Concurrent DBus Quick QuickControls2 Core5Compat REQUIRED)
+else()
+    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Widgets Concurrent DBus Quick QuickControls2 REQUIRED)
+endif()
 if (NOT Qt${QT_VERSION_MAJOR}_FOUND)
     message(FATAL_ERROR "Qt${QT_VERSION_MAJOR} not found!")
 endif()
 
+
+
 find_package(KF${QT_VERSION_MAJOR}WindowSystem REQUIRED)
 if (NOT KF${QT_VERSION_MAJOR}WindowSystem_FOUND)
-    message(FATAL_ERROR "KF${QT_VERSION_MAJOR}WindowSystem not found!")
+   message(FATAL_ERROR "KF${QT_VERSION_MAJOR}WindowSystem not found!")
 endif()
 
 find_package(Fcitx5Core REQUIRED)
@@ -35,7 +41,11 @@ if ((NOT Fcitx5Core_FOUND) AND (NOT Fcitx5Qt${QT_VERSION_MAJOR}DBusAddons_FOUND)
 endif()
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GSettings_QT REQUIRED IMPORTED_TARGET gsettings-qt)
+if (QT_VERSION_MAJOR EQUAL 6)
+    pkg_check_modules(GSettings_QT REQUIRED IMPORTED_TARGET gsettings-qt${QT_VERSION_MAJOR})
+else()
+    pkg_check_modules(GSettings_QT REQUIRED IMPORTED_TARGET gsettings-qt)
+endif()
 
 include_directories(${GSettings_QT_INCLUDE_DIRS})
 include("${FCITX_INSTALL_CMAKECONFIG_DIR}/Fcitx5Utils/Fcitx5CompilerSettings.cmake")

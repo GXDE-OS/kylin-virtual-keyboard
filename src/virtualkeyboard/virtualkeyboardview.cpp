@@ -134,6 +134,10 @@ void VirtualKeyboardView::initView() {
     view_->rootContext()->setContextProperty("model", &model_);
     view_->rootContext()->setContextProperty("view", this);
 
+    view_->rootContext()->setContextProperty("QT_VERSION_MAJOR", QT_VERSION_MAJOR);
+    view_->rootContext()->setContextProperty("QT_VERSION_MINOR", QT_VERSION_MINOR);
+    view_->rootContext()->setContextProperty("QT_VERSION_PATCH", QT_VERSION_PATCH);
+
     view_->setTitle("kylin-virtual-keyboard");
     view_->setColor(QColor(Qt::transparent));
     view_->setSource(QUrl("qrc:/qml/VirtualKeyboard.qml"));

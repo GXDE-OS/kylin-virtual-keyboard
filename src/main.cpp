@@ -34,7 +34,9 @@ const QString APP_ID = "kylin-virtual-keyboard";
 const QString APP_VERSION = "4.20.1.0";
 
 int main(int argc, char *argv[]) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QtSingleApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
 
     QtSingleApplication app(APP_ID, argc, argv);
     QtSingleApplication::setApplicationName(APP_ID);
