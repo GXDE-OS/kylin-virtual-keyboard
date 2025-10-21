@@ -22,9 +22,7 @@
 #include <QDBusInterface>
 #include <QDBusServiceWatcher>
 #include <QObject>
-
-#include <Fcitx5Qt5/Fcitx5Qt5DBusAddons/fcitxqtcontrollerproxy.h>
-
+#include "ipc/fcitxcontrollerserviceproxy.h"
 #include "ipc/ukuimenuserviceproxy.h"
 
 class VirtualKeyboardModel : public QObject {
@@ -99,7 +97,7 @@ private:
 private:
     std::unique_ptr<QDBusServiceWatcher> serviceWatcher_ = nullptr;
     std::unique_ptr<QDBusInterface> virtualKeyboardBackendInterface_ = nullptr;
-    std::unique_ptr<fcitx::FcitxQtControllerProxy> fcitx5Controller_ = nullptr;
+    std::unique_ptr<FcitxControllerServiceProxy> fcitx5Controller_ = nullptr;
     std::unique_ptr<UkuiMenuServiceProxy> ukuiMenuServiceProxy_ = nullptr;
 
     QString uniqueName_;

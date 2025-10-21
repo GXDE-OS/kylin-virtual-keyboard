@@ -20,7 +20,6 @@
 #include <QDBusConnection>
 #include <QDBusMetaType>
 #include <QDBusPendingReply>
-
 #include "log.h"
 
 VirtualKeyboardModel::VirtualKeyboardModel(QObject *parent) : QObject(parent) {
@@ -58,10 +57,8 @@ void VirtualKeyboardModel::processKeyEvent(int keysym, int keycode, int state,
 }
 
 void VirtualKeyboardModel::initFcitx5Controller() {
-    fcitx::registerFcitxQtDBusTypes();
-
-    fcitx5Controller_.reset(new fcitx::FcitxQtControllerProxy(
-        "org.fcitx.Fcitx5", "/controller", QDBusConnection::sessionBus()));
+    registerKvkbdFcitxQtDBusTypes();
+    fcitx5Controller_.reset(new FcitxControllerServiceProxy(this));
 }
 
 void VirtualKeyboardModel::initUkuiMenuServiceProxy() {
@@ -124,7 +121,10 @@ void VirtualKeyboardModel::setUniqueName(const QString &uniqueName) {
 void VirtualKeyboardModel::syncUniqueName() {
     QDBusPendingReply<QString> reply = fcitx5Controller_->CurrentInputMethod();
     reply.waitForFinished();
-
+    if (!reply.isValid()) {
+        KVKBD_WARN("reply error:{}", reply.error().message().toStdString());
+        return;
+    }
     setUniqueName(reply.value());
 }
 
