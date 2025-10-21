@@ -35,9 +35,8 @@ if (NOT KF${QT_VERSION_MAJOR}WindowSystem_FOUND)
 endif()
 
 find_package(Fcitx5Core REQUIRED)
-find_package(Fcitx5Qt${QT_VERSION_MAJOR}DBusAddons REQUIRED)
-if ((NOT Fcitx5Core_FOUND) AND (NOT Fcitx5Qt${QT_VERSION_MAJOR}DBusAddons_FOUND))
-    message(FATAL_ERROR "Fcitx5Core and Fcitx5Qt${QT_VERSION_MAJOR}DBusAddons are not found!")
+if (NOT Fcitx5Core_FOUND)
+    message(FATAL_ERROR "Fcitx5Core not found!")
 endif()
 
 find_package(PkgConfig REQUIRED)

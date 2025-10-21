@@ -17,6 +17,8 @@ set(HEADERS
     ipc/requestmerger.h
     ipc/keyboardserviceproxy.h
     ipc/ukuimenuserviceproxy.h
+    ipc/fcitxqtdbustypes.h
+    ipc/fcitxcontrollerserviceproxy.h
     localsettings/localsettings.h
     localsettings/viewlocalsettings.h
     screenmanager.h
@@ -54,6 +56,8 @@ set(SOURCES
     ipc/requestmerger.cpp
     ipc/keyboardserviceproxy.cpp
     ipc/ukuimenuserviceproxy.cpp
+    ipc/fcitxqtdbustypes.cpp
+    ipc/fcitxcontrollerserviceproxy.cpp
     localsettings/viewlocalsettings.cpp
     main.cpp
     screenmanager.cpp
@@ -84,7 +88,6 @@ target_link_libraries(${PROJECT_NAME}
                 Qt${QT_VERSION_MAJOR}::QuickControls2
                 KF${QT_VERSION_MAJOR}::WindowSystem
                 Fcitx5::Core
-                Fcitx5Qt${QT_VERSION_MAJOR}::DBusAddons
                 ${GSettings_QT_LIBRARIES}
                 qtsingleapplication
                 spdlog::spdlog
