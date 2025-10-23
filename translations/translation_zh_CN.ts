@@ -48,8 +48,8 @@
     <name>VirtualKeyboardTrayIcon</name>
     <message>
         <location filename="../src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp" line="41"/>
-        <source>kylin-virtual-keyboard</source>
-        <translation>麒麟虚拟键盘</translation>
+        <source>Virtual Keyboard</source>
+        <translation>虚拟键盘</translation>
     </message>
 </context>
 </TS>
