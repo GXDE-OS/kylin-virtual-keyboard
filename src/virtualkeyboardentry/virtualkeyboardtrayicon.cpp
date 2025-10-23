@@ -66,7 +66,7 @@ void VirtualKeyboardTrayIcon::onTrayIconActivated(
 void VirtualKeyboardTrayIcon::initTrayIcon() {
     trayIcon_.reset(new QSystemTrayIcon(this));
     trayIcon_->setIcon(QIcon::fromTheme("ukui-virtual-keyboard-symbolic"));
-    trayIcon_->setToolTip(tr("kylin-virtual-keyboard"));
+    trayIcon_->setToolTip(tr("Virtual Keyboard"));
     connect(trayIcon_.get(),
             SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this,
             SLOT(onTrayIconActivated(QSystemTrayIcon::ActivationReason)));
