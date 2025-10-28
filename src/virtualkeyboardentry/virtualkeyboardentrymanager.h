@@ -85,7 +85,7 @@ private:
     std::shared_ptr<NeverShowStrategy> neverShowStrategy_ = nullptr;
     std::shared_ptr<KeyboardStatusStrategy> keyboardStatusStrategy_ = nullptr;
     // 当前策略
-    std::shared_ptr<TrayIconStrategy> currenTrayIconStrategy_ = nullptr;
+    std::shared_ptr<TrayIconStrategy> currentTrayIconStrategy_ = nullptr;
     // 键盘服务代理
     std::unique_ptr<KeyboardServiceProxy> keyboardServiceProxy_ = nullptr;
 };

@@ -177,7 +177,7 @@ void VirtualKeyboardEntryManager::moveValueFromLocalSettings() {
 void VirtualKeyboardEntryManager::updateStrategy(
     std::shared_ptr<TrayIconStrategy> newStrategy) {
     // 更新当前策略
-    currenTrayIconStrategy_ = newStrategy;
+    currentTrayIconStrategy_ = newStrategy;
 
     // 更新托盘图标可用性
     updateTrayExistence();
@@ -187,7 +187,7 @@ void VirtualKeyboardEntryManager::updateStrategy(
 }
 
 void VirtualKeyboardEntryManager::updateTrayExistence() {
-    const bool shouldCreate = currenTrayIconStrategy_->shouldCreateTray();
+    const bool shouldCreate = currentTrayIconStrategy_->shouldCreateTray();
 
     if (shouldCreate && !trayIconEntry_->isInit()) {
         trayIconEntry_->initTrayIcon();
@@ -198,12 +198,12 @@ void VirtualKeyboardEntryManager::updateTrayExistence() {
 }
 
 void VirtualKeyboardEntryManager::updateTrayVisibility() {
-    const auto needMonitor = currenTrayIconStrategy_->needsKeyboardMonitor();
+    const auto needMonitor = currentTrayIconStrategy_->needsKeyboardMonitor();
     int kbdCount = 0;
     if (needMonitor) {
         kbdCount = getKeyboardCount(true);
     }
-    const auto shouldShow = currenTrayIconStrategy_->shouldShowTray(kbdCount);
+    const auto shouldShow = currentTrayIconStrategy_->shouldShowTray(kbdCount);
     KVKBD_INFO("need monitor keyboard:{}, should show trayIcon:{}", needMonitor,
                shouldShow);
     trayIconEntry_->changeTrayIconVisibility(shouldShow);
