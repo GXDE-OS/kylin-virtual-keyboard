@@ -65,6 +65,7 @@ private:
     void updateStrategy(std::shared_ptr<TrayIconStrategy> newStrategy);
     void updateTrayExistence();
     void updateTrayVisibility();
+    void syncTrayIconContextMenuAction();
     int getKeyboardCount(const bool &sync);
 
 private:

@@ -40,6 +40,11 @@ void VirtualKeyboardTrayIcon::hideContextMenu() {
         return;
     }
 
+    if (trayIcon_->contextMenu() == nullptr) {
+        KVKBD_WARN("contextMenu is null!");
+        return;
+    }
+
     trayIcon_->contextMenu()->hide();
 }
 

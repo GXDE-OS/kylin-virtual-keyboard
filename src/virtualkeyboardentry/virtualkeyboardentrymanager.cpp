@@ -41,8 +41,6 @@ VirtualKeyboardEntryManager::VirtualKeyboardEntryManager(
 
     moveValueFromLocalSettings();
 
-    initFloatButtonContextMenuAndAction();
-
     connectSignals();
 
     floatButtonManager_->updateFloatButtonEnabled(
@@ -69,6 +67,10 @@ void VirtualKeyboardEntryManager::initTrayIconStrategy() {
 }
 
 void VirtualKeyboardEntryManager::initFloatButtonContextMenuAndAction() {
+    if (floatButtonContextMenu_ != nullptr &&
+        floatButtonContextMenuAction_ != nullptr) {
+        return;
+    }
     floatButtonContextMenu_.reset(new QMenu());
     floatButtonContextMenuAction_.reset(new QAction());
 
@@ -148,6 +150,10 @@ void VirtualKeyboardEntryManager::connectSignals() {
 void VirtualKeyboardEntryManager::updateFloatButtonContextMenuAction(
     const QString &icon, const QString &text,
     ActionTriggeredCallback callback) {
+    if (floatButtonContextMenuAction_ == nullptr) {
+        return;
+    }
+
     floatButtonContextMenuAction_->setIcon(QIcon(icon));
     floatButtonContextMenuAction_->setText(text);
 
@@ -190,9 +196,7 @@ void VirtualKeyboardEntryManager::updateTrayExistence() {
 
     if (shouldCreate && !trayIconEntry_->isInit()) {
         trayIconEntry_->initTrayIcon();
-        if (floatButtonContextMenu_) {
-            trayIconEntry_->setContextMenu(floatButtonContextMenu_.get());
-        }
+        syncTrayIconContextMenuAction();
     } else if (!shouldCreate && trayIconEntry_->isInit()) {
         trayIconEntry_->destroyTrayIcon();
     }
@@ -208,6 +212,29 @@ void VirtualKeyboardEntryManager::updateTrayVisibility() {
     KVKBD_INFO("need monitor keyboard:{}, should show trayIcon:{}", needMonitor,
                shouldShow);
     trayIconEntry_->changeTrayIconVisibility(shouldShow);
+}
+
+void VirtualKeyboardEntryManager::syncTrayIconContextMenuAction() {
+    initFloatButtonContextMenuAndAction();
+    if (floatButtonContextMenu_) {
+        trayIconEntry_->setContextMenu(floatButtonContextMenu_.get());
+    }
+
+    if (VirtualKeyboardSettings::getInstance().isFloatButtonEnabled()) {
+        updateFloatButtonContextMenuAction(
+            ":/floatbutton/img/disablefloatbutton.svg",
+            tr("Disable the float button"), []() {
+                VirtualKeyboardSettings::getInstance()
+                    .updateFloatButtonAvailability(false);
+            });
+    } else {
+        updateFloatButtonContextMenuAction(
+            ":/floatbutton/img/enablefloatbutton.svg",
+            tr("Enable the float button"), []() {
+                VirtualKeyboardSettings::getInstance()
+                    .updateFloatButtonAvailability(true);
+            });
+    }
 }
 
 int VirtualKeyboardEntryManager::getKeyboardCount(const bool &sync) {
