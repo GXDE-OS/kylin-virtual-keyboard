@@ -187,11 +187,6 @@ void VirtualKeyboardEntryManager::updateStrategy(
 }
 
 void VirtualKeyboardEntryManager::updateTrayExistence() {
-    if (trayIconEntry_ == nullptr) {
-        KVKBD_WARN("trayIconEntry_ is null!");
-        return;
-    }
-
     const bool shouldCreate = currenTrayIconStrategy_->shouldCreateTray();
 
     if (shouldCreate && !trayIconEntry_->isInit()) {
