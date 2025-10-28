@@ -22,13 +22,13 @@ AppInputAreaManager::AppInputAreaManager(QObject *parent)
     : QObject(parent), dummyWidget_(nullptr), oneshotTimer_(nullptr) {
     dummyWidget_.setWindowFlags(Qt::FramelessWindowHint);
     dummyWidget_.setAttribute(Qt::WA_TranslucentBackground);
-    KWindowSystem::setType(dummyWidget_.winId(), NET::Dock);
     oneshotTimer_.setSingleShot(true);
     connectSignal();
 }
 
 void AppInputAreaManager::connectSignal() {
     QObject::connect(&oneshotTimer_, &QTimer::timeout, this, [this]() {
+        KWindowSystem::setType(dummyWidget_.winId(), NET::Dock);
         dummyWidget_.setGeometry(virtualKeyboardRect_);
         dummyWidget_.show();
         // 使用KWin接口调整工作区域，仅在X11下有效
