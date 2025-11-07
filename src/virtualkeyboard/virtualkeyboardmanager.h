@@ -24,13 +24,13 @@
 #include <QObject>
 
 #include "animation/animationfactory.h"
-#include "appinputareamanager.h"
 #include "geometrymanager/expansiongeometrymanager.h"
 #include "geometrymanager/floatgeometrymanager.h"
 #include "localsettings/viewlocalsettings.h"
 #include "placementmodemanager.h"
 #include "virtualkeyboardmodel.h"
 #include "virtualkeyboardview.h"
+#include "workspaceadjuster/workspaceadjuster.h"
 
 class VirtualKeyboardManager : public QObject {
     Q_OBJECT
@@ -69,7 +69,7 @@ public slots:
     void hideVirtualKeyboard();
 
 private:
-    void initAppInputAreaManager();
+    void initWorkspaceAdjuster();
     std::unique_ptr<PlacementModeManager> createPlacementModeManager();
     static Scaler createExpansionModeScaler();
     static Scaler createFloatModeScaler();
@@ -93,7 +93,7 @@ private:
     std::unique_ptr<Animator> createDisabledAnimator();
     std::unique_ptr<Animator> createAnimator();
 
-    std::unique_ptr<AppInputAreaManager> appInputAreaManager_ = nullptr;
+    std::unique_ptr<WorkspaceAdjuster> workspaceAdjuster_ = nullptr;
     std::unique_ptr<VirtualKeyboardModel> model_ = nullptr;
     std::unique_ptr<VirtualKeyboardView> view_ = nullptr;
 

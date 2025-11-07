@@ -8,7 +8,6 @@ set(HEADERS
     animation/enabledanimator.h
     animation/expansionanimationfactory.h
     animation/floatanimationfactory.h
-    appinputareamanager.h
     geometrymanager/expansiongeometrymanager.h
     geometrymanager/floatgeometrymanager.h
     geometrymanager/geometrymanager.h
@@ -47,7 +46,6 @@ set(SOURCES
     animation/enabledanimator.cpp
     animation/expansionanimationfactory.cpp
     animation/floatanimationfactory.cpp
-    appinputareamanager.cpp
     geometrymanager/expansiongeometrymanager.cpp
     geometrymanager/floatgeometrymanager.cpp
     geometrymanager/geometrymanager.cpp
@@ -71,6 +69,8 @@ set(SOURCES
     virtualkeyboardentry/virtualkeyboardentrymanager.cpp
     virtualkeyboardentry/virtualkeyboardtrayicon.cpp
     virtualkeyboardsettings/virtualkeyboardsettings.cpp
+    workspaceadjuster/x11workspaceadjuster.cpp
+    workspaceadjuster/waylandworkspaceadjuster.cpp
     log.cpp
     messagehandler.cpp
     commandlinehandler.cpp

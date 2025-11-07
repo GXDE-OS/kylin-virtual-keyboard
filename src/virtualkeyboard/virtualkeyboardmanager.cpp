@@ -24,15 +24,18 @@
 #include "animation/enabledanimator.h"
 #include "animation/expansionanimationfactory.h"
 #include "animation/floatanimationfactory.h"
+#include "utils.h"
 #include "virtualkeyboardsettings/virtualkeyboardsettings.h"
 #include "virtualkeyboardstrategy.h"
+#include "workspaceadjuster/waylandworkspaceadjuster.h"
+#include "workspaceadjuster/x11workspaceadjuster.h"
 
 VirtualKeyboardManager::VirtualKeyboardManager(
     HideVirtualKeyboardCallback hideVirtualKeyboardCallback)
     : hideVirtualKeyboardCallback_(std::move(hideVirtualKeyboardCallback)) {
     initVirtualKeyboardModel();
 
-    initAppInputAreaManager();
+    initWorkspaceAdjuster();
 
     initVirtualKeyboardView();
 
@@ -42,7 +45,7 @@ VirtualKeyboardManager::VirtualKeyboardManager(
 VirtualKeyboardManager::~VirtualKeyboardManager() {
     hideVirtualKeyboard();
 
-    appInputAreaManager_.reset();
+    workspaceAdjuster_.reset();
 
     view_.reset();
     model_.reset();
@@ -63,7 +66,9 @@ void VirtualKeyboardManager::hideVirtualKeyboard() {
         return;
     }
 
-    appInputAreaManager_->fallInputArea();
+    if (workspaceAdjuster_ != nullptr) {
+        workspaceAdjuster_->fallInputArea();
+    }
 
     view_->hide();
 
@@ -129,8 +134,18 @@ void VirtualKeyboardManager::processResolutionChangedEvent() {
     }
 }
 
-void VirtualKeyboardManager::initAppInputAreaManager() {
-    appInputAreaManager_.reset(new AppInputAreaManager(this));
+void VirtualKeyboardManager::initWorkspaceAdjuster() {
+    if (getDesktopType() == DesktopType::X11) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        workspaceAdjuster_.reset(new X11Kf6WorkspaceAdjuster());
+#else
+        workspaceAdjuster_.reset(new X11Kf5WorkspaceAdjuster());
+#endif
+    } else if (getDesktopType() == DesktopType::WAYLAND) {
+        workspaceAdjuster_.reset(new WaylandWlcomWorkspaceAdjuster());
+    } else {
+        KVKBD_DEBUG("not x11 or wayland desktop, no workspace adjuster.");
+    }
 }
 
 std::unique_ptr<PlacementModeManager>
@@ -209,12 +224,23 @@ void VirtualKeyboardManager::connectVirtualKeyboardModelSignals() {
 }
 
 void VirtualKeyboardManager::connectVirtualKeyboardViewSignals() {
-    connect(
-        view_.get(), &VirtualKeyboardView::raiseAppRequested, this,
-        [this]() { appInputAreaManager_->raiseInputArea(view_->geometry()); });
+    connect(view_.get(), &VirtualKeyboardView::raiseAppRequested, this,
+            [this]() {
+                if (workspaceAdjuster_ == nullptr) {
+                    return;
+                }
+
+                workspaceAdjuster_->raiseInputArea(view_->geometry());
+            });
 
     connect(view_.get(), &VirtualKeyboardView::fallAppRequested, this,
-            [this]() { appInputAreaManager_->fallInputArea(); });
+            [this]() {
+                if (workspaceAdjuster_ == nullptr) {
+                    return;
+                }
+
+                workspaceAdjuster_->fallInputArea();
+            });
 }
 
 void VirtualKeyboardManager::connectVirtualKeyboardSettingsSignals() {
@@ -245,7 +271,11 @@ void VirtualKeyboardManager::raiseInputAreaIfNecessary() {
         return;
     }
 
-    appInputAreaManager_->raiseInputArea(view_->geometry());
+    if (workspaceAdjuster_ == nullptr) {
+        return;
+    }
+
+    workspaceAdjuster_->raiseInputArea(view_->geometry());
 }
 
 std::unique_ptr<AnimationFactory>
