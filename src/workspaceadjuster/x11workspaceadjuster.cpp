@@ -28,7 +28,9 @@
 X11Kf5WorkspaceAdjuster::X11Kf5WorkspaceAdjuster()
     : dummyWidget_(nullptr), oneshotTimer_(nullptr) {
     KWindowSystem::setType(dummyWidget_.winId(), NET::Dock);
-
+    dummyWidget_.setWindowFlags(Qt::FramelessWindowHint);
+    dummyWidget_.setAttribute(Qt::WA_TranslucentBackground);
+    oneshotTimer_.setSingleShot(true);
     connectSignal();
 }
 
@@ -45,7 +47,7 @@ void X11Kf5WorkspaceAdjuster::connectSignal() {
     });
 }
 
-void X11Kf5WorkspaceAdjuster::raiseInputArea(const QRect &rect) {
+void X11Kf5WorkspaceAdjuster::raiseInputArea(const QRect &rect, QWindow *) {
     rect_ = rect;
 
     oneshotTimer_.start(SHOW_DELAY_TIME);
