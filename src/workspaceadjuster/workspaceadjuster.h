@@ -20,10 +20,11 @@
 
 #include <QObject>
 #include <QRect>
+#include <QWindow>
 
 class WorkspaceAdjuster : public QObject {
 public:
-    virtual void raiseInputArea(const QRect &rect) = 0;
+    virtual void raiseInputArea(QWindow *window, const QRect &rect) = 0;
     virtual void fallInputArea() = 0;
 };
 
