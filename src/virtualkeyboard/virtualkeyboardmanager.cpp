@@ -230,7 +230,8 @@ void VirtualKeyboardManager::connectVirtualKeyboardViewSignals() {
                     return;
                 }
 
-                workspaceAdjuster_->raiseInputArea(view_->geometry());
+                workspaceAdjuster_->raiseInputArea(view_->view(), 
+                                                   view_->geometry());
             });
 
     connect(view_.get(), &VirtualKeyboardView::fallAppRequested, this,
@@ -275,7 +276,7 @@ void VirtualKeyboardManager::raiseInputAreaIfNecessary() {
         return;
     }
 
-    workspaceAdjuster_->raiseInputArea(view_->geometry());
+    workspaceAdjuster_->raiseInputArea(view_->view(), view_->geometry());
 }
 
 std::unique_ptr<AnimationFactory>

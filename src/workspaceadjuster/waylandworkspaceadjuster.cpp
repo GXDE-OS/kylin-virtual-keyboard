@@ -17,10 +17,44 @@
 
 #include "waylandworkspaceadjuster.h"
 
-WaylandWlcomWorkspaceAdjuster::WaylandWlcomWorkspaceAdjuster() {}
+#include <QMetaType>
+#include <QVariant>
+#include <QWindow>
 
-void WaylandWlcomWorkspaceAdjuster::raiseInputArea(const QRect &rect) {
-    Q_UNUSED(rect);
+#include "../log.h"
+#include "ukuiwaylandhelper/ukuiwaylandproperties.h"
+
+WaylandWlcomWorkspaceAdjuster::WaylandWlcomWorkspaceAdjuster() {
+    KVKBD_INFO("wayland wlcom workspace adjuster.");
 }
 
-void WaylandWlcomWorkspaceAdjuster::fallInputArea() {}
+void WaylandWlcomWorkspaceAdjuster::raiseInputArea(QWindow *window, 
+                                                    const QRect &rect) {
+    KVKBD_INFO("raise inputarea.");
+    if (window == nullptr) {
+        KVKBD_WARN("window is null, skip raiseInputArea.");
+        return;
+    }
+    surfaceWindow_ = window;
+    setSurfaceWindowProperty(rect, 1);
+}
+
+void WaylandWlcomWorkspaceAdjuster::fallInputArea() {
+    KVKBD_INFO("fall inputarea.");
+    if (surfaceWindow_ == nullptr) {
+        KVKBD_WARN("surfaceWindow_ is null, skip fallInputArea.");
+        return;
+    }
+    QRect fallRect(0, 0, 0, 0);
+    setSurfaceWindowProperty(fallRect, 0);
+}
+
+void WaylandWlcomWorkspaceAdjuster::setSurfaceWindowProperty(
+    const QRect &rect, const int32_t &enabled) {
+    UkuiWaylandProperty::SurfaceProperty property;
+    property.height = rect.height();
+    property.zone = rect.height();
+    property.enabled = enabled;
+    surfaceWindow_->setProperty(UkuiWaylandProperty::SURFACE_ANCHOR,
+                                QVariant::fromValue(property.toVector()));
+}

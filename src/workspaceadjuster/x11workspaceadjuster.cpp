@@ -47,7 +47,7 @@ void X11Kf5WorkspaceAdjuster::connectSignal() {
     });
 }
 
-void X11Kf5WorkspaceAdjuster::raiseInputArea(const QRect &rect, QWindow *) {
+void X11Kf5WorkspaceAdjuster::raiseInputArea(QWindow */*window*/, const QRect &rect) {
     rect_ = rect;
 
     oneshotTimer_.start(SHOW_DELAY_TIME);
@@ -75,7 +75,7 @@ void X11Kf6WorkspaceAdjuster::connectSignal() {
     });
 }
 
-void X11Kf6WorkspaceAdjuster::raiseInputArea(const QRect &rect) {
+void X11Kf6WorkspaceAdjuster::raiseInputArea(QWindow */*window*/, const QRect &rect) {
     rect_ = rect;
 
     oneshotTimer_.start(SHOW_DELAY_TIME);

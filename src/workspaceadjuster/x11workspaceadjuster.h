@@ -29,7 +29,7 @@ public:
     X11Kf5WorkspaceAdjuster();
     ~X11Kf5WorkspaceAdjuster() override = default;
 
-    void raiseInputArea(const QRect &rect, QWindow *) override;
+    void raiseInputArea(QWindow */*window*/, const QRect &rect) override;
     void fallInputArea() override;
 
 private:
