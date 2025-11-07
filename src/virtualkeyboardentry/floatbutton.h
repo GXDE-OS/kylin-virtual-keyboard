@@ -68,6 +68,7 @@ private:
     bool isFloatButtonMoved() const;
 
     void initStyle();
+    void initAttributes();
 
     void startClickTimer();
     void stopClickTimer();

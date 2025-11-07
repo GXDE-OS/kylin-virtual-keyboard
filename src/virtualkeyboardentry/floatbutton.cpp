@@ -20,12 +20,13 @@
 #include <QBitmap>
 #include <QPainter>
 #include <QVariant>
+#include "ukuiwaylandhelper/ukuiwaylandproperties.h"
+#include "utils.h"
 
 FloatButton::FloatButton(MouseClickedCallback mouseClickedCallback)
     : mouseClickedCallback_(std::move(mouseClickedCallback)) {
-    // 主题框架默认禁用了move消息，因此，QPushButton需要禁用主题框架
-    setProperty("useStyleWindowManager", QVariant(false));
     initStyle();
+    initAttributes();
 }
 
 void FloatButton::move(int x, int y) { QPushButton::move(x, y); }
@@ -130,16 +131,31 @@ void FloatButton::paintEvent(QPaintEvent *event) {
 }
 
 void FloatButton::initStyle() {
-    setWindowTitle("kylin-virtual-keyboard-float-button");
-    setAttribute(Qt::WA_TranslucentBackground);
     setStyleSheet("QPushButton{border-image: "
                   "url(:/floatbutton/img/floatbuttondefault.svg);}"
                   "QPushButton:hover{border-image: "
                   "url(:/floatbutton/img/floatbuttonhovered.svg);}"
                   "QPushButton:pressed{border-image: "
                   "url(:/floatbutton/img/floatbuttonpressed.svg);}");
+}
+
+void FloatButton::initAttributes() {
+    setWindowTitle("kylin-virtual-keyboard-float-button");
+    setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_AlwaysShowToolTips, true);
     setToolTip(tr("Click to show virtual keyboard"));
+
+    setWindowFlags(Qt::FramelessWindowHint | Qt::BypassWindowManagerHint |
+                   Qt::Tool);
+
+    // 主题框架默认禁用了move消息，因此，QPushButton需要禁用主题框架
+    setProperty("useStyleWindowManager", QVariant(false));
+
+    if (getDesktopEnvironment() == DesktopEnvironment::UKUI &&
+        getDesktopType() == DesktopType::WAYLAND) {
+        setProperty(UkuiWaylandProperty::SURFACE_ROLE,
+                    UkuiWaylandProperty::Role::INPUT_PANEL);
+    }
 }
 
 void FloatButton::startClickTimer() {

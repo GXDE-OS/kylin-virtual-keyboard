@@ -19,6 +19,7 @@
 
 #include <QGuiApplication>
 #include <QScreen>
+#include <QWindow>
 
 #include "animation/disabledanimator.h"
 #include "animation/enabledanimator.h"
@@ -135,16 +136,15 @@ void VirtualKeyboardManager::processResolutionChangedEvent() {
 }
 
 void VirtualKeyboardManager::initWorkspaceAdjuster() {
-    if (getDesktopType() == DesktopType::X11) {
+    if (getDesktopEnvironment() == DesktopEnvironment::UKUI &&
+        getDesktopType() == DesktopType::WAYLAND) {
+        workspaceAdjuster_.reset(new WaylandWlcomWorkspaceAdjuster());
+    } else {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         workspaceAdjuster_.reset(new X11Kf6WorkspaceAdjuster());
 #else
         workspaceAdjuster_.reset(new X11Kf5WorkspaceAdjuster());
 #endif
-    } else if (getDesktopType() == DesktopType::WAYLAND) {
-        workspaceAdjuster_.reset(new WaylandWlcomWorkspaceAdjuster());
-    } else {
-        KVKBD_DEBUG("not x11 or wayland desktop, no workspace adjuster.");
     }
 }
 
@@ -230,7 +230,7 @@ void VirtualKeyboardManager::connectVirtualKeyboardViewSignals() {
                     return;
                 }
 
-                workspaceAdjuster_->raiseInputArea(view_->view(), 
+                workspaceAdjuster_->raiseInputArea(view_->view(),
                                                    view_->geometry());
             });
 

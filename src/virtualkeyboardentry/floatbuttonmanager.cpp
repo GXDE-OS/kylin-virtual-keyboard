@@ -113,9 +113,6 @@ void FloatButtonManager::hideFloatButton() {
 void FloatButtonManager::createFloatButton() {
     floatButton_.reset(new FloatButton(
         [this]() { fcitxVirtualKeyboardService_.showVirtualKeyboard(); }));
-    floatButton_->setWindowFlags(Qt::FramelessWindowHint |
-                                 Qt::BypassWindowManagerHint | Qt::Tool);
-
     floatButton_->show();
 }
 
