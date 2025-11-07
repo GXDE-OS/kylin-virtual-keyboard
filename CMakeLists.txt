@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.10.0)
 project(kylin-virtual-keyboard LANGUAGES CXX)
 
 OPTION(ENABLE_TEST "Build Test" OFF)
+OPTION(ENABLE_QT6 "Build with Qt6 " OFF)
 
 # set something
 set(CMAKE_AUTOMOC ON)
@@ -17,17 +18,20 @@ if (NOT spdlog_FOUND)
     message(FATAL_ERROR "Spdlog not found!")
 endif()
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED)
-if (QT_VERSION_MAJOR EQUAL 6)
-    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Widgets Concurrent DBus Quick QuickControls2 Core5Compat REQUIRED)
+if (ENABLE_QT6)
+    find_package(QT NAMES Qt6 REQUIRED)
+    find_package(Qt6 COMPONENTS Core Gui Widgets Concurrent DBus Quick QuickControls2 Core5Compat REQUIRED)
 else()
-    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Widgets Concurrent DBus Quick QuickControls2 REQUIRED)
+    find_package(QT NAMES Qt5 REQUIRED)
+    find_package(Qt5 COMPONENTS Core Gui Widgets Concurrent DBus Quick QuickControls2 REQUIRED)
 endif()
+
 if (NOT Qt${QT_VERSION_MAJOR}_FOUND)
     message(FATAL_ERROR "Qt${QT_VERSION_MAJOR} not found!")
+    return()
 endif()
 
-
+message(STATUS "Current Qt version: ${Qt${QT_VERSION_MAJOR}_VERSION}")
 
 find_package(KF${QT_VERSION_MAJOR}WindowSystem REQUIRED)
 if (NOT KF${QT_VERSION_MAJOR}WindowSystem_FOUND)
