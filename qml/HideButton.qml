@@ -25,11 +25,12 @@ Rectangle {
     anchors.right: parent.right
     anchors.rightMargin: virtualKeyboard.cardinalNumber * 3.5
     color: virtualKeyboard.virtualKeyboardColor
+    radius: virtualKeyboard.toolbarRadius
 
     Image {
         id: hideButtonImg
         anchors.centerIn: parent
-        sourceSize: Qt.size(parent.width, parent.width)
+        sourceSize: Qt.size(parent.width * 0.5, parent.width * 0.5)
         source: "qrc:/img/close.svg"
     }
 
@@ -44,19 +45,24 @@ Rectangle {
         hoverEnabled: true
 
         onPressed: {
-            hideButtonImg.source = "qrc:/img/close_pressed.svg"
+            color = virtualKeyboard.hideButtonPressedColor
         }
 
         onReleased: {
             virtualKeyboard.hideVirtualKeyboard()
+            color = virtualKeyboard.hideButtonHoverColor
         }
 
         onEntered: {
             hideButtonToolTip.visible = true
+            color = virtualKeyboard.hideButtonHoverColor
+            hideButtonImg.source = "qrc:/img/close_hovered.svg"
         }
 
         onExited: {
             hideButtonToolTip.visible = false
+            color = virtualKeyboard.virtualKeyboardColor
+            hideButtonImg.source = "qrc:/img/close.svg"
         }
     }
 }

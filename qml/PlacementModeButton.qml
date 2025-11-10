@@ -28,9 +28,11 @@ Rectangle {
     anchors.right: alignmentRight.left
     anchors.rightMargin: virtualKeyboard.cardinalNumber * 3.5
     color: virtualKeyboard.virtualKeyboardColor
+    radius: virtualKeyboard.toolbarRadius
+
     Image {
         id: placementModelButtonImg
-        sourceSize: Qt.size(parent.width, parent.width)
+        sourceSize: Qt.size(parent.width * 0.5, parent.width * 0.5)
         source: "qrc:/img/upfloat.svg"
         anchors.centerIn: parent
     }
@@ -48,10 +50,20 @@ Rectangle {
 
         onEntered: {
             placementModelButtonToolTip.visible = true
+            color = virtualKeyboard.placementButtonHoverColor
         }
 
         onExited: {
             placementModelButtonToolTip.visible = false
+            color = virtualKeyboard.virtualKeyboardColor
+        }
+
+        onPressed: {
+            color = virtualKeyboard.placementButtonPressedColor
+        }
+
+        onReleased: {
+            color = virtualKeyboard.placementButtonHoverColor
         }
     }
 
