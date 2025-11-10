@@ -50,6 +50,7 @@ else()
     pkg_check_modules(GSettings_QT REQUIRED IMPORTED_TARGET gsettings-qt)
 endif()
 
+include(GNUInstallDirs)
 include_directories(${GSettings_QT_INCLUDE_DIRS})
 include("${FCITX_INSTALL_CMAKECONFIG_DIR}/Fcitx5Utils/Fcitx5CompilerSettings.cmake")
 
