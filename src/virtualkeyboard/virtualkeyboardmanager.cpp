@@ -67,7 +67,7 @@ void VirtualKeyboardManager::hideVirtualKeyboard() {
         return;
     }
 
-    if (workspaceAdjuster_ != nullptr) {
+    if (workspaceAdjuster_ != nullptr && !view_->isFloatMode()) {
         workspaceAdjuster_->fallInputArea();
     }
 
