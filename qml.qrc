@@ -35,7 +35,6 @@
         <file>img/space.svg</file>
         <file>img/backspace.svg</file>
         <file>img/close.svg</file>
-        <file>img/close_pressed.svg</file>
         <file>img/enter.svg</file>
         <file>img/left.svg</file>
         <file>img/right.svg</file>
@@ -45,5 +44,6 @@
         <file>qml/js/keycode.js</file>
         <file>img/super_logo.svg</file>
         <file>img/super_logo_clicked.svg</file>
+        <file>img/close_hovered.svg</file>
     </qresource>
 </RCC>
