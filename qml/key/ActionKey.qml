@@ -28,8 +28,8 @@ CharKey {
     keyLabel.visible: actionKeyImgPath == ""
 
     Loader{
-        width: virtualKeyboard.toolbarSize
-        height: virtualKeyboard.toolbarSize
+        width: virtualKeyboard.actionKeySize
+        height: virtualKeyboard.actionKeySize
         anchors.verticalCenter: parent.verticalCenter
         sourceComponent: actionKeyImgPath == "" ? undefined : actionKeyComponent
         anchors{

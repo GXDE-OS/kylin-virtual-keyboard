@@ -71,8 +71,8 @@ TemporarySwitchKey {
     }
 
     Loader {
-        width: virtualKeyboard.toolbarSize * 1.2
-        height: virtualKeyboard.toolbarSize * 1.2
+        width: virtualKeyboard.actionKeySize * 1.2
+        height: virtualKeyboard.actionKeySize * 1.2
         anchors.verticalCenter: parent.verticalCenter
         sourceComponent: winKeyImgPath == "" ? undefined : winKeyComponent
 

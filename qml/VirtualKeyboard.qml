@@ -66,7 +66,8 @@ Rectangle {
     property real imListFontSize: fontSize * 3/4
     property int preeditX: cardinalNumber * 3.5
     property int candidateListWidth: virtualKeyboardContent.width - 7*cardinalNumber
-    property int toolbarSize: cardinalNumber * 3
+    property int actionKeySize: cardinalNumber * 3
+    property int toolbarSize: cardinalNumber * 6
     property int candidateListX: cardinalNumber * 2
     property int candidateListSpacing: cardinalNumber * 3
     property int keyRadius: cardinalNumber
@@ -106,9 +107,15 @@ Rectangle {
     property color preeditBottomColor: "#E4E6E9" /*预编辑下方分割线颜色*/
     property color dragBarIndicatorColor: "#1D1D1D" /*拖拽条指示器颜色*/
 
+    property color hideButtonPressedColor: "#C43232" /*关闭按钮按下态颜色*/
+    property color hideButtonHoverColor: "#E93C3C" /*关闭按钮悬浮态颜色*/
+    property color placementButtonPressedColor: "#C8C8C8" /*布局模式切换按钮按下态颜色*/
+    property color placementButtonHoverColor: "#DCDCDC" /*布局模式切换按钮悬浮态颜色*/
+
     //圆角相关
     property int virtualKeyboardFloatPlacementRadius: 16
     property int dragBarIndicatorRadius: 2
+    property int toolbarRadius: 8
 
     //状态相关
     property string letterState: "NORMAL"

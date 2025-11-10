@@ -43,8 +43,8 @@ SwitchKey {
     }
     Connections {
         target: virtualKeyboard
-        onToolbarSizeChanged: {
-            iconSize = virtualKeyboard.toolbarSize * 1.2
+        onActionKeySizeChanged: {
+            iconSize = virtualKeyboard.actionKeySize * 1.2
         }
     }
 
