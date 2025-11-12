@@ -30,6 +30,9 @@ void VirtualKeyboardSettings::init() {
 
     gsettings_.reset(new QGSettings(gsettingsId_.toUtf8()));
 
+    scaleFactorMergeTimer_.setSingleShot(true);
+    scaleFactorMergeTimer_.setInterval(SCALE_FACTOR_MERGE_PERIOD);
+
     connect(gsettings_.get(), &QGSettings::changed, this,
             [this](const QString &key) {
                 if (!gsettings_->keys().contains(key)) {
@@ -39,13 +42,16 @@ void VirtualKeyboardSettings::init() {
                 if (key == floatButtonEnabledKey_) {
                     emitFloatButtonAvailabilityChanged();
                 } else if (key == virtualKeyboardScaleFactorKey_) {
-                    emit scaleFactorChanged();
+                    scaleFactorMergeTimer_.start();
                 } else if (key == trayIconShowKey_) {
                     emitTrayIconShowChanged();
                 } else if (key == animationEnabledKey_) {
                     emit animationAvailabilityChanged();
                 }
             });
+
+    connect(&scaleFactorMergeTimer_, &QTimer::timeout, this,
+            [this]() { emit scaleFactorChanged(); });
 }
 
 void VirtualKeyboardSettings::emitFloatButtonAvailabilityChanged() {

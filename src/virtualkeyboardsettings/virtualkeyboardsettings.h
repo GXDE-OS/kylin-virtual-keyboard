@@ -21,6 +21,7 @@
 #include <memory>
 #include <QGSettings>
 #include <QObject>
+#include <QTimer>
 #include "log.h"
 
 class VirtualKeyboardSettings : public QObject {
@@ -62,5 +63,7 @@ private:
     const QString animationEnabledKey_ = "animationEnabled";
     const QString trayIconShowKey_ = "trayIconShowPolicy";
     const QString preloadViewEnabledKey_ = "preloadViewEnabled";
+    const int SCALE_FACTOR_MERGE_PERIOD = 300;
+    QTimer scaleFactorMergeTimer_;
 };
 #endif
