@@ -89,6 +89,7 @@ struct SurfaceProperty {
     int32_t width = 0;     // 宽度
     int32_t height = 0;    // 高度
     int32_t anchor = 14; // 锚定位置（位标志：top=1, bottom=2, left=4, right=8）
+    int32_t area = 0;    // 是否覆盖任务栏 （0: 不覆盖, 1: 覆盖）
     int32_t zone = 0;    // 保留区域大小
     int32_t margin_top = 0;    // 上边距
     int32_t margin_right = 0;  // 右边距
@@ -97,8 +98,9 @@ struct SurfaceProperty {
     int32_t enabled = 0;       // 是否启用
 
     QVector<int32_t> toVector() const {
-        return {screen_id,  width,        height,        anchor,      zone,
-                margin_top, margin_right, margin_bottom, margin_left, enabled};
+        return {screen_id,     width,       height,     anchor,
+                area,          zone,        margin_top, margin_right,
+                margin_bottom, margin_left, enabled};
     }
 };
 
