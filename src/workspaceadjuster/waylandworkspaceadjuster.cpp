@@ -53,6 +53,7 @@ void WaylandWlcomWorkspaceAdjuster::setSurfaceWindowProperty(
     const QRect &rect, const int32_t &enabled) {
     UkuiWaylandProperty::SurfaceProperty property;
     property.height = rect.height();
+    property.area = 1;
     property.zone = rect.height();
     property.enabled = enabled;
     surfaceWindow_->setProperty(UkuiWaylandProperty::SURFACE_ANCHOR,
