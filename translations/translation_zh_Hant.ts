@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="bo_CN">
+<TS version="2.1" language="zh_Hant">
 <context>
     <name>FloatButton</name>
     <message>
         <location filename="../src/virtualkeyboardentry/floatbutton.cpp" line="142"/>
         <source>Click to show virtual keyboard</source>
-        <translation>རྟོག་བཟོའི་མཐེབ་གཞོང་མངོན་པ།</translation>
+        <translation>顯示虛擬鍵盤</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../qml/HideButton.qml" line="38"/>
         <source>close</source>
-        <translation>ཁ་རྒྱག</translation>
+        <translation>關閉</translation>
     </message>
 </context>
 <context>
@@ -23,12 +23,12 @@
         <location filename="../qml/PlacementModeButton.qml" line="40"/>
         <location filename="../qml/PlacementModeButton.qml" line="67"/>
         <source>Floating Mode</source>
-        <translation>དཔྱང་འཕྱོའི་རྣམ་པ</translation>
+        <translation>懸浮狀態</translation>
     </message>
     <message>
         <location filename="../qml/PlacementModeButton.qml" line="78"/>
         <source>Docking Mode</source>
-        <translation>མཐའ་སྦྱར་རྣམ་པ</translation>
+        <translation>貼邊狀態</translation>
     </message>
 </context>
 <context>
@@ -36,12 +36,12 @@
     <message>
         <location filename="../src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp" line="83"/>
         <source>Disable the float button</source>
-        <translation>མཐེབ་གཞོང་དཔྱང་འཕྱོའི་ལྒང་བུ་སྤྱོད་འགོག</translation>
+        <translation>禁用鍵盤懸浮球</translation>
     </message>
     <message>
         <location filename="../src/virtualkeyboardentry/virtualkeyboardentrymanager.cpp" line="93"/>
         <source>Enable the float button</source>
-        <translation>མཐེབ་གཞོང་དཔྱང་འཕྱོའི་ལྒང་བུ་སྤྱོད་པ</translation>
+        <translation>啟用鍵盤懸浮球</translation>
     </message>
 </context>
 <context>
@@ -49,7 +49,7 @@
     <message>
         <location filename="../src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp" line="41"/>
         <source>Virtual Keyboard</source>
-        <translation>ཆི་ལིན་རྟོགས་བཟོའི་མཐེབ་གཞོང་།</translation>
+        <translation>虛擬鍵盤</translation>
     </message>
 </context>
 </TS>

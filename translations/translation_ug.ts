@@ -14,7 +14,7 @@
     <message>
         <location filename="../qml/HideButton.qml" line="38"/>
         <source>close</source>
-        <translation>ياپ</translation>
+        <translation>تاقاش</translation>
     </message>
 </context>
 <context>
@@ -48,8 +48,8 @@
     <name>VirtualKeyboardTrayIcon</name>
     <message>
         <location filename="../src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp" line="41"/>
-        <source>kylin-virtual-keyboard</source>
-        <translation>kylin- مەۋھۇم- كۇنۇپكا تاختىسى</translation>
+        <source>Virtual Keyboard</source>
+        <translation>مەۋھۇم كۇنۇپكا تاختىسى</translation>
     </message>
 </context>
 </TS>

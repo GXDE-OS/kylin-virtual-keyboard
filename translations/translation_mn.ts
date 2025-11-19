@@ -48,8 +48,8 @@
     <name>VirtualKeyboardTrayIcon</name>
     <message>
         <location filename="../src/virtualkeyboardentry/virtualkeyboardtrayicon.cpp" line="41"/>
-        <source>kylin-virtual-keyboard</source>
-        <translation>ᠴᠢ ᠯᠢᠨ ᠬᠡᠢᠰᠪᠦᠷᠢ ᠳᠠᠷᠤᠭᠤᠯ</translation>
+        <source>Virtual Keyboard</source>
+        <translation>ᠴᠢᠦ ᠯᠢᠨ ᠬᠡᠢᠰᠪᠦᠷᠢ ᠳᠠᠷᠤᠪᠴᠢ</translation>
     </message>
 </context>
 </TS>
