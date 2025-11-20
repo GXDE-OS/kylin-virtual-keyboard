@@ -40,13 +40,13 @@ public:
     }
 
 private:
-    int getUnitWidth() const override {
+    int getUnitWidth(const QRect & /*screenGeo*/) const override {
         return ScreenManager::getPrimaryScreenSize().width();
     }
 
     float getViewWidthRatio() const override { return 1458.0 / 1620.0; }
 
-    int getUnitHeight() const override {
+    int getUnitHeight(const QRect & /*screenGeo*/) const override {
         const auto viewPortSize = ScreenManager::getPrimaryScreenSize();
 
         return std::max(viewPortSize.width(), viewPortSize.height());

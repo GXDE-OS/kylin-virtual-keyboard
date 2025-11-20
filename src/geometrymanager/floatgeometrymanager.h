@@ -101,11 +101,10 @@ public:
     virtual ~Strategy() = default;
 
     int getViewWidth(const QRect &screenGeo) const {
-        return screenGeo.width() * getViewWidthRatio();
+        return getUnitWidth(screenGeo) * getViewWidthRatio();
     }
     int getViewHeight(const QRect &screenGeo) const {
-        auto height = std::max(screenGeo.width(), screenGeo.height());
-        return height * getViewHeightRatio();
+        return getUnitHeight(screenGeo) * getViewHeightRatio();
     }
 
     virtual int getDefaultRightMargin() const = 0;
@@ -115,10 +114,10 @@ protected:
     Strategy() = default;
 
 private:
-    virtual int getUnitWidth() const = 0;
+    virtual int getUnitWidth(const QRect &screenGeo) const = 0;
     virtual float getViewWidthRatio() const = 0;
 
-    virtual int getUnitHeight() const = 0;
+    virtual int getUnitHeight(const QRect &screenGeo) const = 0;
     virtual float getViewHeightRatio() const = 0;
 };
 

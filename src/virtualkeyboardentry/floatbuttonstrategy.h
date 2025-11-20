@@ -27,24 +27,22 @@ public:
     ~FloatButtonStrategy() override = default;
 
     int getDefaultRightMargin() const override {
-        return getUnitWidth() * defaultRightMarginRatio_;
+        const int screenWidth = ScreenManager::getPrimaryScreenSize().width();
+        return screenWidth * defaultRightMarginRatio_;
     }
 
     int getDefaultBottomMargin() const override {
-        return getUnitHeight() * defaultBottomMarginRatio_;
+        const int screenHeight = ScreenManager::getPrimaryScreenSize().height();
+        return screenHeight * defaultBottomMarginRatio_;
     }
 
 private:
-    int getUnitWidth() const override {
-        const auto viewPortSize = ScreenManager::getPrimaryScreenSize();
-
-        return std::max(viewPortSize.width(), viewPortSize.height());
+    int getUnitWidth(const QRect &screenGeo) const override {
+        return std::max(screenGeo.width(), screenGeo.height());
     }
 
-    int getUnitHeight() const override {
-        const auto viewPortSize = ScreenManager::getPrimaryScreenSize();
-
-        return std::max(viewPortSize.width(), viewPortSize.height());
+    int getUnitHeight(const QRect &screenGeo) const override {
+        return std::max(screenGeo.width(), screenGeo.height());
     }
 
     float getViewWidthRatio() const override { return 56.0 / 1620.0; }
