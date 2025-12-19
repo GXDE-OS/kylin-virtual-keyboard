@@ -15,8 +15,10 @@
 * this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
+import QtQuick 2.0
+
 ActionKey {
     width: virtualKeyboard.spaceKeyWidth
     label: "space"
-    actionKeyImgPath: "qrc:/img/space.svg"
+    actionKeyImgPath: virtualKeyboard.getIconPath("space.svg")
 }

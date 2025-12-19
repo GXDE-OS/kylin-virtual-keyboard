@@ -44,7 +44,7 @@ TemporarySwitchKey {
 
             PropertyChanges {
                 target: win
-                winKeyImgPath: "qrc:/img/super_logo.svg"
+                winKeyImgPath: virtualKeyboard.getIconPath("super_logo.svg")
             }
 
         },
@@ -58,7 +58,7 @@ TemporarySwitchKey {
 
             PropertyChanges {
                 target: win
-                winKeyImgPath: "qrc:/img/super_logo_clicked.svg"
+                winKeyImgPath: virtualKeyboard.getIconPath("super_logo_clicked.svg")
             }
 
         }

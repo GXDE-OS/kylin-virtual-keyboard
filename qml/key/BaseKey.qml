@@ -15,29 +15,26 @@
 * this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
+import QtGraphicalEffects 1.0
 import QtQuick 2.0
 import QtQuick.Controls 2.0
-import QtGraphicalEffects 1.0
 
 ToolButton {
     property int keycode
-    width: virtualKeyboard.keyWidth
-    height: virtualKeyboard.keyHeight
     property string label: ""
     property real fontSize: virtualKeyboard.fontSize
     property alias keyLabel: keyLabel_
     property alias keyBackground: keyBackground_
     property alias dropShadow: dropShadow_
-    /*label和img对应父控件的水平对齐方式 取值为AlignHCenter:居中对齐,AlignRight:向右对齐,AlignLeft:向左对齐*/
+    //label和img对应父控件的水平对齐方式 取值为AlignHCenter:居中对齐,AlignRight:向右对齐,AlignLeft:向左对齐
     property int alignment: Text.AlignHCenter
 
-    background: Rectangle {
-        id: keyBackground_
-        radius: virtualKeyboard.keyRadius
-    }
+    width: virtualKeyboard.keyWidth
+    height: virtualKeyboard.keyHeight
 
     ShadowWrapper {
         id: dropShadow_
+
         anchors.fill: parent
         verticalOffset: virtualKeyboard.dropShadowVerticalOffset
         radius: virtualKeyboard.keyRadius
@@ -47,11 +44,11 @@ ToolButton {
         z: -1 //阴影保持在最下层
     }
 
-
     Label {
         id: keyLabel_
+
         text: label
-        color: "black"
+        color: virtualKeyboard.fontPrimaryColor
         font.pointSize: fontSize
         font.weight: Font.Light
         anchors.fill: parent
@@ -60,5 +57,11 @@ ToolButton {
         verticalAlignment: Text.AlignVCenter
         visible: true
     }
-}
 
+    background: Rectangle {
+        id: keyBackground_
+
+        radius: virtualKeyboard.keyRadius
+    }
+
+}
