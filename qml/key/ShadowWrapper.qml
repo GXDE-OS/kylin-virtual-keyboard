@@ -16,6 +16,7 @@
 */
 
 import QtQuick 2.0
+import org.ukui.quick.items 1.0
 
 Item {
     id: wrapper
@@ -30,58 +31,22 @@ Item {
     property bool isQt6: qtVersionMajor >= 6
 
     anchors.fill: parent
-    onSourceChanged: {
-        if (effectLoader.item)
-            effectLoader.item.source = wrapper.source;
+    z: -1 // 阴影保持在最下层
 
-    }
-    onColorChanged: {
-        if (effectLoader.item)
-            effectLoader.item.color = wrapper.color;
-
-    }
-    onHorizontalOffsetChanged: {
-        if (effectLoader.item)
-            effectLoader.item.horizontalOffset = wrapper.horizontalOffset;
-
-    }
-    onVerticalOffsetChanged: {
-        if (effectLoader.item)
-            effectLoader.item.verticalOffset = wrapper.verticalOffset;
-
-    }
-    onRadiusChanged: {
-        if (effectLoader.item)
-            effectLoader.item.radius = wrapper.radius;
-
-    }
-    onSamplesChanged: {
-        if (effectLoader.item)
-            effectLoader.item.samples = wrapper.samples;
-
-    }
-    onZChanged: {
-        if (effectLoader.item)
-            effectLoader.item.z = wrapper.z;
-
-    }
-
-    Loader {
-        id: effectLoader
-
+    // 使用ShadowedRectangle来创建阴影，color设置为transparent，只显示阴影
+    ShadowedRectangle {
         anchors.fill: parent
-        source: isQt6 ? "GraphicalEffectsQt6.qml" : "GraphicalEffectsQt5.qml"
-        onLoaded: {
-            if (item) {
-                item.source = wrapper.source;
-                item.color = wrapper.color;
-                item.horizontalOffset = wrapper.horizontalOffset;
-                item.verticalOffset = wrapper.verticalOffset;
-                item.radius = wrapper.radius;
-                item.samples = wrapper.samples;
-                item.z = wrapper.z;
-            }
+        radius: wrapper.radius
+        color: "transparent"
+        border.width: 0
+
+        shadow {
+            size: wrapper.radius
+            color: wrapper.color
+            xOffset: wrapper.horizontalOffset
+            yOffset: wrapper.verticalOffset
         }
+
     }
 
 }
