@@ -69,7 +69,8 @@ constexpr const char *SURFACE_STATE = "ukui_surface_state"; // 窗口状态
 constexpr const char *SURFACE_SKIP_TASKBAR =
     "ukui_surface_skip_taskbar"; // 跳过任务栏
 constexpr const char *SURFACE_SKIP_SWITCHER =
-    "ukui_surface_skip_switcher"; // 跳过窗口切换器
+    "ukui_surface_skip_switcher";                         // 跳过窗口切换器
+constexpr const char *SURFACE_BLUR = "ukui_surface_blur"; // 毛玻璃
 
 // 窗口角色
 namespace Role {
