@@ -25,6 +25,7 @@
 #include <QPushButton>
 
 #include "localsettings/localsettings.h"
+#include "themewatcher.h"
 #include "virtualkeyboard/virtualkeyboardmanager.h"
 #include "virtualkeyboardentry/fcitxvirtualkeyboardservice.h"
 #include "virtualkeyboardentry/floatbutton.h"
@@ -44,7 +45,7 @@ public:
     FloatButtonManager(
         const VirtualKeyboardManager &virtualKeyboardManager,
         const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService,
-        LocalSettings &floatButtonSettings);
+        LocalSettings &floatButtonSettings, ThemeWatcher &themeWatcher);
     ~FloatButtonManager() override = default;
 
     void updateFloatButtonEnabled(bool enabled);
@@ -83,6 +84,7 @@ private:
     const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService_;
 
     LocalSettings &floatButtonSettings_;
+    ThemeWatcher &themeWatcher_;
 
     std::unique_ptr<FloatButton> floatButton_ = nullptr;
 

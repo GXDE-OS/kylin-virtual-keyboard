@@ -25,7 +25,6 @@
 
 FloatButton::FloatButton(MouseClickedCallback mouseClickedCallback)
     : mouseClickedCallback_(std::move(mouseClickedCallback)) {
-    initStyle();
     initAttributes();
 }
 
@@ -118,7 +117,7 @@ void FloatButton::mouseMoveEvent(QMouseEvent *event) {
 void FloatButton::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setBrush(QBrush(Qt::white));
+    painter.setBrush(QBrush(Qt::transparent));
     painter.setPen(Qt::transparent);
 
     QRect rect = this->rect();
@@ -130,13 +129,16 @@ void FloatButton::paintEvent(QPaintEvent *event) {
     QPushButton::paintEvent(event);
 }
 
-void FloatButton::initStyle() {
-    setStyleSheet("QPushButton{border-image: "
-                  "url(:/floatbutton/img/floatbuttondefault.svg);}"
-                  "QPushButton:hover{border-image: "
-                  "url(:/floatbutton/img/floatbuttonhovered.svg);}"
-                  "QPushButton:pressed{border-image: "
-                  "url(:/floatbutton/img/floatbuttonpressed.svg);}");
+void FloatButton::updateThemeStyle(const QString &themeColor) {
+    const QString themePrefix = QString(":/img/%1/").arg(themeColor);
+    const QString defaultIcon = themePrefix + "floatbuttondefault.svg";
+    const QString hoveredIcon = themePrefix + "floatbuttonhovered.svg";
+    const QString pressedIcon = themePrefix + "floatbuttonpressed.svg";
+
+    setStyleSheet(QString("QPushButton{border-image: url(%1);}"
+                          "QPushButton:hover{border-image: url(%2);}"
+                          "QPushButton:pressed{border-image: url(%3);}")
+                      .arg(defaultIcon, hoveredIcon, pressedIcon));
 }
 
 void FloatButton::initAttributes() {
@@ -145,16 +147,21 @@ void FloatButton::initAttributes() {
     setAttribute(Qt::WA_AlwaysShowToolTips, true);
     setToolTip(tr("Click to show virtual keyboard"));
 
-    setWindowFlags(Qt::FramelessWindowHint | Qt::BypassWindowManagerHint |
-                   Qt::Tool);
-
     // 主题框架默认禁用了move消息，因此，QPushButton需要禁用主题框架
     setProperty("useStyleWindowManager", QVariant(false));
+    setWindowFlags(Qt::FramelessWindowHint | Qt::BypassWindowManagerHint |
+                   Qt::Tool);
 
     if (getDesktopEnvironment() == DesktopEnvironment::UKUI &&
         getDesktopType() == DesktopType::WAYLAND) {
         setProperty(UkuiWaylandProperty::SURFACE_ROLE,
                     UkuiWaylandProperty::Role::INPUT_PANEL);
+        // TODO: 合成器目前圆角是固定值，而且没有给inputpanel窗口设置圆角
+        // 设置阴影和毛玻璃会有圆角问题，暂时屏蔽
+        //        setProperty(UkuiWaylandProperty::SURFACE_NO_TITLEBAR, true);
+        //                QPair<QRegion, int> pair(QRegion(), 0);
+        //                setProperty(UkuiWaylandProperty::SURFACE_BLUR,
+        //                            QVariant::fromValue(pair));
     }
 }
 

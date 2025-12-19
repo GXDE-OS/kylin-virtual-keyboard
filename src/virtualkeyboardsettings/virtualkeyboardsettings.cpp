@@ -141,11 +141,6 @@ const QString VirtualKeyboardSettings::currentTheme() const {
 
 void VirtualKeyboardSettings::emitCurrentThemeChanged() {
     const QString value = gsettings_->get(defaultThemeKey_).toString();
-    if (value == currentThemeValue_) {
-        return;
-    }
-
-    currentThemeValue_ = value;
     emit currentThemeChanged(value);
 }
 

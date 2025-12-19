@@ -44,6 +44,9 @@ public:
     explicit FloatButton(MouseClickedCallback mouseClickedCallback);
     ~FloatButton() override = default;
 
+public slots:
+    void updateThemeStyle(const QString &themeColor);
+
 signals:
     void mouseMoved(int x, int y);
     void mouseReleased();
@@ -67,7 +70,6 @@ private:
     void updateManhattonLength(QMouseEvent *event);
     bool isFloatButtonMoved() const;
 
-    void initStyle();
     void initAttributes();
 
     void startClickTimer();

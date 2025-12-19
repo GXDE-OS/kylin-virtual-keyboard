@@ -31,9 +31,9 @@ VirtualKeyboardEntryManager::VirtualKeyboardEntryManager(
     VirtualKeyboardManager &virtualKeyboardManager,
     const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService)
     : virtualKeyboardManager_(virtualKeyboardManager),
-      floatButtonManager_(new FloatButtonManager(virtualKeyboardManager,
-                                                 fcitxVirtualKeyboardService,
-                                                 floatButtonSettings_)),
+      floatButtonManager_(new FloatButtonManager(
+          virtualKeyboardManager, fcitxVirtualKeyboardService,
+          floatButtonSettings_, virtualKeyboardManager.themeWatcher())),
       trayIconEntry_(new VirtualKeyboardTrayIcon(virtualKeyboardManager_,
                                                  fcitxVirtualKeyboardService)),
       keyboardServiceProxy_(new KeyboardServiceProxy()) {

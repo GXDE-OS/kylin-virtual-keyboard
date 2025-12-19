@@ -66,9 +66,9 @@ private:
     const QString animationEnabledKey_ = "animationEnabled";
     const QString trayIconShowKey_ = "trayIconShowPolicy";
     const QString preloadViewEnabledKey_ = "preloadViewEnabled";
+    const QString defaultThemeKey_ = "theme";
     const int SCALE_FACTOR_MERGE_PERIOD = 300;
     QTimer scaleFactorMergeTimer_;
     const QString themeKey_ = "theme";
-    const QString currentThemeValue_ = "default";
 };
 #endif

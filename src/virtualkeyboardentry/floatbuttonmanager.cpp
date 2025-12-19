@@ -26,15 +26,16 @@
 
 #include "geometrymanager/floatgeometrymanager.h"
 #include "geometrymanager/geometrymanager.h"
+#include "themewatcher.h"
 #include "virtualkeyboardentry/floatbuttonstrategy.h"
 
 FloatButtonManager::FloatButtonManager(
     const VirtualKeyboardManager &virtualKeyboardManager,
     const FcitxVirtualKeyboardService &fcitxVirtualKeyboardService,
-    LocalSettings &floatButtonSettings)
+    LocalSettings &floatButtonSettings, ThemeWatcher &themeWatcher)
     : virtualKeyboardManager_(virtualKeyboardManager),
       fcitxVirtualKeyboardService_(fcitxVirtualKeyboardService),
-      floatButtonSettings_(floatButtonSettings) {
+      floatButtonSettings_(floatButtonSettings), themeWatcher_(themeWatcher) {
     initGeometryManager();
 
     initInternalSignalConnections();
@@ -113,10 +114,17 @@ void FloatButtonManager::hideFloatButton() {
 void FloatButtonManager::createFloatButton() {
     floatButton_.reset(new FloatButton(
         [this]() { fcitxVirtualKeyboardService_.showVirtualKeyboard(); }));
+    floatButton_->updateThemeStyle(themeWatcher_.currentThemeColor());
     floatButton_->show();
 }
 
 void FloatButtonManager::connectFloatButtonSignals() {
+    connect(&themeWatcher_, &ThemeWatcher::currentThemeColorChanged,
+            floatButton_.get(), [this]() {
+                floatButton_->updateThemeStyle(
+                    themeWatcher_.currentThemeColor());
+            });
+
     connect(floatButton_.get(), &FloatButton::mouseMoved,
             geometryManager_.get(), &FloatGeometryManager::moveBy);
     connect(floatButton_.get(), &FloatButton::mouseReleased,
