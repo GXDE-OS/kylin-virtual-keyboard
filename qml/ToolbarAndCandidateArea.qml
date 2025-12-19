@@ -20,7 +20,12 @@ import QtQuick 2.0
 Rectangle {
     width: parent.width
     height: virtualKeyboard.toolAndCandidateHeight
-    color: virtualKeyboard.virtualKeyboardColor
-    Toolbar{}
-    CandidateList{}
+    color: "transparent"
+
+    Toolbar {
+    }
+
+    CandidateList {
+    }
+
 }

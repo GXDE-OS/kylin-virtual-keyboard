@@ -98,7 +98,7 @@ Column {
         SymbolKey{ label: ", "; shiftedText: "<"; keycode: Keycode.KEY_COMMA }
         SymbolKey{ label: "."; shiftedText: ">"; keycode: Keycode.KEY_DOT }
         SymbolKey{ label: "/"; shiftedText: "?"; keycode: Keycode.KEY_SLASH }
-        ActionKey{ label: "up"; actionKeyImgPath: "qrc:/img/up.svg"; keycode: Keycode.KEY_UP }
+        ActionKey{ label: "up"; actionKeyImgPath: virtualKeyboard.getIconPath("up.svg"); keycode: Keycode.KEY_UP }
         ShiftKey{ width: virtualKeyboard.keyWidth*2 + virtualKeyboard.keySpacing; alignment: Text.AlignRight; keycode: Keycode.KEY_RIGHTSHIFT }
     }
     Row {
@@ -109,11 +109,11 @@ Column {
         WinKey{ label: "win"; keycode: Keycode.KEY_LEFTSUPER }
         AltKey{ keycode: Keycode.KEY_LEFTALT }
         ChangeImKey{}
-        SpaceKey{ keycode: Keycode.KEY_SPACE }
+        SpaceKey{  keycode: Keycode.KEY_SPACE }
         AltKey{ keycode: Keycode.KEY_RIGHTALT }
-        ActionKey{ label: "left"; actionKeyImgPath: "qrc:/img/left.svg"; keycode: Keycode.KEY_LEFT }
-        ActionKey{ label: "down"; actionKeyImgPath: "qrc:/img/down.svg"; keycode: Keycode.KEY_DOWN }
-        ActionKey{ label: "right"; actionKeyImgPath: "qrc:/img/right.svg"; keycode: Keycode.KEY_RIGHT }
+        ActionKey{ label: "left"; actionKeyImgPath: virtualKeyboard.getIconPath("left.svg"); keycode: Keycode.KEY_LEFT }
+        ActionKey{ label: "down"; actionKeyImgPath: virtualKeyboard.getIconPath("down.svg"); keycode: Keycode.KEY_DOWN }
+        ActionKey{ label: "right"; actionKeyImgPath: virtualKeyboard.getIconPath("right.svg"); keycode: Keycode.KEY_RIGHT }
         CtrlKey{ keycode: Keycode.KEY_RIGHTCTRL }
     }
 }

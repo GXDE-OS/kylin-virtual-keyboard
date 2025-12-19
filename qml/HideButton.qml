@@ -24,45 +24,39 @@ Rectangle {
     anchors.verticalCenter: parent.verticalCenter
     anchors.right: parent.right
     anchors.rightMargin: virtualKeyboard.cardinalNumber * 3.5
-    color: virtualKeyboard.virtualKeyboardColor
+    color: mouseArea.pressed ? virtualKeyboard.hideButtonPressedColor : (mouseArea.containsMouse ? virtualKeyboard.hideButtonHoverColor : "transparent")
     radius: virtualKeyboard.toolbarRadius
 
     Image {
         id: hideButtonImg
+
         anchors.centerIn: parent
         sourceSize: Qt.size(parent.width * 0.5, parent.width * 0.5)
-        source: "qrc:/img/close.svg"
+        source: mouseArea.containsMouse ? virtualKeyboard.getIconPath("close_hovered.svg") : virtualKeyboard.getIconPath("close.svg")
     }
 
     ToolTip {
-        id:hideButtonToolTip
-        text: qsTr("close")
+        id: hideButtonToolTip
+
         property var backOpacity: 1
+
+        text: qsTr("close")
     }
 
     MouseArea {
+        id: mouseArea
+
         anchors.fill: parent
         hoverEnabled: true
-
-        onPressed: {
-            color = virtualKeyboard.hideButtonPressedColor
+        onClicked: {
+            virtualKeyboard.hideVirtualKeyboard();
         }
-
-        onReleased: {
-            virtualKeyboard.hideVirtualKeyboard()
-            color = virtualKeyboard.hideButtonHoverColor
-        }
-
         onEntered: {
-            hideButtonToolTip.visible = true
-            color = virtualKeyboard.hideButtonHoverColor
-            hideButtonImg.source = "qrc:/img/close_hovered.svg"
+            hideButtonToolTip.visible = true;
         }
-
         onExited: {
-            hideButtonToolTip.visible = false
-            color = virtualKeyboard.virtualKeyboardColor
-            hideButtonImg.source = "qrc:/img/close.svg"
+            hideButtonToolTip.visible = false;
         }
     }
+
 }

@@ -18,31 +18,52 @@
 import QtQuick 2.0
 
 Rectangle {
+    property int startX: 0
+    property int startY: 0
+
     width: parent.width
     height: virtualKeyboard.dragBarHeight
-    color: virtualKeyboard.virtualKeyboardColor
+    color: "transparent"
     radius: virtualKeyboard.virtualKeyboardFloatPlacementRadius
+    state: virtualKeyboard.placementMode
+    states: [
+        State {
+            name: "EXPANSION"
 
-    property int startX: 0;
-    property int startY: 0;
+            PropertyChanges {
+                target: dragBar
+                visible: false
+            }
+
+        },
+        State {
+            name: "FLOAT"
+
+            PropertyChanges {
+                target: dragBar
+                visible: true
+            }
+
+        }
+    ]
 
     MouseArea {
         anchors.fill: parent
         onPressed: {
-            startX = mouseX
-            startY = mouseY
+            startX = mouseX;
+            startY = mouseY;
         }
         onPositionChanged: {
-            virtualKeyboard.moveBy(mouseX - startX, mouseY - startY)
+            virtualKeyboard.moveBy(mouseX - startX, mouseY - startY);
         }
-
         onReleased: {
-            virtualKeyboard.endDrag()
+            virtualKeyboard.endDrag();
         }
     }
 
     Rectangle {
         id: dragBarIndicator
+
         anchors.centerIn: parent
         width: virtualKeyboard.dragBarIndicatorWidth
         height: virtualKeyboard.dragBarIndicatorHeight
@@ -50,21 +71,4 @@ Rectangle {
         radius: virtualKeyboard.dragBarIndicatorRadius
     }
 
-    state: virtualKeyboard.placementMode
-    states: [
-        State {
-            name: "EXPANSION"
-            PropertyChanges {
-                target: dragBar
-                visible: false
-            }
-        },
-        State {
-            name: "FLOAT"
-            PropertyChanges {
-                target: dragBar
-                visible: true
-            }
-        }
-    ]
 }

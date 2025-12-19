@@ -19,23 +19,27 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 
 Rectangle {
-    property alias cursorPosition: preeditText.cursorPosition   
+    property alias cursorPosition: preeditText.cursorPosition
     property alias text: preeditText.text
+
     width: parent.width
     height: virtualKeyboard.preeditHeight
-    color: virtualKeyboard.virtualKeyboardColor
+    color: "transparent"
     x: virtualKeyboard.preeditX
 
     TextInput {
         id: preeditText
+
         font.pointSize: virtualKeyboard.preeditTextFontSize
         anchors.verticalCenter: parent.verticalCenter
-        color: "black"
+        color: virtualKeyboard.candidateDefaultColor
         cursorVisible: text.length != 0
 
         // 暂不支持通过点击改变光标位置
         MouseArea {
             anchors.fill: parent
-        }        
+        }
+
     }
+
 }

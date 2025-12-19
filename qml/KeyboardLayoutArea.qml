@@ -20,13 +20,13 @@ import QtQuick.Window 2.0
 
 Rectangle {
     visible: isKeyBoardLayoutVisible
-
     width: parent.width
     height: virtualKeyboard.keyboardLayoutHeight
     radius: virtualKeyboard.radius
-    color: virtualKeyboard.virtualKeyboardColor
-
     anchors.topMargin: keySpacing * 2
+    color: "transparent"
 
-    ClassicKeyboardLayout{}
+    ClassicKeyboardLayout {
+    }
+
 }

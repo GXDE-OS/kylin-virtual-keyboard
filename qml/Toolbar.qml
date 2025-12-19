@@ -21,10 +21,14 @@ Rectangle {
     width: parent.width
     height: parent.height
     visible: virtualKeyboard.isToolbarVisible
-    color: virtualKeyboard.virtualKeyboardColor
+    color: "transparent"
 
-    HideButton{id: hideButton}
-    PlacementModeButton{
+    HideButton {
+        id: hideButton
+    }
+
+    PlacementModeButton {
         alignmentRight: hideButton
     }
+
 }

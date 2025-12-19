@@ -19,77 +19,75 @@ import QtQuick 2.0
 import QtQuick.Controls 2.0
 
 Rectangle {
-    height: virtualKeyboard.toolbarSize
-    width: virtualKeyboard.toolbarSize
-
     property var alignmentRight
 
+    height: virtualKeyboard.toolbarSize
+    width: virtualKeyboard.toolbarSize
     anchors.verticalCenter: parent.verticalCenter
     anchors.right: alignmentRight.left
     anchors.rightMargin: virtualKeyboard.cardinalNumber * 3.5
-    color: virtualKeyboard.virtualKeyboardColor
+    color: mouseArea.pressed ? virtualKeyboard.placementButtonPressedColor : (mouseArea.containsMouse ? virtualKeyboard.placementButtonHoverColor : "transparent")
     radius: virtualKeyboard.toolbarRadius
+    state: virtualKeyboard.placementMode
+    states: [
+        State {
+            name: "EXPANSION"
+
+            PropertyChanges {
+                target: placementModelButtonImg
+                source: virtualKeyboard.getIconPath("upfloat.svg")
+            }
+
+            PropertyChanges {
+                target: placementModelButtonToolTip
+                text: qsTr("Floating Mode")
+            }
+
+        },
+        State {
+            name: "FLOAT"
+
+            PropertyChanges {
+                target: placementModelButtonImg
+                source: virtualKeyboard.getIconPath("downfloat.svg")
+            }
+
+            PropertyChanges {
+                target: placementModelButtonToolTip
+                text: qsTr("Docking Mode")
+            }
+
+        }
+    ]
 
     Image {
         id: placementModelButtonImg
+
         sourceSize: Qt.size(parent.width * 0.5, parent.width * 0.5)
-        source: "qrc:/img/upfloat.svg"
+        source: virtualKeyboard.getIconPath("upfloat.svg")
         anchors.centerIn: parent
     }
 
     ToolTip {
         id: placementModelButtonToolTip
-        text: qsTr("Floating Mode")
+
         property var backOpacity: 1
+
+        text: qsTr("Floating Mode")
     }
 
     MouseArea {
+        id: mouseArea
+
         anchors.fill: parent
         hoverEnabled: true
         onClicked: virtualKeyboard.flipPlacementMode()
-
         onEntered: {
-            placementModelButtonToolTip.visible = true
-            color = virtualKeyboard.placementButtonHoverColor
+            placementModelButtonToolTip.visible = true;
         }
-
         onExited: {
-            placementModelButtonToolTip.visible = false
-            color = virtualKeyboard.virtualKeyboardColor
-        }
-
-        onPressed: {
-            color = virtualKeyboard.placementButtonPressedColor
-        }
-
-        onReleased: {
-            color = virtualKeyboard.placementButtonHoverColor
+            placementModelButtonToolTip.visible = false;
         }
     }
 
-    state: virtualKeyboard.placementMode
-    states: [
-        State {
-            name: "EXPANSION"
-            PropertyChanges {
-                target: placementModelButtonImg
-                source: "qrc:/img/upfloat.svg"
-            }
-            PropertyChanges {
-                target: placementModelButtonToolTip
-                text: qsTr("Floating Mode")
-            }
-        },
-        State {
-            name: "FLOAT"
-            PropertyChanges {
-                target: placementModelButtonImg
-                source: "qrc:/img/downfloat.svg"
-            }
-            PropertyChanges {
-                target: placementModelButtonToolTip
-                text: qsTr("Docking Mode")
-            }
-        }
-    ]
 }
