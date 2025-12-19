@@ -33,31 +33,60 @@
         <file>qml/key/EnterKey.qml</file>
         <file>qml/PlacementModeButton.qml</file>
         <file>qml/DragBar.qml</file>
+        <file>qml/theme/ThemeWrapper.qml</file>
+        <file>qml/js/themeutils.js</file>
+        <file>qml/theme/ukui/LightTheme.qml</file>
+        <file>qml/theme/ukui/DarkTheme.qml</file>
+        <file>qml/theme/default/LightTheme.qml</file>
+        <file>qml/theme/default/DarkTheme.qml</file>
 
         <file>qml/js/keycode.js</file>
 
-        <file>img/upfloat.svg</file>
-        <file>img/downfloat.svg</file>
-        <file>img/space.svg</file>
-        <file>img/backspace.svg</file>
-        <file>img/close.svg</file>
-        <file>img/enter.svg</file>
-        <file>img/left.svg</file>
-        <file>img/right.svg</file>
-        <file>img/up.svg</file>
-        <file>img/down.svg</file>
         <file>img/extend.svg</file>
-        <file>img/super_logo.svg</file>
-        <file>img/super_logo_clicked.svg</file>
-        <file>img/close_hovered.svg</file>
+
+        <!-- Light theme icons -->
+        <file>img/light/backspace.svg</file>
+        <file>img/light/close.svg</file>
+        <file>img/light/close_hovered.svg</file>
+        <file>img/light/down.svg</file>
+        <file>img/light/downfloat.svg</file>
+        <file>img/light/enter.svg</file>
+        <file>img/light/extend.svg</file>
+        <file>img/light/left.svg</file>
+        <file>img/light/right.svg</file>
+        <file>img/light/space.svg</file>
+        <file>img/light/super_logo.svg</file>
+        <file>img/light/super_logo_clicked.svg</file>
+        <file>img/light/up.svg</file>
+        <file>img/light/upfloat.svg</file>
+        <file>img/light/disablefloatbutton.svg</file>
+        <file>img/light/enablefloatbutton.svg</file>
+        <file>img/light/floatbuttondefault.svg</file>
+        <file>img/light/floatbuttonhovered.svg</file>
+        <file>img/light/floatbuttonpressed.svg</file>
+
+        <!-- Dark theme icons -->
+        <file>img/dark/backspace.svg</file>
+        <file>img/dark/close.svg</file>
+        <file>img/dark/close_hovered.svg</file>
+        <file>img/dark/down.svg</file>
+        <file>img/dark/downfloat.svg</file>
+        <file>img/dark/enter.svg</file>
+        <file>img/dark/left.svg</file>
+        <file>img/dark/right.svg</file>
+        <file>img/dark/space.svg</file>
+        <file>img/dark/super_logo.svg</file>
+        <file>img/dark/super_logo_clicked.svg</file>
+        <file>img/dark/up.svg</file>
+        <file>img/dark/upfloat.svg</file>
+        <file>img/dark/floatbuttondefault.svg</file>
+        <file>img/dark/floatbuttonhovered.svg</file>
+        <file>img/dark/floatbuttonpressed.svg</file>
     </qresource>
 
     <qresource prefix="/floatbutton">
         <file>img/enablefloatbutton.svg</file>
         <file>img/disablefloatbutton.svg</file>
-        <file>img/floatbuttondefault.svg</file>
-        <file>img/floatbuttonpressed.svg</file>
-        <file>img/floatbuttonhovered.svg</file>
     </qresource>
 
     <qresource prefix="/translations">
