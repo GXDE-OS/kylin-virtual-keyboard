@@ -34,6 +34,7 @@
 VirtualKeyboardManager::VirtualKeyboardManager(
     HideVirtualKeyboardCallback hideVirtualKeyboardCallback)
     : hideVirtualKeyboardCallback_(std::move(hideVirtualKeyboardCallback)) {
+    initThemeWatcher();
     initVirtualKeyboardModel();
 
     initWorkspaceAdjuster();
@@ -196,6 +197,10 @@ VirtualKeyboardManager::createFloatGeometryManger() {
         viewSettings_, createFloatModeScaler()));
 }
 
+void VirtualKeyboardManager::initThemeWatcher() {
+    themeWatcher_.reset(new ThemeWatcher(this));
+}
+
 void VirtualKeyboardManager::initVirtualKeyboardModel() {
     model_.reset(new VirtualKeyboardModel(this));
 
@@ -204,9 +209,10 @@ void VirtualKeyboardManager::initVirtualKeyboardModel() {
 }
 
 void VirtualKeyboardManager::initVirtualKeyboardView() {
-    view_.reset(new VirtualKeyboardView(
-        *this, *model_, createPlacementModeManager(),
-        createExpansionGeometryManager(), createFloatGeometryManger()));
+    view_.reset(
+        new VirtualKeyboardView(*this, *model_, createPlacementModeManager(),
+                                createExpansionGeometryManager(),
+                                createFloatGeometryManger(), *themeWatcher_));
     view_->setAnimator(createAnimator());
 
     connectVirtualKeyboardModelSignals();

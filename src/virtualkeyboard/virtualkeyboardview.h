@@ -28,6 +28,7 @@
 #include "geometrymanager/expansiongeometrymanager.h"
 #include "geometrymanager/floatgeometrymanager.h"
 #include "geometrymanager/geometrymanager.h"
+#include "themewatcher.h"
 #include "virtualkeyboard/placementmodemanager.h"
 
 class VirtualKeyboardView : public QObject {
@@ -38,7 +39,8 @@ public:
         QObject &manager, QObject &model,
         std::unique_ptr<PlacementModeManager> placementModeManager,
         std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager,
-        std::unique_ptr<FloatGeometryManager> floatGeometryManager);
+        std::unique_ptr<FloatGeometryManager> floatGeometryManager,
+        ThemeWatcher &themeWatcher);
     ~VirtualKeyboardView() override;
 
     void initView();
@@ -119,6 +121,7 @@ private:
 private:
     QObject &manager_;
     QObject &model_;
+    ThemeWatcher &themeWatcher_;
     std::unique_ptr<QQuickView> view_ = nullptr;
     std::unique_ptr<PlacementModeManager> placementModeManager_ = nullptr;
 

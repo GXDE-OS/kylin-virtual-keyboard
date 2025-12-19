@@ -19,6 +19,7 @@
 #include <QQmlContext>
 #include <QQuickItem>
 #include "screenmanager.h"
+#include "themewatcher.h"
 #include "ukuiwaylandhelper/ukuiwaylandproperties.h"
 #include "utils.h"
 #include "virtualkeyboardsettings/virtualkeyboardsettings.h"
@@ -27,8 +28,9 @@ VirtualKeyboardView::VirtualKeyboardView(
     QObject &manager, QObject &model,
     std::unique_ptr<PlacementModeManager> placementModeManager,
     std::unique_ptr<ExpansionGeometryManager> expansionGeometryManager,
-    std::unique_ptr<FloatGeometryManager> floatGeometryManager)
-    : manager_(manager), model_(model),
+    std::unique_ptr<FloatGeometryManager> floatGeometryManager,
+    ThemeWatcher &themeWatcher)
+    : manager_(manager), model_(model), themeWatcher_(themeWatcher),
       placementModeManager_(std::move(placementModeManager)),
       expansionGeometryManager_(std::move(expansionGeometryManager)),
       floatGeometryManager_(std::move(floatGeometryManager)) {
@@ -135,6 +137,7 @@ void VirtualKeyboardView::initView() {
     view_->rootContext()->setContextProperty("manager", &manager_);
     view_->rootContext()->setContextProperty("model", &model_);
     view_->rootContext()->setContextProperty("view", this);
+    view_->rootContext()->setContextProperty("themeWatcher", &themeWatcher_);
 
     view_->rootContext()->setContextProperty("QT_VERSION_MAJOR",
                                              QT_VERSION_MAJOR);
@@ -146,14 +149,19 @@ void VirtualKeyboardView::initView() {
     view_->setTitle("kylin-virtual-keyboard");
     view_->setColor(QColor(Qt::transparent));
     view_->setSource(QUrl("qrc:/qml/VirtualKeyboard.qml"));
-    view_->setFlags(Qt::Window | Qt::WindowDoesNotAcceptFocus |
-                    Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
-                    Qt::BypassWindowManagerHint);
 
     if (getDesktopEnvironment() == DesktopEnvironment::UKUI &&
         getDesktopType() == DesktopType::WAYLAND) {
         view_->setProperty(UkuiWaylandProperty::SURFACE_ROLE,
                            UkuiWaylandProperty::Role::INPUT_PANEL);
+        view_->setProperty(UkuiWaylandProperty::SURFACE_NO_TITLEBAR, true);
+        QPair<QRegion, int> pair(QRegion(), 0);
+        view_->setProperty(UkuiWaylandProperty::SURFACE_BLUR,
+                           QVariant::fromValue(pair));
+    } else {
+        view_->setFlags(Qt::Window | Qt::WindowDoesNotAcceptFocus |
+                        Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
+                        Qt::BypassWindowManagerHint);
     }
 
     view_->setGeometry(calculateInitialGeometry());

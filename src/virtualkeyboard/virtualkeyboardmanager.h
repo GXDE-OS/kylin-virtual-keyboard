@@ -28,6 +28,7 @@
 #include "geometrymanager/floatgeometrymanager.h"
 #include "localsettings/viewlocalsettings.h"
 #include "placementmodemanager.h"
+#include "themewatcher.h"
 #include "virtualkeyboardmodel.h"
 #include "virtualkeyboardview.h"
 #include "workspaceadjuster/workspaceadjuster.h"
@@ -60,6 +61,8 @@ public:
     void notifyIMDeactivated(const QString &uniqueName);
     void notifyIMListChanged();
 
+    ThemeWatcher &themeWatcher() { return *themeWatcher_; }
+
 signals:
     void virtualKeyboardVisibiltyChanged(bool isShow);
 
@@ -70,6 +73,8 @@ public slots:
 
 private:
     void initWorkspaceAdjuster();
+    void initThemeWatcher();
+
     std::unique_ptr<PlacementModeManager> createPlacementModeManager();
     static Scaler createExpansionModeScaler();
     static Scaler createFloatModeScaler();
@@ -96,6 +101,7 @@ private:
     std::unique_ptr<WorkspaceAdjuster> workspaceAdjuster_ = nullptr;
     std::unique_ptr<VirtualKeyboardModel> model_ = nullptr;
     std::unique_ptr<VirtualKeyboardView> view_ = nullptr;
+    std::unique_ptr<ThemeWatcher> themeWatcher_ = nullptr;
 
     HideVirtualKeyboardCallback hideVirtualKeyboardCallback_;
 
