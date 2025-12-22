@@ -47,6 +47,8 @@ void VirtualKeyboardSettings::init() {
                     emitTrayIconShowChanged();
                 } else if (key == animationEnabledKey_) {
                     emit animationAvailabilityChanged();
+                } else if (key == defaultThemeKey_) {
+                    emitCurrentThemeChanged();
                 }
             });
 
@@ -125,6 +127,26 @@ void VirtualKeyboardSettings::emitTrayIconShowChanged() {
     } else {
         KVKBD_WARN("WARNING : Gsettings Set trayIconShow Error !");
     }
+}
+
+const QString VirtualKeyboardSettings::currentTheme() const {
+    if (gsettings_ == nullptr) {
+        KVKBD_WARN(
+            "WARNING : Gsettings Objetc is NULL, can't get current theme!");
+        return "default";
+    }
+
+    return gsettings_->get(defaultThemeKey_).toString();
+}
+
+void VirtualKeyboardSettings::emitCurrentThemeChanged() {
+    const QString value = gsettings_->get(defaultThemeKey_).toString();
+    if (value == currentThemeValue_) {
+        return;
+    }
+
+    currentThemeValue_ = value;
+    emit currentThemeChanged(value);
 }
 
 VirtualKeyboardSettings &VirtualKeyboardSettings::getInstance() {

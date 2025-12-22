@@ -35,6 +35,7 @@ public:
     bool isPreloadViewEnabled() const;
     float calculateVirtualKeyboardScaleFactor() const;
     const QString trayIconShow() const;
+    const QString currentTheme() const;
 
 private:
     VirtualKeyboardSettings();
@@ -45,6 +46,7 @@ private:
     void init();
     void emitFloatButtonAvailabilityChanged();
     void emitTrayIconShowChanged();
+    void emitCurrentThemeChanged();
 
 signals:
     void requestFloatButtonEnabled();
@@ -54,6 +56,7 @@ signals:
     void neverShowTrayIcon();
     void alwaysShowTrayIcon();
     void showTrayIconWhenKeyboardisConnected();
+    void currentThemeChanged(const QString &theme);
 
 private:
     std::unique_ptr<QGSettings> gsettings_;
@@ -65,5 +68,7 @@ private:
     const QString preloadViewEnabledKey_ = "preloadViewEnabled";
     const int SCALE_FACTOR_MERGE_PERIOD = 300;
     QTimer scaleFactorMergeTimer_;
+    const QString themeKey_ = "theme";
+    const QString currentThemeValue_ = "default";
 };
 #endif
