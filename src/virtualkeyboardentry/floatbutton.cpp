@@ -15,7 +15,7 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "virtualkeyboardentry/floatbutton.h"
+#include "floatbutton.h"
 
 #include <QBitmap>
 #include <QPainter>
