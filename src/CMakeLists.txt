@@ -21,6 +21,7 @@ set(HEADERS
     localsettings/localsettings.h
     localsettings/viewlocalsettings.h
     screenmanager.h
+    themewatcher.h
     virtualkeyboard/placementmodemanager.h
     virtualkeyboard/virtualkeyboardmanager.h
     virtualkeyboard/virtualkeyboardmodel.h
@@ -59,6 +60,7 @@ set(SOURCES
     localsettings/viewlocalsettings.cpp
     main.cpp
     screenmanager.cpp
+    themewatcher.cpp
     virtualkeyboard/placementmodemanager.cpp
     virtualkeyboard/virtualkeyboardmanager.cpp
     virtualkeyboard/virtualkeyboardmodel.cpp
