@@ -16,8 +16,11 @@
  */
 
 #include "animation/floatanimationfactory.h"
-
+#include <QEasingCurve>
 #include <QParallelAnimationGroup>
+#include <QPointF>
+#include <QPropertyAnimation>
+#include <QVariant>
 
 std::unique_ptr<QAbstractAnimation>
 FloatAnimationFactory::createShowAnimation(QObject *target,
@@ -35,7 +38,26 @@ std::unique_ptr<QAbstractAnimation>
 FloatAnimationFactory::createFlipAnimation(QObject *target,
                                            const AnimationInfo &animationInfo) {
     return createPropertyAnimation(target, "y", animationInfo.startY,
-                                   animationInfo.endY, animationInfo.duration);
+                                   animationInfo.endY, 200);
+}
+
+std::unique_ptr<QAbstractAnimation>
+FloatAnimationFactory::createPropertyAnimation(QObject *target,
+                                               const QByteArray &propertyName,
+                                               const QVariant &startValue,
+                                               const QVariant &endValue,
+                                               int duration) {
+    std::unique_ptr<QPropertyAnimation> animation(
+        new QPropertyAnimation(target, propertyName));
+    animation->setStartValue(startValue);
+    animation->setEndValue(endValue);
+    animation->setDuration(duration);
+    QEasingCurve easingCurve(QEasingCurve::BezierSpline);
+    easingCurve.addCubicBezierSegment(QPointF(0.25, 0.1), QPointF(0.25, 0.1),
+                                      QPointF(1, 1));
+    animation->setEasingCurve(easingCurve);
+
+    return animation;
 }
 
 std::unique_ptr<QAbstractAnimation>
@@ -45,12 +67,13 @@ FloatAnimationFactory::createYAndOpacityAnimationGroup(
         new QParallelAnimationGroup());
     animationGroup->addAnimation(
         createPropertyAnimation(target, "y", animationInfo.startY,
-                                animationInfo.endY, animationInfo.duration)
+                                animationInfo.endY, 200)
             .release());
     animationGroup->addAnimation(
-        createPropertyAnimation(target, "opacity", animationInfo.startOpacity,
-                                animationInfo.endOpacity,
-                                animationInfo.duration)
+        createPropertyAnimation(
+            target, "opacity",
+            QVariant(static_cast<qreal>(animationInfo.startOpacity)),
+            QVariant(static_cast<qreal>(animationInfo.endOpacity)), 200)
             .release());
     return animationGroup;
 }

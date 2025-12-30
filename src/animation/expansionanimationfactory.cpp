@@ -16,6 +16,9 @@
  */
 
 #include "animation/expansionanimationfactory.h"
+#include <QEasingCurve>
+#include <QPointF>
+#include <QPropertyAnimation>
 
 std::unique_ptr<QAbstractAnimation>
 ExpansionAnimationFactory::createShowAnimation(
@@ -32,11 +35,29 @@ ExpansionAnimationFactory::createHideAnimation(
 std::unique_ptr<QAbstractAnimation>
 ExpansionAnimationFactory::createFlipAnimation(
     QObject *target, const AnimationInfo &animationInfo) {
-    return createYAnimation(target, animationInfo);
+    return createPropertyAnimation(target, "y", animationInfo.startY,
+                                   animationInfo.endY, 200);
+}
+
+std::unique_ptr<QAbstractAnimation>
+ExpansionAnimationFactory::createPropertyAnimation(
+    QObject *target, const QByteArray &propertyName, const QVariant &startValue,
+    const QVariant &endValue, int duration) {
+    std::unique_ptr<QPropertyAnimation> animation(
+        new QPropertyAnimation(target, propertyName));
+    animation->setStartValue(startValue);
+    animation->setEndValue(endValue);
+    animation->setDuration(duration);
+    QEasingCurve easingCurve(QEasingCurve::BezierSpline);
+    easingCurve.addCubicBezierSegment(QPointF(0.25, 0.1), QPointF(0.25, 0.1),
+                                      QPointF(1, 1));
+    animation->setEasingCurve(easingCurve);
+
+    return animation;
 }
 
 std::unique_ptr<QAbstractAnimation> ExpansionAnimationFactory::createYAnimation(
     QObject *target, const AnimationInfo &animationInfo) {
     return createPropertyAnimation(target, "y", animationInfo.startY,
-                                   animationInfo.endY, animationInfo.duration);
+                                   animationInfo.endY, 260);
 }

@@ -18,6 +18,8 @@
 #ifndef FLOATANIMATIONFACTORY_H
 #define FLOATANIMATIONFACTORY_H
 
+#include <QEasingCurve>
+#include <QParallelAnimationGroup>
 #include "animation/animationfactory.h"
 
 class FloatAnimationFactory : public AnimationFactory {
@@ -36,6 +38,10 @@ public:
                         const AnimationInfo &animationInfo) override;
 
 private:
+    static std::unique_ptr<QAbstractAnimation>
+    createPropertyAnimation(QObject *target, const QByteArray &propertyName,
+                            const QVariant &startValue,
+                            const QVariant &endValue, int duration);
     static std::unique_ptr<QAbstractAnimation>
     createYAndOpacityAnimationGroup(QObject *target,
                                     const AnimationInfo &animationInfo);

@@ -18,6 +18,7 @@
 #ifndef EXPANSIONANIMATIONFACTORY_H
 #define EXPANSIONANIMATIONFACTORY_H
 
+#include <QEasingCurve>
 #include "animation/animationfactory.h"
 
 class ExpansionAnimationFactory : public AnimationFactory {
@@ -36,6 +37,10 @@ public:
                         const AnimationInfo &animationInfo) override;
 
 private:
+    static std::unique_ptr<QAbstractAnimation>
+    createPropertyAnimation(QObject *target, const QByteArray &propertyName,
+                            const QVariant &startValue,
+                            const QVariant &endValue, int duration);
     static std::unique_ptr<QAbstractAnimation>
     createYAnimation(QObject *target, const AnimationInfo &animationInfo);
 };
