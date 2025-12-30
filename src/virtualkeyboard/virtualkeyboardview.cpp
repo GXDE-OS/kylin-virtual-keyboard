@@ -173,8 +173,11 @@ void VirtualKeyboardView::initView() {
 QRect VirtualKeyboardView::calculateInitialGeometry() {
     auto geo = geometry();
     auto screenHeight = getScreenRelativeHeight();
-
-    int normalizedY = std::min(screenHeight, geo.y() + geo.height());
+    auto yOffset = geo.height();
+    if (isFloatMode()) {
+        yOffset = 40;
+    }
+    int normalizedY = std::min(screenHeight, geo.y() + yOffset);
 
     return QRect(geo.x(), normalizedY, geo.width(), geo.height());
 }
