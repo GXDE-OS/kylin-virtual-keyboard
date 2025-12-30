@@ -260,11 +260,11 @@ Rectangle {
     Rectangle {
         id: virtualKeyboardContent
 
-        color: themeWrapper.virtualKeyboardColor
+        color: "transparent"
         radius: virtualKeyboard.radius
+        anchors.horizontalCenter: parent.horizontalCenter
         width: view.contentWidth
         height: view.contentHeight
-        anchors.horizontalCenter: parent.horizontalCenter
 
         DragBar {
             id: dragBar
