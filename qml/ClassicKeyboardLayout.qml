@@ -29,7 +29,7 @@ Column {
     Row {
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: virtualKeyboard.keySpacing
-        ActionKey{ label: "Esc"; height: virtualKeyboard.keyHeight * 3/4; keycode: Keycode.KEY_ESC}
+        ActionKey{ label: "Esc"; height: virtualKeyboard.firstRowKeyHeight; keycode: Keycode.KEY_ESC}
         SymbolKey{ label: "`"; shiftedText: "~"; height: virtualKeyboard.firstRowKeyHeight; keycode: Keycode.KEY_GRAVE }
         FnSymbolKey{ label: "1"; shiftedText: "!"; fnValue:"F1"; fnKeycode: Keycode.KEY_F1; numberKeycode: Keycode.KEY_1 }
         FnSymbolKey{ label: "2"; shiftedText: "@"; fnValue:"F2"; fnKeycode: Keycode.KEY_F2; numberKeycode: Keycode.KEY_2 }
@@ -43,7 +43,7 @@ Column {
         FnSymbolKey{ label: "0"; shiftedText: ")"; fnValue:"F10"; fnKeycode: Keycode.KEY_F10; numberKeycode: Keycode.KEY_0 }
         FnSymbolKey{ label: "-"; shiftedText: "_"; fnValue:"F11"; fnKeycode: Keycode.KEY_F11; numberKeycode: Keycode.KEY_MINUS }
         FnSymbolKey{ label: "="; shiftedText: "+"; fnValue:"F12"; fnKeycode: Keycode.KEY_F12; numberKeycode: Keycode.KEY_EQUAL }
-        BackspaceKey{ keycode: Keycode.KEY_BACKSPACE }
+        BackspaceKey{ height:virtualKeyboard.firstRowKeyHeight; keycode: Keycode.KEY_BACKSPACE }
     }
 
     Row {
