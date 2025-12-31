@@ -19,6 +19,7 @@
 #include <QQmlContext>
 #include <QQuickItem>
 #include "screenmanager.h"
+#include "shadowborderitem.h"
 #include "themewatcher.h"
 #include "ukuiwaylandhelper/ukuiwaylandproperties.h"
 #include "utils.h"
@@ -132,8 +133,10 @@ void VirtualKeyboardView::initView() {
     }
     KVKBD_INFO("preloadViewEnabled:{}", preloadViewEnabled);
 
-    view_.reset(new QQuickView());
+    qmlRegisterType<ShadowBorderItem>("VirtualKeyboard.ShadowBorderItem", 1, 0,
+                                      "ShadowBorderItem");
 
+    view_.reset(new QQuickView());
     view_->rootContext()->setContextProperty("manager", &manager_);
     view_->rootContext()->setContextProperty("model", &model_);
     view_->rootContext()->setContextProperty("view", this);

@@ -27,6 +27,7 @@ set(HEADERS
     virtualkeyboard/virtualkeyboardmodel.h
     virtualkeyboard/virtualkeyboardstrategy.h
     virtualkeyboard/virtualkeyboardview.h
+    virtualkeyboard/shadowborderitem.h
     virtualkeyboardentry/fcitxvirtualkeyboardservice.h
     virtualkeyboardentry/floatbutton.h
     virtualkeyboardentry/floatbuttonmanager.h
@@ -66,6 +67,7 @@ set(SOURCES
     virtualkeyboard/virtualkeyboardmodel.cpp
     virtualkeyboard/virtualkeyboardview.cpp
     virtualkeyboard/virtualkeyboardviewstate.cpp
+    virtualkeyboard/shadowborderitem.cpp
     virtualkeyboardentry/floatbutton.cpp
     virtualkeyboardentry/floatbuttonmanager.cpp
     virtualkeyboardentry/virtualkeyboardentrymanager.cpp

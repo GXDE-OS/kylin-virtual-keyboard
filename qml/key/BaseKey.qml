@@ -15,9 +15,9 @@
 * this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import QtGraphicalEffects 1.0
 import QtQuick 2.0
 import QtQuick.Controls 2.0
+import VirtualKeyboard.ShadowBorderItem 1.0
 
 ToolButton {
     property int keycode
@@ -32,16 +32,17 @@ ToolButton {
     width: virtualKeyboard.keyWidth
     height: virtualKeyboard.keyHeight
 
-    ShadowWrapper {
+    ShadowBorderItem {
         id: dropShadow_
 
         anchors.fill: parent
-        verticalOffset: virtualKeyboard.dropShadowVerticalOffset
-        radius: virtualKeyboard.keyRadius
+        anchors.leftMargin: -1
+        anchors.rightMargin: -1
+        anchors.bottomMargin: verticalOffset > 0 ? -verticalOffset : 0
+        anchors.topMargin: verticalOffset < 0 ? verticalOffset : 0
         color: virtualKeyboard.charKeyDropShadowColor
-        source: keyBackground
-        samples: 100
-        z: -1 //阴影保持在最下层
+        verticalOffset: virtualKeyboard.dropShadowVerticalOffset
+        keyRadius: virtualKeyboard.keyRadius
     }
 
     Label {

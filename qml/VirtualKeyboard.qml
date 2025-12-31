@@ -71,7 +71,7 @@ Rectangle {
     property int shiftLeftMargin: cardinalNumber
     property int shiftTopMargin: cardinalNumber / 2
     property int imLeftMargin: cardinalNumber
-    property int dropShadowVerticalOffset: 2
+    property int dropShadowVerticalOffset: cardinalNumber / 3
     property int dragBarIndicatorWidth: cardinalNumber * 7
     property int dragBarIndicatorHeight: cardinalNumber / 2
     // 颜色相关
