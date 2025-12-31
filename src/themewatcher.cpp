@@ -46,7 +46,7 @@ void ThemeWatcher::updateTheme() {
 }
 
 void ThemeWatcher::updateThemeColor() {
-    QString currentThemeColor = "default";
+    QString currentThemeColor = "light";
     if (getDesktopEnvironment() == DesktopEnvironment::UKUI) {
         if (styleSettings_ == nullptr) {
             KVKBD_WARN(
