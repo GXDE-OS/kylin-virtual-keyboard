@@ -162,6 +162,10 @@ Rectangle {
         manager.flipPlacementMode();
     }
 
+    function pressed() {
+        manager.pressed()
+    }
+
     function moveBy(offsetX, offsetY) {
         manager.moveBy(offsetX, offsetY);
     }

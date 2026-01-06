@@ -52,6 +52,7 @@ Rectangle {
         onPressed: {
             startX = mouseX;
             startY = mouseY;
+            virtualKeyboard.pressed();
         }
         onPositionChanged: {
             virtualKeyboard.moveBy(mouseX - startX, mouseY - startY);
