@@ -40,7 +40,7 @@ void FloatButton::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         startX_ = event->pos().x();
         startY_ = event->pos().y();
-
+        emit mousePressed();
         startClickTimer();
     }
 
@@ -147,10 +147,11 @@ void FloatButton::initAttributes() {
     setAttribute(Qt::WA_AlwaysShowToolTips, true);
     setToolTip(tr("Click to show virtual keyboard"));
 
-    // 主题框架默认禁用了move消息，因此，QPushButton需要禁用主题框架
-    setProperty("useStyleWindowManager", QVariant(false));
     setWindowFlags(Qt::FramelessWindowHint | Qt::BypassWindowManagerHint |
                    Qt::Tool);
+
+    // 主题框架默认禁用了move消息，因此，QPushButton需要禁用主题框架
+    setProperty("useStyleWindowManager", QVariant(false));
 
     if (getDesktopEnvironment() == DesktopEnvironment::UKUI &&
         getDesktopType() == DesktopType::WAYLAND) {

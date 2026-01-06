@@ -50,6 +50,7 @@ public slots:
 signals:
     void mouseMoved(int x, int y);
     void mouseReleased();
+    void mousePressed();
 
 public slots:
     void move(int x, int y);

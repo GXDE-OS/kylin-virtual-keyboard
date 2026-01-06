@@ -23,6 +23,7 @@
 #include <QDateTime>
 #include <QObject>
 #include <QPushButton>
+#include <QTimer>
 
 #include "localsettings/localsettings.h"
 #include "themewatcher.h"
@@ -62,12 +63,15 @@ private slots:
     void destroyFloatButton();
 
     void onScreenResolutionChanged();
+    void onViewMoved(int x, int y);
+    void onViewResized(int width, int height);
 
 private:
     void initGeometryManager();
 
     void initInternalSignalConnections();
     void initScreenSignalConnections();
+    void initGeometryManagerConnections();
 
     void createFloatButton();
     void connectFloatButtonSignals();
@@ -89,6 +93,8 @@ private:
     std::unique_ptr<FloatButton> floatButton_ = nullptr;
 
     std::unique_ptr<FloatGeometryManager> geometryManager_ = nullptr;
+
+    QTimer updateGeometryTimer_;
 };
 
 #endif // FLOATBUTTONMANAGER_H

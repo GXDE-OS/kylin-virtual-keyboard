@@ -26,6 +26,7 @@
 
 #include "geometrymanager/floatgeometrymanager.h"
 #include "geometrymanager/geometrymanager.h"
+#include "screenwatcher.h"
 #include "themewatcher.h"
 #include "virtualkeyboardentry/floatbuttonstrategy.h"
 
@@ -38,8 +39,14 @@ FloatButtonManager::FloatButtonManager(
       floatButtonSettings_(floatButtonSettings), themeWatcher_(themeWatcher) {
     initGeometryManager();
 
+    updateGeometryTimer_.setSingleShot(true);
+    updateGeometryTimer_.setInterval(500);
+    connect(&updateGeometryTimer_, &QTimer::timeout, this,
+            [this]() { geometryManager_->updateGeometry(); });
+
     initInternalSignalConnections();
     initScreenSignalConnections();
+    initGeometryManagerConnections();
 }
 
 void FloatButtonManager::enableFloatButton() { setFloatButtonEnabled(true); }
@@ -54,8 +61,17 @@ void FloatButtonManager::initGeometryManager() {
 }
 
 void FloatButtonManager::initScreenSignalConnections() {
-    connect(QGuiApplication::primaryScreen(), &QScreen::geometryChanged, this,
+    ScreenWatcher &screenWatcher = ScreenWatcher::getInstance();
+
+    connect(&screenWatcher, &ScreenWatcher::screensChanged, this,
             &FloatButtonManager::onScreenResolutionChanged);
+}
+
+void FloatButtonManager::initGeometryManagerConnections() {
+    connect(geometryManager_.get(), &FloatGeometryManager::viewMoved, this,
+            &FloatButtonManager::onViewMoved, Qt::UniqueConnection);
+    connect(geometryManager_.get(), &FloatGeometryManager::viewResized, this,
+            &FloatButtonManager::onViewResized, Qt::UniqueConnection);
 }
 
 void FloatButtonManager::initInternalSignalConnections() {
@@ -91,8 +107,22 @@ void FloatButtonManager::onScreenResolutionChanged() {
     if (!floatButtonEnabled_) {
         return;
     }
+    updateGeometryTimer_.start();
+}
 
-    QTimer::singleShot(500, [this]() { geometryManager_->updateGeometry(); });
+void FloatButtonManager::onViewMoved(int x, int y) {
+    if (!floatButton_) {
+        return;
+    }
+    floatButton_->move(x, y);
+    ScreenWatcher::getInstance().markScreen(QPoint(x, y));
+}
+
+void FloatButtonManager::onViewResized(int width, int height) {
+    if (!floatButton_) {
+        return;
+    }
+    floatButton_->resize(width, height);
 }
 
 void FloatButtonManager::showFloatButton() {
@@ -101,6 +131,7 @@ void FloatButtonManager::showFloatButton() {
     }
 
     floatButton_->show();
+    geometryManager_->updateGeometry();
 }
 
 void FloatButtonManager::hideFloatButton() {
@@ -125,25 +156,27 @@ void FloatButtonManager::connectFloatButtonSignals() {
                     themeWatcher_.currentThemeColor());
             });
 
+    connect(floatButton_.get(), &FloatButton::mousePressed,
+            geometryManager_.get(), &FloatGeometryManager::pressed,
+            Qt::UniqueConnection);
     connect(floatButton_.get(), &FloatButton::mouseMoved,
-            geometryManager_.get(), &FloatGeometryManager::moveBy);
+            geometryManager_.get(), &FloatGeometryManager::moveBy,
+            Qt::UniqueConnection);
     connect(floatButton_.get(), &FloatButton::mouseReleased,
-            geometryManager_.get(), &FloatGeometryManager::endDrag);
-
-    connect(geometryManager_.get(), &FloatGeometryManager::viewMoved,
-            floatButton_.get(), &FloatButton::move);
-    connect(geometryManager_.get(), &FloatGeometryManager::viewResized,
-            floatButton_.get(), &FloatButton::resize);
-
-    connect(&virtualKeyboardManager_,
-            &VirtualKeyboardManager::virtualKeyboardVisibiltyChanged,
-            floatButton_.get(), [this](bool visible) {
-                if (visible) {
-                    hideFloatButton();
-                } else {
-                    showFloatButton();
-                }
-            });
+            geometryManager_.get(), &FloatGeometryManager::endDrag,
+            Qt::UniqueConnection);
+    connect(
+        &virtualKeyboardManager_,
+        &VirtualKeyboardManager::virtualKeyboardVisibiltyChanged,
+        floatButton_.get(),
+        [this](bool visible) {
+            if (visible) {
+                hideFloatButton();
+            } else {
+                showFloatButton();
+            }
+        },
+        Qt::UniqueConnection);
 }
 
 void FloatButtonManager::updateFloatButtonEnabled(bool enabled) {

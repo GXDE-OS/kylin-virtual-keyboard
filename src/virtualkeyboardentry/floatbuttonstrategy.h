@@ -19,7 +19,7 @@
 #define FLOATBUTTONSTRATEGY_H
 
 #include "geometrymanager/floatgeometrymanager.h"
-#include "screenmanager.h"
+#include "screenwatcher.h"
 
 class FloatButtonStrategy : public FloatGeometryManager::Strategy {
 public:
@@ -27,14 +27,18 @@ public:
     ~FloatButtonStrategy() override = default;
 
     int getDefaultRightMargin() const override {
-        const int screenWidth = ScreenManager::getPrimaryScreenSize().width();
+        const int screenWidth =
+            ScreenWatcher::getInstance().getPrimaryScreenGeometry().width();
         return screenWidth * defaultRightMarginRatio_;
     }
 
     int getDefaultBottomMargin() const override {
-        const int screenHeight = ScreenManager::getPrimaryScreenSize().height();
+        const int screenHeight =
+            ScreenWatcher::getInstance().getPrimaryScreenGeometry().height();
         return screenHeight * defaultBottomMarginRatio_;
     }
+
+    bool loadLastPosition() override { return false; }
 
 private:
     int getUnitWidth(const QRect &screenGeo) const override {
