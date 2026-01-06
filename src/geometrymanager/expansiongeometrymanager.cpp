@@ -16,27 +16,31 @@
  */
 
 #include "expansiongeometrymanager.h"
-#include "screenmanager.h"
+#include "screenwatcher.h"
 
 ExpansionGeometryManager::ExpansionGeometryManager(Scaler &&scaler)
     : GeometryManager(std::move(scaler)) {}
 
 int ExpansionGeometryManager::calculateViewWidth() const {
-    return ScreenManager::getPrimaryScreenSize().width();
+    return ScreenWatcher::getInstance()
+        .getOptimalScreenGeometry(GeometryManager::currentPosition_)
+        .width();
 }
 
 int ExpansionGeometryManager::calculateViewHeight() const {
-    QSize viewPortSize = ScreenManager::getPrimaryScreenSize();
-
-    return std::max(viewPortSize.width(), viewPortSize.height()) *
-           viewHeightRatio_;
+    QRect screenGeo = ScreenWatcher::getInstance().getOptimalScreenGeometry(
+        GeometryManager::currentPosition_);
+    return std::max(screenGeo.width(), screenGeo.height()) * viewHeightRatio_;
 }
 
 QPoint ExpansionGeometryManager::calculateViewPosition() const {
-    QRect viewPortRec = ScreenManager::getPrimaryScreenGeometry();
-    return QPoint(viewPortRec.left(), viewPortRec.y() + viewPortRec.height() - calculateScaledViewHeight());
+    QRect viewPortRec = ScreenWatcher::getInstance().getOptimalScreenGeometry(
+        GeometryManager::currentPosition_);
+    return QPoint(viewPortRec.left(), viewPortRec.y() + viewPortRec.height() -
+                                          calculateScaledViewHeight());
 }
 
 QRect ExpansionGeometryManager::getScreenGeometry() const {
-    return ScreenManager::getPrimaryScreenGeometry();
+    return ScreenWatcher::getInstance().getOptimalScreenGeometry(
+        GeometryManager::currentPosition_);
 }

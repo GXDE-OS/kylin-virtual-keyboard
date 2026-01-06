@@ -16,7 +16,6 @@
  */
 
 #include "geometrymanager.h"
-#include "screenmanager.h"
 
 Scaler::Scaler(ScaleFactorCallback widthScaleFactorCallback,
                ScaleFactorCallback heightScaleFactorCallback,
@@ -81,3 +80,6 @@ int GeometryManager::getViewContentWidth() const {
 int GeometryManager::getViewContentHeight() const {
     return calculateViewHeight() * scaler_.getContentScaleFactor();
 }
+
+// static
+QPoint GeometryManager::currentPosition_;

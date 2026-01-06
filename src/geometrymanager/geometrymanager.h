@@ -21,9 +21,8 @@
 #include <functional>
 #include <QObject>
 #include <QPoint>
+#include <QRect>
 #include <QSize>
-
-#include "log.h"
 
 class Scaler {
 public:
@@ -75,6 +74,8 @@ protected:
     QSize calculateViewSize() const;
     int calculateScaledViewWidth() const;
     int calculateScaledViewHeight() const;
+
+    static QPoint currentPosition_;
 
 private:
     virtual int calculateViewWidth() const = 0;

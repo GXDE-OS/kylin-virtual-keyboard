@@ -37,6 +37,7 @@ public:
     ~FloatGeometryManager() override;
 
 public slots:
+    void pressed();
     void moveBy(int offsetX, int offsetY);
     void endDrag();
 
@@ -48,7 +49,6 @@ private:
 
     int calculateNormalizedX(int positionX) const;
     int calculateNormalizedY(int positionY) const;
-    QRect calculateProbableScreenGeometry() const;
 
     QPoint calculateNormalizedPosition(const QPoint &position) const;
     QPoint calculatePositionFromRatio(float leftMarginRatio,
@@ -71,13 +71,15 @@ private:
     void saveLastPostionMap();
     void loadMarginRatioMap();
     void loadLastPostionMap();
-    void resetParameters();
     void moveView(const QPoint &targetPoint);
     QRect adjustToScreenEdges(const QRect &windowRect) const;
+    QPoint calculateOptimalScreenAtPosition(const QRect &windowRect) const;
 
 private:
     float leftMarginRatio_ = 0.0f;
     float topMarginRatio_ = 0.0f;
+
+    QSize lastSize_;
 
     std::unique_ptr<Strategy> strategy_;
 
@@ -92,8 +94,6 @@ private:
     static const QString lastPositionXKey;
     static const QString lastPositionYKey;
     static const int defaultCoordinate;
-
-    QPoint currentPosition_;
 };
 
 class FloatGeometryManager::Strategy {
@@ -109,6 +109,7 @@ public:
 
     virtual int getDefaultRightMargin() const = 0;
     virtual int getDefaultBottomMargin() const = 0;
+    virtual bool loadLastPosition() { return true; }
 
 protected:
     Strategy() = default;
