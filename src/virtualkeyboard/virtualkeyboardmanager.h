@@ -48,8 +48,10 @@ public:
 
     Q_INVOKABLE void hide();
     Q_INVOKABLE void flipPlacementMode();
+    Q_INVOKABLE void pressed();
     Q_INVOKABLE void moveBy(int offsetX, int offsetY);
     Q_INVOKABLE void endDrag();
+
     void visibiltyChanged();
     bool isVirtualKeyboardVisible() const;
     void updatePreeditCaret(int index);
@@ -67,8 +69,6 @@ signals:
     void virtualKeyboardVisibiltyChanged(bool isShow);
 
 public slots:
-    void processResolutionChangedEvent();
-
     void hideVirtualKeyboard();
 
 private:
@@ -91,6 +91,7 @@ private:
     void connectVirtualKeyboardViewSignals();
     void connectVirtualKeyboardSettingsSignals();
 
+    void handleScreensChanged();
     void raiseInputAreaIfNecessary();
 
     std::unique_ptr<AnimationFactory> createAnimationFactory();

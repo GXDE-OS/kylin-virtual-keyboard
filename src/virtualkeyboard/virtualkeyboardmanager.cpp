@@ -25,6 +25,7 @@
 #include "animation/enabledanimator.h"
 #include "animation/expansionanimationfactory.h"
 #include "animation/floatanimationfactory.h"
+#include "screenwatcher.h"
 #include "utils.h"
 #include "virtualkeyboardsettings/virtualkeyboardsettings.h"
 #include "virtualkeyboardstrategy.h"
@@ -87,6 +88,8 @@ void VirtualKeyboardManager::hide() {
 
 void VirtualKeyboardManager::flipPlacementMode() { view_->flip(); }
 
+void VirtualKeyboardManager::pressed() { view_->pressed(); }
+
 void VirtualKeyboardManager::moveBy(int offsetX, int offsetY) {
     view_->moveBy(offsetX, offsetY);
 }
@@ -127,13 +130,6 @@ void VirtualKeyboardManager::notifyIMDeactivated(
 
 void VirtualKeyboardManager::notifyIMListChanged() {
     model_->syncCurrentIMList();
-}
-
-void VirtualKeyboardManager::processResolutionChangedEvent() {
-    if (isVirtualKeyboardVisible()) {
-        view_->updateGeometry();
-        raiseInputAreaIfNecessary();
-    }
 }
 
 void VirtualKeyboardManager::initWorkspaceAdjuster() {
@@ -248,6 +244,10 @@ void VirtualKeyboardManager::connectVirtualKeyboardViewSignals() {
 
                 workspaceAdjuster_->fallInputArea();
             });
+    connect(view_.get(), &VirtualKeyboardView::positionChanged, this,
+            [](const QPoint &position) {
+                ScreenWatcher::getInstance().markScreen(position);
+            });
 }
 
 void VirtualKeyboardManager::connectVirtualKeyboardSettingsSignals() {
@@ -263,10 +263,19 @@ void VirtualKeyboardManager::connectVirtualKeyboardSettingsSignals() {
             [this]() { view_->setAnimator(createAnimator()); });
 }
 
+void VirtualKeyboardManager::handleScreensChanged() {
+    if (!view_->isVisible()) {
+        return;
+    }
+    KVKBD_DEBUG("update view geometry");
+    view_->updateGeometry();
+    raiseInputAreaIfNecessary();
+}
+
 void VirtualKeyboardManager::initScreenSignalConnections() {
-    connect(QGuiApplication::primaryScreen(),
-            SIGNAL(geometryChanged(const QRect &)), this,
-            SLOT(processResolutionChangedEvent()));
+    ScreenWatcher &screenWatcher = ScreenWatcher::getInstance();
+    connect(&screenWatcher, &ScreenWatcher::screensChanged, this,
+            &VirtualKeyboardManager::handleScreensChanged);
 }
 
 void VirtualKeyboardManager::raiseInputAreaIfNecessary() {
