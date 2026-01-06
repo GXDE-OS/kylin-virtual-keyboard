@@ -20,7 +20,7 @@ set(HEADERS
     ipc/fcitxcontrollerserviceproxy.h
     localsettings/localsettings.h
     localsettings/viewlocalsettings.h
-    screenmanager.h
+    screenwatcher.h
     themewatcher.h
     virtualkeyboard/placementmodemanager.h
     virtualkeyboard/virtualkeyboardmanager.h
@@ -60,7 +60,7 @@ set(SOURCES
     ipc/fcitxcontrollerserviceproxy.cpp
     localsettings/viewlocalsettings.cpp
     main.cpp
-    screenmanager.cpp
+    screenwatcher.cpp
     themewatcher.cpp
     virtualkeyboard/placementmodemanager.cpp
     virtualkeyboard/virtualkeyboardmanager.cpp
