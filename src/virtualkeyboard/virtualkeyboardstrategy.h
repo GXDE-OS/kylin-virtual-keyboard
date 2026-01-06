@@ -19,8 +19,7 @@
 #define VIRTUALKEYBOARDSTRATEGY_H
 
 #include "geometrymanager/floatgeometrymanager.h"
-
-#include "screenmanager.h"
+#include "screenwatcher.h"
 
 class VirtualKeyboardStrategy : public FloatGeometryManager::Strategy {
 public:
@@ -28,28 +27,28 @@ public:
     ~VirtualKeyboardStrategy() override = default;
 
     int getDefaultRightMargin() const override {
-        const int screenWidth = ScreenManager::getPrimaryScreenSize().width();
+        const int screenWidth =
+            ScreenWatcher::getInstance().getPrimaryScreenGeometry().width();
 
         return screenWidth * defaultRightMarginRatio_;
     }
 
     int getDefaultBottomMargin() const override {
-        const int screenHeight = ScreenManager::getPrimaryScreenSize().height();
+        const int screenHeight =
+            ScreenWatcher::getInstance().getPrimaryScreenGeometry().height();
 
         return screenHeight * defaultBottomMarginRatio_;
     }
 
 private:
-    int getUnitWidth(const QRect & /*screenGeo*/) const override {
-        return ScreenManager::getPrimaryScreenSize().width();
+    int getUnitWidth(const QRect &screenGeo) const override {
+        return screenGeo.width();
     }
 
     float getViewWidthRatio() const override { return 1458.0 / 1620.0; }
 
-    int getUnitHeight(const QRect & /*screenGeo*/) const override {
-        const auto viewPortSize = ScreenManager::getPrimaryScreenSize();
-
-        return std::max(viewPortSize.width(), viewPortSize.height());
+    int getUnitHeight(const QRect &screenGeo) const override {
+        return std::max(screenGeo.width(), screenGeo.height());
     }
 
     float getViewHeightRatio() const override { return 548.0 / 1620.0; }

@@ -18,7 +18,8 @@
 #include "virtualkeyboard/virtualkeyboardview.h"
 #include <QQmlContext>
 #include <QQuickItem>
-#include "screenmanager.h"
+#include "log.h"
+#include "screenwatcher.h"
 #include "shadowborderitem.h"
 #include "themewatcher.h"
 #include "ukuiwaylandhelper/ukuiwaylandproperties.h"
@@ -101,7 +102,9 @@ void VirtualKeyboardView::updateGeometry() {
         return;
     }
 
-    view_->setGeometry(geometry());
+    QRect geo = geometry();
+    view_->setGeometry(geo);
+    emit positionChanged(geo.topLeft());
 
     emitContentGeometrySignals();
 }
@@ -121,9 +124,18 @@ void VirtualKeyboardView::move(int x, int y) {
     }
     view_->setX(x);
     view_->setY(y);
+    emit positionChanged(QPoint(x, y));
 }
 
-void VirtualKeyboardView::resize() { updateGeometry(); }
+void VirtualKeyboardView::resize(int width, int height) {
+    if (!view_) {
+        KVKBD_WARN("view_ is null!");
+        return;
+    }
+
+    view_->resize(width, height);
+    emitContentGeometrySignals();
+}
 
 void VirtualKeyboardView::initView() {
     const auto preloadViewEnabled =
@@ -168,10 +180,13 @@ void VirtualKeyboardView::initView() {
     }
 
     view_->setGeometry(calculateInitialGeometry());
+    emit positionChanged(geometry().topLeft());
     setViewOpacity();
 
     connectSignals();
 }
+
+void VirtualKeyboardView::pressed() { floatGeometryManager_->pressed(); }
 
 QRect VirtualKeyboardView::calculateInitialGeometry() {
     auto geo = geometry();
@@ -183,10 +198,6 @@ QRect VirtualKeyboardView::calculateInitialGeometry() {
     int normalizedY = std::min(screenHeight, geo.y() + yOffset);
 
     return QRect(geo.x(), normalizedY, geo.width(), geo.height());
-}
-
-int VirtualKeyboardView::getScreenHeight() {
-    return ScreenManager::getPrimaryScreenSize().height();
 }
 
 int VirtualKeyboardView::getScreenRelativeHeight() {

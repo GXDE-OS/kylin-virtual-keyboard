@@ -52,6 +52,7 @@ public:
     Q_PROPERTY(
         int contentWidth READ getContentWidth NOTIFY contentWidthChanged);
 
+    void pressed();
     void moveBy(int offsetX, int offsetY);
     void endDrag();
 
@@ -85,10 +86,11 @@ signals:
 
     void raiseAppRequested();
     void fallAppRequested();
+    void positionChanged(const QPoint &position);
 
 public slots:
     void move(int x, int y);
-    void resize();
+    void resize(int width, int height);
 
 private:
     class State;
@@ -101,7 +103,6 @@ private:
 private:
     void initState();
     QRect calculateInitialGeometry();
-    static int getScreenHeight();
     int getScreenRelativeHeight();
     void connectSignals();
     void destroyView();
