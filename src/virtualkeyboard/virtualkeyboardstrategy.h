@@ -28,14 +28,14 @@ public:
 
     int getDefaultRightMargin() const override {
         const int screenWidth =
-            ScreenWatcher::getInstance().getPrimaryScreenGeometry().width();
+            ScreenWatcher::getInstance().getOptimalScreenGeometry().width();
 
         return screenWidth * defaultRightMarginRatio_;
     }
 
     int getDefaultBottomMargin() const override {
         const int screenHeight =
-            ScreenWatcher::getInstance().getPrimaryScreenGeometry().height();
+            ScreenWatcher::getInstance().getOptimalScreenGeometry().height();
 
         return screenHeight * defaultBottomMarginRatio_;
     }

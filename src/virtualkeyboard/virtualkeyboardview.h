@@ -59,6 +59,7 @@ public:
     QRect geometry() const;
     QRect screenGeometry() const;
     void updateGeometry();
+    void updateMarginRatio();
 
     void emitContentGeometrySignals();
 
@@ -87,6 +88,7 @@ signals:
     void raiseAppRequested();
     void fallAppRequested();
     void positionChanged(const QPoint &position);
+    void sizeChanged();
 
 public slots:
     void move(int x, int y);

@@ -105,8 +105,12 @@ void VirtualKeyboardView::updateGeometry() {
     QRect geo = geometry();
     view_->setGeometry(geo);
     emit positionChanged(geo.topLeft());
-
+    emit sizeChanged();
     emitContentGeometrySignals();
+}
+
+void VirtualKeyboardView::updateMarginRatio() {
+    floatGeometryManager_->updateViewMarginRatio();
 }
 
 void VirtualKeyboardView::updateExpansionFlippingStartGeometry() {
@@ -135,6 +139,7 @@ void VirtualKeyboardView::resize(int width, int height) {
 
     view_->resize(width, height);
     emitContentGeometrySignals();
+    emit sizeChanged();
 }
 
 void VirtualKeyboardView::initView() {
