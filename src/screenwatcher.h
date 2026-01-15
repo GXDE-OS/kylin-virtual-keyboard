@@ -48,8 +48,6 @@ class ScreenWatcher : public QObject {
 public:
     static ScreenWatcher &getInstance();
 
-    QRect getPrimaryScreenGeometry() const;
-
     /**
      * @brief 获取最合适的屏幕几何
      * @param position 位置点
@@ -60,7 +58,8 @@ public:
      * 2. 虚拟键盘正在显示的屏幕几何
      * 3. 主屏幕几何
      */
-    QRect getOptimalScreenGeometry(const QPoint &position) const;
+    QRect getOptimalScreenGeometry(const QPoint &position = QPoint(-1,
+                                                                   -1)) const;
 
     /**
      * @brief 标记虚拟键盘窗口所在的屏幕
@@ -74,8 +73,20 @@ public:
      */
     void markScreen(const QPoint &position);
 
+    /**
+     * @brief 通知不活跃的视图，需要更新对应的几何参数
+     * @param
+     * @return
+     *
+     * 某个模式的ui如果显示在了新的屏幕上
+     * 那么应该通知其他不活跃的ui，更新自身的屏幕边缘比例
+     * 这样，当不活跃的视图显示时，其所使用的比例数据是正确的
+     */
+    void notifyScreenMarkChanged();
+
 signals:
     void screensChanged();
+    void screenMarkChanged();
 
 private:
     explicit ScreenWatcher(QObject *parent = nullptr);
@@ -109,6 +120,7 @@ private:
 private:
     QString lastPrimaryScreenName_;
     QHash<QScreen *, ScreenInfo> screenList_;
+    bool isScreenMarkChanged_ = false;
 };
 
 #endif // SCREENWATCHER_H

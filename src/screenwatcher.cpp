@@ -36,10 +36,6 @@ ScreenWatcher &ScreenWatcher::getInstance() {
     return screenWatcher;
 }
 
-QRect ScreenWatcher::getPrimaryScreenGeometry() const {
-    return QGuiApplication::primaryScreen()->geometry();
-}
-
 QRect ScreenWatcher::getOptimalScreenGeometry(const QPoint &position) const {
     if (const auto *screen = QGuiApplication::screenAt(position)) {
         return screen->geometry();
@@ -98,7 +94,16 @@ void ScreenWatcher::markScreen(const QPoint &position) {
     ScreenInfo *info = getScreenInfo(windowScreen);
     if (info != nullptr) {
         info->hasWindow = true;
+        isScreenMarkChanged_ = true;
     }
+}
+
+void ScreenWatcher::notifyScreenMarkChanged() {
+    if (!isScreenMarkChanged_) {
+        return;
+    }
+    isScreenMarkChanged_ = false;
+    emit screenMarkChanged();
 }
 
 bool ScreenWatcher::isScreenMarked(const QScreen *screen) const {
@@ -125,17 +130,11 @@ void ScreenWatcher::updateScreenList() {
 }
 
 ScreenInfo *ScreenWatcher::getScreenInfo(QScreen *screen) {
-    if (screen == nullptr) {
-        return nullptr;
-    }
     auto it = screenList_.find(screen);
     return (it != screenList_.end()) ? &it.value() : nullptr;
 }
 
 const ScreenInfo *ScreenWatcher::getScreenInfoConst(QScreen *screen) const {
-    if (screen == nullptr) {
-        return nullptr;
-    }
     auto it = screenList_.constFind(screen);
     return (it != screenList_.constEnd()) ? &it.value() : nullptr;
 }
