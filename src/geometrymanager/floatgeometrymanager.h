@@ -40,6 +40,7 @@ public slots:
     void pressed();
     void moveBy(int offsetX, int offsetY);
     void endDrag();
+    void updateViewMarginRatio();
 
 private:
     QPoint calculateViewPosition() const override;

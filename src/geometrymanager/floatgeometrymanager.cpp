@@ -88,6 +88,26 @@ QRect FloatGeometryManager::getScreenGeometry() const {
         GeometryManager::currentPosition_);
 }
 
+void FloatGeometryManager::updateViewMarginRatio() {
+    const auto viewPortGeo =
+        ScreenWatcher::getInstance().getOptimalScreenGeometry();
+    const auto viewSize = calculateViewSize();
+
+    const int leftMargin =
+        viewPortGeo.left() + viewPortGeo.width() -
+        (viewSize.width() + strategy_->getDefaultRightMargin());
+    const int topMargin =
+        viewPortGeo.top() + viewPortGeo.height() -
+        (viewSize.height() + strategy_->getDefaultBottomMargin());
+
+    leftMarginRatio_ = calculateLeftMarginRatio(leftMargin);
+    topMarginRatio_ = calculateTopMarginRatio(topMargin);
+    KVKBD_DEBUG("leftMarginRatio_:{}, topMarginRatio_:{}", leftMarginRatio_,
+                topMarginRatio_);
+    saveLastPostionMap();
+    saveMarginRatioMap();
+}
+
 QPoint FloatGeometryManager::calculateNormalizedPosition(
     const QPoint &position) const {
     const auto viewRect = QRect(position, calculateViewSize());
@@ -174,7 +194,7 @@ void FloatGeometryManager::saveLastPostionMap() {
 
 QMap<QString, QVariant> FloatGeometryManager::getDefaultMarginRatioMap() const {
     const auto viewPortGeo =
-        ScreenWatcher::getInstance().getPrimaryScreenGeometry();
+        ScreenWatcher::getInstance().getOptimalScreenGeometry();
     const auto viewSize = calculateViewSize();
 
     const int leftMargin =
