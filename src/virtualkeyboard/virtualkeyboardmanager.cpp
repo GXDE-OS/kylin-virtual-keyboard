@@ -248,6 +248,8 @@ void VirtualKeyboardManager::connectVirtualKeyboardViewSignals() {
             [](const QPoint &position) {
                 ScreenWatcher::getInstance().markScreen(position);
             });
+    connect(view_.get(), &VirtualKeyboardView::sizeChanged, this,
+            []() { ScreenWatcher::getInstance().notifyScreenMarkChanged(); });
 }
 
 void VirtualKeyboardManager::connectVirtualKeyboardSettingsSignals() {
@@ -272,10 +274,22 @@ void VirtualKeyboardManager::handleScreensChanged() {
     raiseInputAreaIfNecessary();
 }
 
+void VirtualKeyboardManager::handleMarkedScreenChanged() {
+    if (isVirtualKeyboardVisible()) {
+        return;
+    }
+    // 虚拟键盘不可见时，标记屏幕改变是由悬浮球触发的，此时需要更新视图的边缘比例
+    KVKBD_DEBUG(
+        "marked screen changed, update virtual keyboard view margin ratio");
+    view_->updateMarginRatio();
+}
+
 void VirtualKeyboardManager::initScreenSignalConnections() {
     ScreenWatcher &screenWatcher = ScreenWatcher::getInstance();
     connect(&screenWatcher, &ScreenWatcher::screensChanged, this,
             &VirtualKeyboardManager::handleScreensChanged);
+    connect(&screenWatcher, &ScreenWatcher::screenMarkChanged, this,
+            &VirtualKeyboardManager::handleMarkedScreenChanged);
 }
 
 void VirtualKeyboardManager::raiseInputAreaIfNecessary() {

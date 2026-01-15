@@ -92,6 +92,7 @@ private:
     void connectVirtualKeyboardSettingsSignals();
 
     void handleScreensChanged();
+    void handleMarkedScreenChanged();
     void raiseInputAreaIfNecessary();
 
     std::unique_ptr<AnimationFactory> createAnimationFactory();
