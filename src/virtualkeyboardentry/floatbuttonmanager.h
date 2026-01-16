@@ -63,6 +63,7 @@ private slots:
     void destroyFloatButton();
 
     void onScreenResolutionChanged();
+    void onMarkedScreenChanged();
     void onViewMoved(int x, int y);
     void onViewResized(int width, int height);
 

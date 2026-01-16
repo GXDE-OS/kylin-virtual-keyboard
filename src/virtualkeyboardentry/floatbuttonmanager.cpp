@@ -65,6 +65,8 @@ void FloatButtonManager::initScreenSignalConnections() {
 
     connect(&screenWatcher, &ScreenWatcher::screensChanged, this,
             &FloatButtonManager::onScreenResolutionChanged);
+    connect(&screenWatcher, &ScreenWatcher::screenMarkChanged, this,
+            &FloatButtonManager::onMarkedScreenChanged);
 }
 
 void FloatButtonManager::initGeometryManagerConnections() {
@@ -110,6 +112,20 @@ void FloatButtonManager::onScreenResolutionChanged() {
     updateGeometryTimer_.start();
 }
 
+void FloatButtonManager::onMarkedScreenChanged() {
+    if (!floatButtonEnabled_) {
+        return;
+    }
+
+    if (floatButton_ != nullptr && floatButton_->isVisible()) {
+        return;
+    }
+
+    // 悬浮球不可见时，标记屏幕改变是由虚拟键盘视图触发，此时需要更新悬浮球的边缘比例
+    KVKBD_DEBUG("marked screen changed, update float button margin ratio");
+    geometryManager_->updateViewMarginRatio();
+}
+
 void FloatButtonManager::onViewMoved(int x, int y) {
     if (!floatButton_) {
         return;
@@ -122,7 +138,9 @@ void FloatButtonManager::onViewResized(int width, int height) {
     if (!floatButton_) {
         return;
     }
+    KVKBD_DEBUG("onViewResized");
     floatButton_->resize(width, height);
+    ScreenWatcher::getInstance().notifyScreenMarkChanged();
 }
 
 void FloatButtonManager::showFloatButton() {
