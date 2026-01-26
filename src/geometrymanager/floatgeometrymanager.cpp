@@ -60,16 +60,16 @@ void FloatGeometryManager::moveBy(int offsetX, int offsetY) {
     const QPoint offset(offsetX, offsetY);
     const auto currentPosition = calculateCurrentPosition();
     updateCurrentPostion(currentPosition);
+    KVKBD_DEBUG("current position:{},{}, offset:{},{}", currentPosition.x(),
+                currentPosition.y(), offset.x(), offset.y());
     moveView(QPoint(currentPosition + offset));
 }
-
-void FloatGeometryManager::endDrag() {
+void FloatGeometryManager::endDrag(const QPoint &position) {
+    updateCurrentPostion(position);
     const auto viewRect = QRect(GeometryManager::currentPosition_, lastSize_);
     const auto adjustedPosition = calculateOptimalScreenAtPosition(viewRect);
-    if (adjustedPosition != GeometryManager::currentPosition_) {
-        updateCurrentPostion(adjustedPosition);
-        moveView(adjustedPosition);
-    }
+    updateCurrentPostion(adjustedPosition);
+    moveView(adjustedPosition);
     saveMarginRatioMap();
     saveLastPostionMap();
     updateGeometry();
@@ -146,6 +146,11 @@ QSize FloatGeometryManager::calculateMarginSize() const {
     const int verticalMargin =
         viewPortRect.top() + viewPortRect.height() - viewSize.height();
 
+    KVKBD_DEBUG("horizontalMargin:{},verticalMargin:{}, viewPortRect: "
+                "leftxtop:{}x{}, widthxheight:{}x{}, viewSize:{}x{}",
+                horizontalMargin, verticalMargin, viewPortRect.left(),
+                viewPortRect.top(), viewPortRect.width(), viewPortRect.height(),
+                viewSize.width(), viewSize.height());
     return QSize(horizontalMargin, verticalMargin);
 }
 
@@ -176,6 +181,8 @@ float FloatGeometryManager::calculateTopMarginRatio(float topMargin) const {
 void FloatGeometryManager::updateMarginRatio(const QPoint &targetPosition) {
     leftMarginRatio_ = calculateLeftMarginRatio(targetPosition.x());
     topMarginRatio_ = calculateTopMarginRatio(targetPosition.y());
+    KVKBD_DEBUG("leftMarginRatio_:{},topMarginRatio_:{}", leftMarginRatio_,
+                topMarginRatio_);
 }
 
 void FloatGeometryManager::updateCurrentPostion(const QPoint &position) {
@@ -232,8 +239,8 @@ void FloatGeometryManager::loadMarginRatioMap() {
 
     const float leftMarginRatio = marginRatioMap[leftMarginRatioKey].toFloat();
     const float topMarginRatio = marginRatioMap[topMarginRatioKey].toFloat();
-    KVKBD_DEBUG("leftMarginRatio_:{}, topMarginRatio_:{}", leftMarginRatio,
-                leftMarginRatio);
+    KVKBD_DEBUG("leftMarginRatio:{}, topMarginRatio:{}", leftMarginRatio,
+                topMarginRatio);
     updateMarginRatio(
         calculateNormalizedPositionFromRatio(leftMarginRatio, topMarginRatio));
 }

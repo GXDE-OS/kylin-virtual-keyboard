@@ -39,7 +39,7 @@ public:
 public slots:
     void pressed();
     void moveBy(int offsetX, int offsetY);
-    void endDrag();
+    void endDrag(const QPoint &position);
     void updateViewMarginRatio();
 
 private:
