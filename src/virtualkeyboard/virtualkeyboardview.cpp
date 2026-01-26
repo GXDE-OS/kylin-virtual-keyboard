@@ -86,7 +86,7 @@ void VirtualKeyboardView::endDrag() {
         return;
     }
 
-    floatGeometryManager_->endDrag();
+    floatGeometryManager_->endDrag(view_->position());
 }
 
 QRect VirtualKeyboardView::geometry() const {
@@ -126,6 +126,7 @@ void VirtualKeyboardView::move(int x, int y) {
         KVKBD_WARN("view_ is null!");
         return;
     }
+    KVKBD_DEBUG("position:{},{}", x, y);
     view_->setX(x);
     view_->setY(y);
     emit positionChanged(QPoint(x, y));
@@ -174,10 +175,15 @@ void VirtualKeyboardView::initView() {
         getDesktopType() == DesktopType::WAYLAND) {
         view_->setProperty(UkuiWaylandProperty::SURFACE_ROLE,
                            UkuiWaylandProperty::Role::INPUT_PANEL);
+        UkuiWindowStates defaultState = UkuiWindowState::Movable;
+        QPair<uint32_t, uint32_t> moveablePair(UKUI_WINDOW_STATE_MASK_ALL,
+                                               defaultState);
+        view_->setProperty(UkuiWaylandProperty::SURFACE_STATE,
+                           QVariant::fromValue(moveablePair));
         view_->setProperty(UkuiWaylandProperty::SURFACE_NO_TITLEBAR, true);
-        QPair<QRegion, int> pair(QRegion(), 0);
+        QPair<QRegion, int> blurPair(QRegion(), 0);
         view_->setProperty(UkuiWaylandProperty::SURFACE_BLUR,
-                           QVariant::fromValue(pair));
+                           QVariant::fromValue(blurPair));
     } else {
         view_->setFlags(Qt::Window | Qt::WindowDoesNotAcceptFocus |
                         Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
@@ -191,7 +197,17 @@ void VirtualKeyboardView::initView() {
     connectSignals();
 }
 
-void VirtualKeyboardView::pressed() { floatGeometryManager_->pressed(); }
+void VirtualKeyboardView::pressed() {
+    floatGeometryManager_->pressed();
+    if (view_ == nullptr) {
+        return;
+    }
+    if (getDesktopEnvironment() == DesktopEnvironment::UKUI &&
+        getDesktopType() == DesktopType::WAYLAND) {
+        KVKBD_DEBUG("moveStart");
+        view_->startSystemMove();
+    }
+}
 
 QRect VirtualKeyboardView::calculateInitialGeometry() {
     auto geo = geometry();
