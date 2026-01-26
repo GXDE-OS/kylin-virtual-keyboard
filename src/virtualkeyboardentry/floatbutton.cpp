@@ -20,6 +20,8 @@
 #include <QBitmap>
 #include <QPainter>
 #include <QVariant>
+#include <QWindow>
+#include "log.h"
 #include "ukuiwaylandhelper/ukuiwaylandproperties.h"
 #include "utils.h"
 
@@ -28,7 +30,10 @@ FloatButton::FloatButton(MouseClickedCallback mouseClickedCallback)
     initAttributes();
 }
 
-void FloatButton::move(int x, int y) { QPushButton::move(x, y); }
+void FloatButton::move(int x, int y) {
+    KVKBD_DEBUG("position:{},{}", x, y);
+    QPushButton::move(x, y);
+}
 
 void FloatButton::resize(int width, int height) {
     setFixedSize(width, height);
@@ -41,7 +46,15 @@ void FloatButton::mousePressEvent(QMouseEvent *event) {
         startX_ = event->pos().x();
         startY_ = event->pos().y();
         emit mousePressed();
+        startGlobalX_ = windowHandle()->position().x();
+        startGlobalY_ = windowHandle()->position().y();
+
         startClickTimer();
+
+        if (getDesktopEnvironment() == DesktopEnvironment::UKUI &&
+            getDesktopType() == DesktopType::WAYLAND) {
+            windowHandle()->startSystemMove();
+        }
     }
 
     QPushButton::mousePressEvent(event);
@@ -52,12 +65,14 @@ bool FloatButton::shouldPerformMouseClick() const {
 }
 
 void FloatButton::processMouseReleaseEvent() {
-    emit mouseReleased();
+    emit mouseReleased(windowHandle()->position());
 
     manhattonLength = 0;
 
     startX_ = -1;
     startY_ = -1;
+    startGlobalX_ = -1;
+    startGlobalY_ = -1;
 }
 
 void FloatButton::processMouseClickEvent() {
@@ -73,7 +88,6 @@ void FloatButton::mouseReleaseEvent(QMouseEvent *event) {
     if (event->button() != Qt::LeftButton) {
         return;
     }
-
     bool couldPerformMouseClick = shouldPerformMouseClick();
     stopClickTimer();
 
@@ -96,7 +110,10 @@ void FloatButton::updateManhattonLength(QMouseEvent *event) {
 }
 
 bool FloatButton::isFloatButtonMoved() const {
-    return manhattonLength > manhattonLengthThreshold;
+    auto offsetX = windowHandle()->position().x() - startGlobalX_;
+    auto offsetY = windowHandle()->position().y() - startGlobalY_;
+    auto offset = std::abs(offsetX) + std::abs(offsetY);
+    return manhattonLength > manhattonLengthThreshold || offset > 0;
 }
 
 void FloatButton::processMouseMoveEvent(QMouseEvent *event) {
@@ -157,6 +174,12 @@ void FloatButton::initAttributes() {
         getDesktopType() == DesktopType::WAYLAND) {
         setProperty(UkuiWaylandProperty::SURFACE_ROLE,
                     UkuiWaylandProperty::Role::INPUT_PANEL);
+        // inputpanel 默认禁止移动，需要设置窗口属性为可移动
+        UkuiWindowStates defaultState = UkuiWindowState::Movable;
+        QPair<uint32_t, uint32_t> pair(UKUI_WINDOW_STATE_MASK_ALL,
+                                       defaultState);
+        setProperty(UkuiWaylandProperty::SURFACE_STATE,
+                    QVariant::fromValue(pair));
         // TODO: 合成器目前圆角是固定值，而且没有给inputpanel窗口设置圆角
         // 设置阴影和毛玻璃会有圆角问题，暂时屏蔽
         //        setProperty(UkuiWaylandProperty::SURFACE_NO_TITLEBAR, true);

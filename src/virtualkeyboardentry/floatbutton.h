@@ -49,7 +49,7 @@ public slots:
 
 signals:
     void mouseMoved(int x, int y);
-    void mouseReleased();
+    void mouseReleased(const QPoint &target);
     void mousePressed();
 
 public slots:
@@ -79,6 +79,9 @@ private:
 private:
     int startX_ = -1;
     int startY_ = -1;
+
+    int startGlobalX_ = -1;
+    int startGlobalY_ = -1;
 
     int manhattonLength = 0;
     constexpr static int manhattonLengthThreshold = 10;
