@@ -38,15 +38,20 @@ ScreenWatcher &ScreenWatcher::getInstance() {
 
 QRect ScreenWatcher::getOptimalScreenGeometry(const QPoint &position) const {
     if (const auto *screen = QGuiApplication::screenAt(position)) {
+        KVKBD_DEBUG("screen name:{}", screen->name().toStdString());
         return screen->geometry();
     }
 
     for (auto it = screenList_.begin(); it != screenList_.end(); ++it) {
         const ScreenInfo &info = it.value();
         if (info.hasWindowMark()) {
+            KVKBD_DEBUG("marked screen name:{}",
+                        info.screen->name().toStdString());
             return info.screen->geometry();
         }
     }
+    KVKBD_DEBUG("primaryScreen name:{}",
+                QGuiApplication::primaryScreen()->name().toStdString());
 
     return QGuiApplication::primaryScreen()->geometry();
 }
@@ -95,6 +100,7 @@ void ScreenWatcher::markScreen(const QPoint &position) {
     if (info != nullptr) {
         info->hasWindow = true;
         isScreenMarkChanged_ = true;
+        KVKBD_DEBUG("screen name:{}", info->screen->name().toStdString());
     }
 }
 
