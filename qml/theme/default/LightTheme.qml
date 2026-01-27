@@ -22,51 +22,47 @@ QtObject {
     id: lightTheme
 
     // 虚拟键盘背景色
-    property color virtualKeyboardColor: "#F6F6F6"
+    property color virtualKeyboardColor: "#EBEDEF"
     // 字符按键颜色
     property color charKeyNormalColor: "#FFFFFF"
-    property color charKeyPressedColor: Qt.rgba(0, 0, 0, 0.2)
-    property color charKeyHoverColor: Qt.rgba(0, 0, 0, 0.15)
-    property color charKeyDropShadowColor: Qt.rgba(115 / 255, 115 / 255, 115 / 255, 0.8)
+    property color charKeyPressedColor: "#DDE0E4"
+    property color charKeyHoverColor: "#EDF1F5"
+    property color charKeyDropShadowColor: "#95A0AD"
     // 动作按键颜色
-    property color actionKeyNormalColor: Qt.rgba(0, 0, 0, 0.1)
-    property color actionKeyPressedColor: Qt.rgba(0, 0, 0, 0.2)
-    property color actionKeyHoverColor: Qt.rgba(0, 0, 0, 0.15)
+    property color actionKeyNormalColor: "#CED3D9"
+    property color actionKeyPressedColor: "#A5ACB5"
+    property color actionKeyHoverColor: "#C0C6CE"
     // 开关按键颜色
-    property color switchKeyNormalColor: Qt.rgba(0, 0, 0, 0.1)
-    property color switchKeyPressedColor: Qt.rgba(0, 0, 0, 0.2)
-    property color switchKeyHoverNormalColor: Qt.rgba(0, 0, 0, 0.15)
-    property color switchKeyOpenColor: "#3676F5"
-    // KBrand-Click: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #3790FA
-    property color switchKeyOpenPressedColor: ThemeUtils.calculateMixedColor(Qt.rgba(55 / 255, 144 / 255, 250 / 255, 1), 0.2)
-    // KBrand-Hover: linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), #3790FA
-    property color switchKeyHoverOpenColor: ThemeUtils.calculateMixedColor(Qt.rgba(55 / 255, 144 / 255, 250 / 255, 1), 0.05)
+    property color switchKeyNormalColor: "#CED3D9"
+    property color switchKeyPressedColor: "#A5ACB5"
+    property color switchKeyHoverNormalColor: "#C0C6CE"
+    property color switchKeyOpenColor: "#3690F8"
+    property color switchKeyOpenPressedColor: "#2C73C6"
+    property color switchKeyHoverOpenColor: "#328AF0"
     // 开关按键阴影颜色
-    property color switchKeyNormalDropShadowColor: Qt.rgba(115 / 255, 115 / 255, 115 / 255, 0.8)
-    property color switchKeyOpenDropShadowColor: Qt.rgba(3 / 255, 59 / 255, 170 / 255, 0.8)
-    property color switchKeyOpenPressedDropShadowColor: Qt.rgba(115 / 255, 115 / 255, 115 / 255, 0.8)
+    property color switchKeyNormalDropShadowColor: "#95A0AD"
+    property color switchKeyOpenDropShadowColor: "#1174E5"
+    property color switchKeyOpenPressedDropShadowColor: "#165FB3"
     // 输入法列表高亮颜色
-    property color currentIMColor: "#3676F5"
+    property color currentIMColor: "#328AF0"
     // 候选词相关颜色
-    property color candidateListBackgroundColor: "#E6E6E6"
-    property color candidateDefaultColor: Qt.rgba(0, 0, 0, 0.85)
+    property color candidateListBackgroundColor: "#DDE0E4"
+    property color candidateDefaultColor: "#262626"
     property color candidateHighlightColor: "#3790FA"
-    property color preeditBottomColor: Qt.rgba(0, 0, 0, 0.1)
+    property color preeditBottomColor: "#E4E6E9"
     // 拖拽条
-    property color dragBarIndicatorColor: Qt.rgba(0, 0, 0, 0.85)
+    property color dragBarIndicatorColor: "#1D1D1D"
     // 关闭按钮
-    // KError-Click: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #F53F3F
-    property color hideButtonPressedColor: ThemeUtils.calculateMixedColor(Qt.rgba(245 / 255, 73 / 255, 73 / 255, 1), 0.2)
-    // KError-Hover: linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), #F53F3F
-    property color hideButtonHoverColor: ThemeUtils.calculateMixedColor(Qt.rgba(245 / 255, 73 / 255, 73 / 255, 1), 0.05)
+    property color hideButtonPressedColor: "#C43232"
+    property color hideButtonHoverColor: "#E93C3C"
     // 模式切换
-    property color placementButtonPressedColor: Qt.rgba(0, 0, 0, 0.2)
-    property color placementButtonHoverColor: Qt.rgba(0, 0, 0, 0.15)
+    property color placementButtonPressedColor: "#C8C8C8"
+    property color placementButtonHoverColor: "#DCDCDC"
     // 文本颜色
     property color fontPrimaryColor: Qt.rgba(0, 0, 0, 0.85)
     property color fontSecondaryColor: Qt.rgba(0, 0, 0, 0.35)
     // 圆角属性
-    property int virtualKeyboardFloatPlacementRadius: 12
+    property int virtualKeyboardFloatPlacementRadius: 16
     property int dragBarIndicatorRadius: 2
     property int toolbarRadius: 8
 }
