@@ -1,0 +1,28 @@
+Source: kylin-virtual-keyboard
+Section: utils
+Priority: optional
+Maintainer: gfdgd_xi <3025613752@qq.com>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+ cmake,
+ libkf5windowsystem-dev,
+ qtdeclarative5-dev, 
+ libfcitx5-qt-dev, 
+ qtbase5-dev,
+ qml-module-qtquick-controls2, 
+ libgsettings-qt-dev, 
+ pkg-config, 
+ qtquickcontrols2-5-dev, 
+ libfcitx5core-dev,
+ libspdlog-dev
+Standards-Version: 4.7.2
+Homepage: https://gitee.com/openkylin/kylin-virtual-keyboard
+
+Package: kylin-virtual-keyboard
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: 麒麟虚拟键盘 For GXDE
+ 麒麟虚拟键盘 For GXDE
