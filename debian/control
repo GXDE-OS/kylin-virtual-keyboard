@@ -15,7 +15,9 @@ Build-Depends:
  pkg-config, 
  qtquickcontrols2-5-dev, 
  libfcitx5core-dev,
- libspdlog-dev
+ libspdlog-dev, 
+ libgsettings-qt-dev, 
+ libgio-2.0-dev | libglib2.0-dev
 Standards-Version: 4.7.2
 Homepage: https://gitee.com/openkylin/kylin-virtual-keyboard
 
