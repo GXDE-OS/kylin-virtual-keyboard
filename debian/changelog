@@ -1,5 +1,5 @@
-kylin-virtual-keyboard (1.0.0-1) UNRELEASED; urgency=medium
+kylin-virtual-keyboard (1.0.1) UNRELEASED; urgency=medium
 
-  * Initial release. (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * 修改tray-icon-show-policy默认值为NeverShow
 
- -- gfdgd_xi <3025613752@qq.com>  Fri, 20 Mar 2026 12:16:08 +0800
+ -- gfdgd_xi <3025613752@qq.com>  Fri, 20 Mar 2026 15:02:38 +0800
