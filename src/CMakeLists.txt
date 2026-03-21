@@ -15,7 +15,7 @@ set(HEADERS
     ipc/fcitxvirtualkeyboardserviceproxy.h
     ipc/requestmerger.h
     ipc/keyboardserviceproxy.h
-    ipc/ukuimenuserviceproxy.h
+    ipc/gxdelauncherserviceproxy.h
     ipc/fcitxqtdbustypes.h
     ipc/fcitxcontrollerserviceproxy.h
     localsettings/localsettings.h
@@ -55,7 +55,7 @@ set(SOURCES
     ipc/fcitxvirtualkeyboardserviceproxy.cpp
     ipc/requestmerger.cpp
     ipc/keyboardserviceproxy.cpp
-    ipc/ukuimenuserviceproxy.cpp
+    ipc/gxdelauncherserviceproxy.cpp
     ipc/fcitxqtdbustypes.cpp
     ipc/fcitxcontrollerserviceproxy.cpp
     localsettings/viewlocalsettings.cpp

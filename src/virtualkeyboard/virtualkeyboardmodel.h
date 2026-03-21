@@ -23,7 +23,7 @@
 #include <QDBusServiceWatcher>
 #include <QObject>
 #include "ipc/fcitxcontrollerserviceproxy.h"
-#include "ipc/ukuimenuserviceproxy.h"
+#include "ipc/gxdelauncherserviceproxy.h"
 
 class VirtualKeyboardModel : public QObject {
     Q_OBJECT
@@ -79,7 +79,7 @@ private slots:
 
 private:
     void initFcitx5Controller();
-    void initUkuiMenuServiceProxy();
+    void initGxdeLauncherServiceProxy();
     void initDBusServiceWatcher();
     void initVirtualKeyboardBackendInterface();
 
@@ -92,13 +92,13 @@ private:
     int getPreeditCaret() const;
     QString getPreeditText() const;
 
-    void changeUkuiMenuVisiblity();
+    void changeGxdeLauncherVisiblity();
 
 private:
     std::unique_ptr<QDBusServiceWatcher> serviceWatcher_ = nullptr;
     std::unique_ptr<QDBusInterface> virtualKeyboardBackendInterface_ = nullptr;
     std::unique_ptr<FcitxControllerServiceProxy> fcitx5Controller_ = nullptr;
-    std::unique_ptr<UkuiMenuServiceProxy> ukuiMenuServiceProxy_ = nullptr;
+    std::unique_ptr<GxdeLauncherServiceProxy> gxdeLauncherServiceProxy_ = nullptr;
 
     QString uniqueName_;
 

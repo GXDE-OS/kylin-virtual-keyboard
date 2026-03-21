@@ -15,18 +15,18 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "ukuimenuserviceproxy.h"
+#include "gxdelauncherserviceproxy.h"
 
-const QString g_ukuiMenuServiceName = "org.ukui.menu";
-const QString g_ukuiMenuServicePath = "/org/ukui/menu";
-const char *g_ukuiMenuServiceInterface = "org.ukui.menu";
+const QString g_gxdeLauncherServiceName = "com.deepin.dde.Launcher";
+const QString g_gxdeLauncherServicePath = "/com/deepin/dde/Launcher";
+const char *g_gxdeLauncherServiceInterface = "com.deepin.dde.Launcher";
 
-UkuiMenuServiceProxy::UkuiMenuServiceProxy(QObject *parent)
-    : QDBusAbstractInterface(g_ukuiMenuServiceName, g_ukuiMenuServicePath,
-                             g_ukuiMenuServiceInterface,
+GxdeLauncherServiceProxy::GxdeLauncherServiceProxy(QObject *parent)
+    : QDBusAbstractInterface(g_gxdeLauncherServiceName, g_gxdeLauncherServicePath,
+                             g_gxdeLauncherServiceInterface,
                              QDBusConnection::sessionBus(), parent) {}
 
-void UkuiMenuServiceProxy::toggle() {
+void GxdeLauncherServiceProxy::toggle() {
     QList<QVariant> argumentList;
     argumentList << "";
     asyncCallWithArgumentList("active", argumentList);

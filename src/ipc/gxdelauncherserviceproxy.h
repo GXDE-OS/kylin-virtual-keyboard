@@ -15,15 +15,15 @@
  * this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef UKUIMENUSERVICEPROXY_H
-#define UKUIMENUSERVICEPROXY_H
+#ifndef GXDELAUNCHERSERVICEPROXY_H
+#define GXDELAUNCHERSERVICEPROXY_H
 
 #include <QDBusAbstractInterface>
 
-class UkuiMenuServiceProxy : public QDBusAbstractInterface {
+class GxdeLauncherServiceProxy : public QDBusAbstractInterface {
 public:
-    explicit UkuiMenuServiceProxy(QObject *parent = nullptr);
-    ~UkuiMenuServiceProxy() override = default;
+    explicit GxdeLauncherServiceProxy(QObject *parent = nullptr);
+    ~GxdeLauncherServiceProxy() override = default;
 
     void toggle();
 };

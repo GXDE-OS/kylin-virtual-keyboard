@@ -24,7 +24,7 @@
 
 VirtualKeyboardModel::VirtualKeyboardModel(QObject *parent) : QObject(parent) {
     initFcitx5Controller();
-    initUkuiMenuServiceProxy();
+    initGxdeLauncherServiceProxy();
     initDBusServiceWatcher();
 }
 
@@ -46,8 +46,8 @@ void VirtualKeyboardModel::processKeyEvent(int keysym, int keycode, int state,
                                            bool isRelease, int time) {
     // TODO：未来支持全局快捷键之后需要把这里的逻辑全部去掉  hantengc
     if (keycode == 133 && isRelease && state == 64) {
-        KVKBD_INFO("will change ukui menu visiblity.");
-        changeUkuiMenuVisiblity();
+        KVKBD_INFO("will change gxde launcher visiblity.");
+        changeGxdeLauncherVisiblity();
         return;
     }
 
@@ -61,8 +61,8 @@ void VirtualKeyboardModel::initFcitx5Controller() {
     fcitx5Controller_.reset(new FcitxControllerServiceProxy(this));
 }
 
-void VirtualKeyboardModel::initUkuiMenuServiceProxy() {
-    ukuiMenuServiceProxy_.reset(new UkuiMenuServiceProxy(this));
+void VirtualKeyboardModel::initGxdeLauncherServiceProxy() {
+    gxdeLauncherServiceProxy_.reset(new GxdeLauncherServiceProxy(this));
 }
 
 void VirtualKeyboardModel::initDBusServiceWatcher() {
@@ -178,12 +178,12 @@ void VirtualKeyboardModel::syncCurrentIMList() {
     setCurrentIMList(QVariant(stringList));
 }
 
-void VirtualKeyboardModel::changeUkuiMenuVisiblity() {
-    if (ukuiMenuServiceProxy_ == nullptr) {
-        KVKBD_INFO("ukui menu service proxy is nullptr,will return and not to "
-                   "show ukui menu.");
+void VirtualKeyboardModel::changeGxdeLauncherVisiblity() {
+    if (gxdeLauncherServiceProxy_ == nullptr) {
+        KVKBD_INFO("gxde launcher service proxy is nullptr,will return and not to "
+                   "show gxde launcher.");
         return;
     }
 
-    ukuiMenuServiceProxy_->toggle();
+    gxdeLauncherServiceProxy_->toggle();
 }
