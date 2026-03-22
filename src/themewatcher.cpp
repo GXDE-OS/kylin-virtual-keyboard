@@ -28,6 +28,11 @@ ThemeWatcher::ThemeWatcher(QObject *parent) : QObject(parent) {
             styleSettings_.reset(new QGSettings("org.ukui.style"));
         }
     }
+    else if (getDesktopEnvironment() == DesktopEnvironment::DDE) {
+        if (QGSettings::isSchemaInstalled("com.deepin.dde.appearance")) {
+            styleSettings_.reset(new QGSettings("com.deepin.dde.appearance"));
+        }
+    }
     updateTheme();
     updateThemeColor();
     connectSignals();
@@ -62,6 +67,21 @@ void ThemeWatcher::updateThemeColor() {
             currentThemeColor = "light";
         }
     }
+    if (getDesktopEnvironment() == DesktopEnvironment::DDE) {
+        if (styleSettings_ == nullptr) {
+            KVKBD_WARN(
+                "WARNING : INCORRECT GSETTINGS ID :{}, IS NOT INSTALLED!",
+                "com.deepin.dde.appearance");
+            return;
+        }
+
+        QString styleName = styleSettings_->get("gtk-theme").toString();
+        if (styleName == "deepin-dark") {
+            currentThemeColor = "dark";
+        } else if (styleName == "deepin-light") {
+            currentThemeColor = "light";
+        }
+    }
 
     if (currentThemeColor == currentThemeColor_) {
         return;
@@ -91,6 +111,15 @@ void ThemeWatcher::connectSignals() {
         connect(styleSettings_.get(), &QGSettings::changed, this,
                 [this](const QString &key) {
                     if (key == "styleName") {
+                        updateThemeColor();
+                    }
+                });
+    }
+    if (getDesktopEnvironment() == DesktopEnvironment::DDE &&
+        styleSettings_ != nullptr) {
+        connect(styleSettings_.get(), &QGSettings::changed, this,
+                [this](const QString &key) {
+                    if (key == "gtkTheme") {
                         updateThemeColor();
                     }
                 });

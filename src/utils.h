@@ -24,7 +24,7 @@
 
 enum class DesktopType { X11, WAYLAND, UNKNOWN };
 
-enum class DesktopEnvironment { GNOME, KDE, UKUI, UNKNOWN };
+enum class DesktopEnvironment { GNOME, KDE, UKUI, UNKNOWN, DDE };
 
 static std::string toLower(const char *str) {
     if (str == nullptr) {
@@ -69,6 +69,8 @@ static inline DesktopEnvironment getDesktopEnvironment() {
             return DesktopEnvironment::GNOME;
         } else if (name == "ukui") {
             return DesktopEnvironment::UKUI;
+        } else if (name == "deepin") {
+            return DesktopEnvironment::DDE;
         }
     }
 
