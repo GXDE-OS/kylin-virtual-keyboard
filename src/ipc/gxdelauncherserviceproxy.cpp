@@ -27,7 +27,5 @@ GxdeLauncherServiceProxy::GxdeLauncherServiceProxy(QObject *parent)
                              QDBusConnection::sessionBus(), parent) {}
 
 void GxdeLauncherServiceProxy::toggle() {
-    QList<QVariant> argumentList;
-    argumentList << "";
-    asyncCallWithArgumentList("active", argumentList);
+    asyncCall("Toggle"); //这里少改了
 }
