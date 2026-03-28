@@ -7,7 +7,7 @@
     </key>
     <key name="virtual-keyboard-scale-factor" type="i">
       <range min="20" max="100"/>
-      <default>50</default>
+      <default>60</default>
       <summary>Scale the virtual keyboard size</summary>
       <description>Scale the virtual keyboard size. Its range is [20, 100]</description>
     </key>
