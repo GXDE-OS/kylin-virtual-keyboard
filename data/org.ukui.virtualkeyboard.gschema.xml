@@ -1,7 +1,7 @@
 <schemalist gettext-domain="kylin-virtual-keyboard">
   <schema id="org.ukui.virtualkeyboard" path="/org/ukui/virtualkeyboard/">
     <key name="float-button-enabled" type="b">
-      <default>false</default>
+      <default>true</default>
       <summary>Controls the availability of float button</summary>
       <description>Controls the availability of float button</description>
     </key>
@@ -17,7 +17,7 @@
       <description>Controls the availability of virtualkeyboard animation</description>
     </key>
     <key name="tray-icon-show-policy" type="s">
-      <default>'NeverShow'</default>
+      <default>'AlwaysShow'</default>
       <summary>Controls the availability and visibility of virtualkeyboard tray icon</summary>
       <description>Controls the availability and visibility of virtualkeyboard tray icon</description>
       <choices>
