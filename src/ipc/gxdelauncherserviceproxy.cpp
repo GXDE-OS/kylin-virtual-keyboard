@@ -17,9 +17,9 @@
 
 #include "gxdelauncherserviceproxy.h"
 
-const QString g_gxdeLauncherServiceName = "com.deepin.dde.Launcher";
-const QString g_gxdeLauncherServicePath = "/com/deepin/dde/Launcher";
-const char *g_gxdeLauncherServiceInterface = "com.deepin.dde.Launcher";
+const QString g_gxdeLauncherServiceName = "com.deepin.dde.Launcher1";
+const QString g_gxdeLauncherServicePath = "/com/deepin/dde/Launcher1";
+const char *g_gxdeLauncherServiceInterface = "com.deepin.dde.Launcher1";
 
 GxdeLauncherServiceProxy::GxdeLauncherServiceProxy(QObject *parent)
     : QDBusAbstractInterface(g_gxdeLauncherServiceName, g_gxdeLauncherServicePath,
