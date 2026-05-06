@@ -71,7 +71,7 @@ public:
      * 显示时，基于窗口最新的位置来标记窗口所在的屏幕
      * 当屏幕改变时，直接基于标记来决定是否向键盘管理器发送信号
      */
-    void markScreen(const QPoint &position);
+    void markScreen(const QPoint &position, bool needNotify = true);
 
     /**
      * @brief 通知不活跃的视图，需要更新对应的几何参数
@@ -83,6 +83,18 @@ public:
      * 这样，当不活跃的视图显示时，其所使用的比例数据是正确的
      */
     void notifyScreenMarkChanged();
+
+    /**
+     * @brief 是否有屏幕被标记
+     * @param
+     * @return
+     *
+     * 上次显示的位置是否位于有效屏幕（是否被标记）
+     * 几何管理器需要在初始化时，判断历史位置是否有效
+     * 虚拟键盘视图和悬浮球需要在屏幕移除时，判断历史位置是否有效
+     *
+     */
+    bool isAnyScreenMarked() const;
 
 signals:
     void screensChanged();
@@ -114,8 +126,6 @@ private:
     void updateScreenList();
     ScreenInfo *getScreenInfo(QScreen *screen);
     const ScreenInfo *getScreenInfoConst(QScreen *screen) const;
-    // 是否有屏幕被虚拟键盘显示时标记
-    bool isAnyScreenMarked() const;
 
 private:
     QString lastPrimaryScreenName_;

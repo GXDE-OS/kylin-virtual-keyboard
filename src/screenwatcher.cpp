@@ -82,7 +82,7 @@ bool ScreenWatcher::isAnyScreenMarked() const {
     return false;
 }
 
-void ScreenWatcher::markScreen(const QPoint &position) {
+void ScreenWatcher::markScreen(const QPoint &position, bool needNotify) {
     QScreen *windowScreen = QGuiApplication::screenAt(position);
     if (windowScreen == nullptr) {
         return;
@@ -99,7 +99,9 @@ void ScreenWatcher::markScreen(const QPoint &position) {
     ScreenInfo *info = getScreenInfo(windowScreen);
     if (info != nullptr) {
         info->hasWindow = true;
-        isScreenMarkChanged_ = true;
+        if (needNotify) {
+            isScreenMarkChanged_ = true;
+        }
         KVKBD_DEBUG("screen name:{}", info->screen->name().toStdString());
     }
 }
