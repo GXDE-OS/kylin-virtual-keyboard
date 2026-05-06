@@ -106,6 +106,10 @@ void FloatButtonManager::destroyFloatButton() {
 }
 
 void FloatButtonManager::onScreenResolutionChanged() {
+    if (ScreenWatcher::getInstance().isAnyScreenMarked() == false) {
+        KVKBD_DEBUG("marked screen removed, update float button margin ratio");
+        geometryManager_->updateViewMarginRatio();
+    }
     if (!floatButtonEnabled_) {
         return;
     }
@@ -113,10 +117,6 @@ void FloatButtonManager::onScreenResolutionChanged() {
 }
 
 void FloatButtonManager::onMarkedScreenChanged() {
-    if (!floatButtonEnabled_) {
-        return;
-    }
-
     if (floatButton_ != nullptr && floatButton_->isVisible()) {
         return;
     }

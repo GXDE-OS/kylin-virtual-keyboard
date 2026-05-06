@@ -266,6 +266,11 @@ void VirtualKeyboardManager::connectVirtualKeyboardSettingsSignals() {
 }
 
 void VirtualKeyboardManager::handleScreensChanged() {
+    if (ScreenWatcher::getInstance().isAnyScreenMarked() == false) {
+        KVKBD_DEBUG(
+            "marked screen removed, update virtual keyboard view margin ratio");
+        view_->updateMarginRatio();
+    }
     if (!view_->isVisible()) {
         return;
     }
