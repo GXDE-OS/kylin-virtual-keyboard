@@ -64,8 +64,9 @@ private:
     QMap<QString, QVariant> getDefaultMarginRatioMap() const;
     QMap<QString, QVariant> getDefaultLastPositionMap() const;
 
-    float calculateLeftMarginRatio(float leftMargin) const;
-    float calculateTopMarginRatio(float topMargin) const;
+    // 全局坐标相对 getScreenGeometry() 左上角的偏移（global − left / global − top）
+    float calculateLeftMarginRatio(float offsetFromScreenLeft) const;
+    float calculateTopMarginRatio(float offsetFromScreenTop) const;
     void updateMarginRatio(const QPoint &targetPosition);
     void updateCurrentPostion(const QPoint &position);
     void saveMarginRatioMap();
