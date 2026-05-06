@@ -17,9 +17,9 @@
 
 #include "waylandworkspaceadjuster.h"
 
-#include <QMetaType>
+#include <QGuiApplication>
+#include <QScreen>
 #include <QVariant>
-#include <QWindow>
 
 #include "../log.h"
 #include "ukuiwaylandhelper/ukuiwaylandproperties.h"
@@ -28,8 +28,8 @@ WaylandWlcomWorkspaceAdjuster::WaylandWlcomWorkspaceAdjuster() {
     KVKBD_INFO("wayland wlcom workspace adjuster.");
 }
 
-void WaylandWlcomWorkspaceAdjuster::raiseInputArea(QWindow *window, 
-                                                    const QRect &rect) {
+void WaylandWlcomWorkspaceAdjuster::raiseInputArea(QWindow *window,
+                                                   const QRect &rect) {
     KVKBD_INFO("raise inputarea.");
     if (window == nullptr) {
         KVKBD_WARN("window is null, skip raiseInputArea.");
@@ -45,17 +45,34 @@ void WaylandWlcomWorkspaceAdjuster::fallInputArea() {
         KVKBD_WARN("surfaceWindow_ is null, skip fallInputArea.");
         return;
     }
-    QRect fallRect(0, 0, 0, 0);
-    setSurfaceWindowProperty(fallRect, 0);
+    setSurfaceWindowProperty(QRect(), 0);
 }
 
 void WaylandWlcomWorkspaceAdjuster::setSurfaceWindowProperty(
     const QRect &rect, const int32_t &enabled) {
-    UkuiWaylandProperty::SurfaceProperty property;
-    property.height = rect.height();
-    property.area = 1;
-    property.zone = rect.height();
-    property.enabled = enabled;
+    if (surfaceWindow_ == nullptr) {
+        KVKBD_WARN("surfaceWindow_ is null, skip ukui_surface_anchor.");
+        return;
+    }
+    QScreen *screen = surfaceWindow_->screen();
+    if (screen == nullptr) {
+        screen = QGuiApplication::primaryScreen();
+    }
+
+    UkuiWaylandProperty::SurfaceProperty sp;
+    sp.width = static_cast<int32_t>(rect.width());
+    sp.height = static_cast<int32_t>(rect.height());
+    sp.exclusive = static_cast<int32_t>(rect.height());
+    sp.area = 1;
+    sp.enabled = enabled;
+
+    KVKBD_DEBUG("surface anchor vector: w:{} h:{} anchor:{} area:{} excl:{} "
+                "res:{} mT:{} mR:{} mB:{} mL:{} on:{}",
+                sp.width, sp.height, sp.anchor, sp.area, sp.exclusive,
+                sp.reserved, sp.margin_top, sp.margin_right, sp.margin_bottom,
+                sp.margin_left, sp.enabled);
+
+    const QPair<QScreen *, QVector<int32_t>> pair(screen, sp.toVector());
     surfaceWindow_->setProperty(UkuiWaylandProperty::SURFACE_ANCHOR,
-                                QVariant::fromValue(property.toVector()));
+                                QVariant::fromValue(pair));
 }

@@ -25,7 +25,7 @@ public:
     WaylandWlcomWorkspaceAdjuster();
     ~WaylandWlcomWorkspaceAdjuster() override = default;
 
-    void raiseInputArea(QWindow */*window*/, const QRect &rect) override;
+    void raiseInputArea(QWindow * /*window*/, const QRect &rect) override;
     void fallInputArea() override;
 
 private:

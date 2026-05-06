@@ -86,21 +86,21 @@ constexpr const char *POPUP = "popup";            // 弹出窗口
  * 用于设置窗口的锚定位置和边距
  */
 struct SurfaceProperty {
-    int32_t screen_id = 0; // 屏幕ID
-    int32_t width = 0;     // 宽度
-    int32_t height = 0;    // 高度
-    int32_t anchor = 14; // 锚定位置（位标志：top=1, bottom=2, left=4, right=8）
-    int32_t area = 0;    // 是否覆盖任务栏 （0: 不覆盖, 1: 覆盖）
-    int32_t zone = 0;    // 保留区域大小
-    int32_t margin_top = 0;    // 上边距
-    int32_t margin_right = 0;  // 右边距
-    int32_t margin_bottom = 0; // 下边距
-    int32_t margin_left = 0;   // 左边距
-    int32_t enabled = 0;       // 是否启用
+    int32_t width = 0;     // 表面宽度
+    int32_t height = 0;    // 表面高度
+    int32_t anchor = 14;   // 锚定（位标志：top=1, bottom=2, left=4, right=8）
+    int32_t area = 0;      // 是否覆盖任务栏，0 否，1 是
+    int32_t exclusive = 0; // 工作区独占预留尺寸
+    int32_t reserved = 1;  // 协议常量，固定为 1
+    int32_t margin_top = 0;
+    int32_t margin_right = 0;
+    int32_t margin_bottom = 0;
+    int32_t margin_left = 0;
+    int32_t enabled = 0; // 末尾开关：1 开启独占，0 关闭
 
     QVector<int32_t> toVector() const {
-        return {screen_id,     width,       height,     anchor,
-                area,          zone,        margin_top, margin_right,
+        return {width,         height,      anchor,     area,
+                exclusive,     reserved,    margin_top, margin_right,
                 margin_bottom, margin_left, enabled};
     }
 };
