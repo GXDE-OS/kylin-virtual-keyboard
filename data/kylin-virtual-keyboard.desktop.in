@@ -11,3 +11,5 @@ X-GNOME-AutoRestart-Phase=Application
 X-UKUI-AutoRestart=true
 X-UKUI-AutoRestart-Phase=Application
 NoDisplay=true
+StartupWMClass=kylin-virtual-keyboard
+Icon=ukui-virtual-keyboard-symbolic
