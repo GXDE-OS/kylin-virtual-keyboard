@@ -43,7 +43,7 @@
       </choices>
     </key>
     <key name="theme" type="s">
-      <default>'ukui'</default>
+      <default>'default'</default>
       <summary>Supports users in choosing different themes. The UKUI theme cannot be used if it is not the UKUI desktop environment</summary>
       <description>Supports users in choosing different themes. The UKUI theme cannot be used if it is not the UKUI desktop environment</description>
       <choices>
