@@ -1,4 +1,4 @@
-kylin-virtual-keyboard (1.0.6) UNRELEASED; urgency=medium
+kylin-virtual-keyboard (2.0.0) UNRELEASED; urgency=medium
 
   * 修改tray-icon-show-policy默认值为NeverShow
   * 修改：使用ukuimenu变为使用gxdelauncher
@@ -6,5 +6,6 @@ kylin-virtual-keyboard (1.0.6) UNRELEASED; urgency=medium
   * 更换键盘图标
   * 调整屏幕键盘默认尺寸
   * 修复虚拟键盘无法正常显示的问题
+  * Qt6 适配
 
- -- gfdgd_xi <3025613752@qq.com>  Sat, 13 Jun 2026 07:29:08 +0800
+ -- gfdgd_xi <3025613752@qq.com>  Sun, 14 Jun 2026 22:26:23 +0800
