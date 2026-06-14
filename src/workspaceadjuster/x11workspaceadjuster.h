@@ -23,7 +23,9 @@
 #include <QObject>
 #include <QTimer>
 #include <QWidget>
+#include <QWindow>
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 class X11Kf5WorkspaceAdjuster : public WorkspaceAdjuster {
 public:
     X11Kf5WorkspaceAdjuster();
@@ -42,14 +44,15 @@ private:
     static const int SHOW_DELAY_TIME = 200;
 };
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#else
 class X11Kf6WorkspaceAdjuster : public WorkspaceAdjuster {
 public:
-    X11Kf6WorkspaceAdjuster() override = default;
-    ~X11Kf6WorkspaceAdjuster();
+    X11Kf6WorkspaceAdjuster();
+    ~X11Kf6WorkspaceAdjuster() override = default;
+    // ~X11Kf6WorkspaceAdjuster();
 
-    void raiseInputArea(const QRect &rect);
-    void fallInputArea();
+    void raiseInputArea(QWindow *window, const QRect &rect) override;
+    void fallInputArea() override;
 
 private:
     void connectSignal();

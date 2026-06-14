@@ -83,21 +83,19 @@ set(SOURCES
 
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES} ${RESOURCES})
 target_link_libraries(${PROJECT_NAME}
-                Qt${QT_VERSION_MAJOR}::Core
-                Qt${QT_VERSION_MAJOR}::Gui
-                Qt${QT_VERSION_MAJOR}::Widgets
-                Qt${QT_VERSION_MAJOR}::Concurrent
-                Qt${QT_VERSION_MAJOR}::DBus
-                Qt${QT_VERSION_MAJOR}::Quick
-                Qt${QT_VERSION_MAJOR}::QuickControls2
-                KF${QT_VERSION_MAJOR}::WindowSystem
+                Qt6::Core
+                Qt6::Gui
+                Qt6::Widgets
+                Qt6::Concurrent
+                Qt6::DBus
+                Qt6::Quick
+                Qt6::QuickControls2
+                Qt6::Core5Compat
+                KF6::WindowSystem
                 Fcitx5::Core
                 ${GSettings_QT_LIBRARIES}
                 qtsingleapplication
                 spdlog::spdlog
             )
-if (QT_VERSION_MAJOR EQUAL 6)
-        target_link_libraries(${PROJECT_NAME} Qt${QT_VERSION_MAJOR}::Core5Compat)
-endif()
 
 install(TARGETS ${PROJECT_NAME}  DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)

@@ -6,17 +6,18 @@ Rules-Requires-Root: no
 Build-Depends:
  debhelper-compat (= 13),
  cmake,
- libkf5windowsystem-dev,
- qtdeclarative5-dev, 
- libfcitx5-qt-dev, 
- qtbase5-dev,
- qml-module-qtquick-controls2, 
+ libkf6windowsystem-dev,
+ qt6-declarative-dev, 
+ qt6-5compat-dev,
+ libfcitx5-qt6-dev, 
+ qt6-base-dev,
+ qml6-module-qtquick-controls, 
  libgsettings-qt-dev, 
  pkg-config, 
  qtquickcontrols2-5-dev, 
  libfcitx5core-dev,
  libspdlog-dev, 
- libgsettings-qt-dev, 
+ libgsettings-qt6-dev, 
  libgio-2.0-dev | libglib2.0-dev
 Standards-Version: 4.7.2
 Homepage: https://gitee.com/openkylin/kylin-virtual-keyboard
@@ -26,5 +27,6 @@ Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
+ qml6-module-qtquick-controls2-styles-chameleon，
 Description: 麒麟虚拟键盘 For GXDE
  麒麟虚拟键盘 For GXDE

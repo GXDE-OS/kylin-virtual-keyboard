@@ -41,11 +41,6 @@ enum class UkuiWindowState : uint32_t {
 Q_DECLARE_FLAGS(UkuiWindowStates, UkuiWindowState)
 Q_DECLARE_OPERATORS_FOR_FLAGS(UkuiWindowStates)
 
-inline UkuiWindowState operator&(UkuiWindowState lhs, UkuiWindowState rhs) {
-    return static_cast<UkuiWindowState>(static_cast<uint32_t>(lhs) &
-                                        static_cast<uint32_t>(rhs));
-}
-
 inline UkuiWindowState operator~(UkuiWindowState rhs) {
     return static_cast<UkuiWindowState>(~static_cast<uint32_t>(rhs));
 }

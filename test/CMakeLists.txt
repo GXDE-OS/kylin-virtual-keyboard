@@ -4,11 +4,7 @@ project(kylin-virtual-keyboard-test VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Widgets Concurrent DBus Quick QuickControls2 REQUIRED)
-if (NOT Qt${QT_VERSION_MAJOR}_FOUND)
-    message(FATAL_ERROR "Qt${QT_VERSION_MAJOR} not found!")
-endif()
+find_package(Qt6 COMPONENTS Core Gui Widgets Concurrent DBus Quick QuickControls2 REQUIRED)
 
 find_package(Gettext REQUIRED)
 find_package(Fcitx5Core REQUIRED)
@@ -45,16 +41,15 @@ add_executable(runTests
 target_link_libraries(runTests
     Fcitx5::Core
     Fcitx5::Utils
-    Qt${QT_VERSION_MAJOR}::Core
-    Qt${QT_VERSION_MAJOR}::Gui
-    Qt${QT_VERSION_MAJOR}::Widgets
-    Qt${QT_VERSION_MAJOR}::Concurrent
-    Qt${QT_VERSION_MAJOR}::DBus
-    Qt${QT_VERSION_MAJOR}::Quick
-    Qt${QT_VERSION_MAJOR}::QuickControls2
-    KF${QT_VERSION_MAJOR}::WindowSystem
-    Fcitx5::Core
-    Fcitx5Qt${QT_VERSION_MAJOR}::DBusAddons
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Widgets
+    Qt6::Concurrent
+    Qt6::DBus
+    Qt6::Quick
+    Qt6::QuickControls2
+    KF6::WindowSystem
+    Fcitx5Qt6::DBusAddons
     ${GSettings_QT_LIBRARIES}
 )
 

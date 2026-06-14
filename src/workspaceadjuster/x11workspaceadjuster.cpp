@@ -25,6 +25,7 @@
 #include <KWindowSystem>
 #endif
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 X11Kf5WorkspaceAdjuster::X11Kf5WorkspaceAdjuster()
     : dummyWidget_(nullptr), oneshotTimer_(nullptr) {
     KWindowSystem::setType(dummyWidget_.winId(), NET::Dock);
@@ -60,9 +61,13 @@ void X11Kf5WorkspaceAdjuster::fallInputArea() {
     oneshotTimer_.stop();
 }
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#else
 X11Kf6WorkspaceAdjuster::X11Kf6WorkspaceAdjuster() {
     KX11Extras::setType(dummyWidget_.winId(), NET::Dock);
+    dummyWidget_.setWindowFlags(Qt::FramelessWindowHint);
+    dummyWidget_.setAttribute(Qt::WA_TranslucentBackground);
+    oneshotTimer_.setSingleShot(true);
+    connectSignal();
 }
 
 void X11Kf6WorkspaceAdjuster::connectSignal() {
